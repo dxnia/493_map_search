@@ -1,42 +1,48 @@
-<p class="add-trip-button" ng-click="submitNewDay();" >+</p>
-
-<div class ='trip-agenda'>
-  <h1>{{current_trip.title}}</h1>
-  <!-- <h2>{{current_trip.start_date}} - {{current_trip.end_date}}</h2> -->
-  <br><hr>
-  
-  <div class = 'agenda-row'>
-    <div class = 'checklist-column'>
-      <h2><b>CHECKLIST</b></h2>
-    </div>
-
-    <div class = 'day-column'>
-        <div class='scrolling_trip_row'>
-
-          <span ng-repeat = "day in current_trip.days track by $index">
-          
-            <div class='trip_entry' style="background-image:url('{{trip.image}}');" ng-click="redirect(); setCurrentTripContent(trip, $index);">
-              <div id="trip_title_dates">
-                <span style="color:#101010;">{{ trip.title }},</span>
-                <span style="color:#101010;">{{ trip.place }}</span><br>
-                <span style="font-size:11px; line-height: 15px;">{{(trip.start_date | date : 'MMM ' | uppercase) + (trip.start_date | date : 'dd')}} - {{ (trip.end_date | date : 'MMM ' | uppercase) + (trip.end_date | date : 'dd, yyyy')}}</span>
-
-              </div>
-                      <p class="delete-trip-button" ng-click="markTripCompleted(trip, $index);" style="z-index: 1000;" ng-click="" >x</p>
+<p class="add-trip-button" ng-click="submitNewDay($event);">+</p>
+<div class='trip-agenda'>
+    <h1>{{current_trip.title}}</h1>
+    <!-- <h2>{{current_trip.start_date}} - {{current_trip.end_date}}</h2> -->
+    <br>
+    <hr>
+    <div class='agenda-row'>
+        <div class='checklist-column'>
+            <h2><b>CHECKLIST</b></h2>
+        </div>
+        <div class='row'>
+            <span ng-repeat="day in current_trip.days track by $index">
+          <div class = 'day-column' id="day{{$index}}">
+       
+                <h2 style="text-align: center"><b>DAY{{$index+1}}</b></h2>
+                <input type="button"  value="+" ng-click="ShowHide($event)" />
+            <br />
+            <br />
+                
+                   <!--    <p class="delete-trip-button" ng-click="markTripCompleted(trip, $index);" style="z-index: 1000;" ng-click="" >x</p> -->
 
 
             </div>
-          </span>
+            </span>
         </div>
-
-
-      <!-- <h2><b>DAY 1</b></h2>
+        <div ng-show="IsVisible" class='scrolling_trip_row'>
+            <span ng-repeat="place in current_trip.attractions">
+    
+      <div class='trip_entry' style="background-image:url('{{place.thumbnail_url}}');" ng-click="addPlaceToDay(place);">
+        <div id="trip_title_dates">
+          <span style="color:#101010;">{{ place.name }}</span>
+            <br>
+            <span style="font-size:11px; line-height: 15px;">{{place.perex}}</span>
+        </div>
+    </div>
+    </span>
+</div>
+</div>
+</div>
+<!-- <h2><b>DAY 1</b></h2>
       <div class = 'day-activity'>Walk down Orchard Road</div>
       <div class = 'day-activity'>Botanical Garden</div>
       <div class = 'day-activity'>Singapore Zoo</div> -->
-    </div>
-
-    <!-- <div class = 'day-column'>
+<!-- </div> -->
+<!-- <div class = 'day-column'>
       <h2><b>DAY 2</b></h2>
     </div>
 
@@ -44,10 +50,5 @@
       <h2><b>DAY 3</b></h2>
 
     </div> -->
-
-  </div>
-
-
-
-
+</div>
 </div>

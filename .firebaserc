@@ -1,5 +1,6 @@
 {
   "projects": {
-    "production": "projectf-371d9"
+    "production": "projectf-371d9",
+    "default": "strugglebuddy-ac602"
   }
 }

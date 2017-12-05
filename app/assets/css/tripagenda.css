@@ -61,12 +61,6 @@ overflow-y: hidden;
   text-align: left;
 }
 
-.trip-agenda h2 {
-  font-size: 15px;
-  font-weight: 400;
-  color: #545454;
-  text-align: left;
-}
 
 .trip-agenda hr {
   opacity: .1;
