@@ -139,6 +139,15 @@ Final_Controllers.controller('searchPage',[ '$scope', '$http', '$window', 'Place
 
   console.log("woohoo seeing my trips");
 
+  $scope.markTripCompleted = function(trip, index) { 
+
+    console.log("trip: " + trip); 
+    console.log("index:  " + index); 
+    upcomingTripService.completeTrip(trip, index); 
+
+
+  }
+
   $scope.viewAddTripForm = false;
   $scope.toggleModal = function() {
       $scope.viewAddTripForm = !$scope.viewAddTripForm;
@@ -227,8 +236,18 @@ Final_Controllers.controller('searchPage',[ '$scope', '$http', '$window', 'Place
         // window.location.href = "/#/mytrips";
     }
 
-    $scope.redirect = function(){
+    $scope.redirect = function(index){
        window.location.href = "/#/tripagenda";
+    }
+
+    $scope.setCurrentTripContent = function(trip, $index){ 
+      $scope.current_trip = trip; 
+      console.log("current trip content: "); 
+      console.log($scope.current_trip); 
+
+      upcomingTripService.setCurrentTrip(trip); 
+
+
     }
 
     $scope.submitNewTrip = function() {
@@ -245,6 +264,9 @@ Final_Controllers.controller('searchPage',[ '$scope', '$http', '$window', 'Place
     console.log($scope.city); 
     $scope.description = upcomingTripService.getDesc(); 
     console.log("AHHHHH" +  $scope.description ); 
+    $scope.current_trip = upcomingTripService.getCurrentTrip(); 
+    console.log("scope says the current trip is: ");
+    console.log( $scope.current_trip); 
    // $scope.upcomingTripService.upcomingTrips = upcomingTripService.upcomingTrips;
 
 
@@ -331,15 +353,10 @@ Final_Controllers.factory('LatLong', function($http) {
 
 
 Final_Controllers.service('upcomingTripService', function() { 
+  var current_trip = {}; 
 
   var property = 'First'; 
-  var city =[
-
-  {
-    name: 'empty'
-
-  }
-  ]; 
+  var city = "";
   var desc =[
 
   {
@@ -414,8 +431,11 @@ Final_Controllers.service('upcomingTripService', function() {
   var result_desc = ""; 
   angular.copy(desc, result_desc);
 
+  var current_trip_results = {}; 
+
   return { 
     getCompleted: getCompleted, 
+    completeTrip: completeTrip, 
     getProperty: getProperty, 
     setProperty: setProperty, 
     getAttractions: getAttractions, 
@@ -423,7 +443,9 @@ Final_Controllers.service('upcomingTripService', function() {
     setCity: setCity, 
     getCity: getCity, 
     getDesc: getDesc, 
-    setDesc: setDesc
+    setDesc: setDesc, 
+    getCurrentTrip: getCurrentTrip, 
+    setCurrentTrip: setCurrentTrip
   };
   // setProperty: function(value){ 
     //   property = value; 
@@ -432,6 +454,24 @@ Final_Controllers.service('upcomingTripService', function() {
       upcomingTrips.push(value);
 
       property = value; 
+    }
+    function setCurrentTrip(trip){ 
+      current_trip = trip; 
+      angular.copy(current_trip, current_trip_results);
+    }
+
+    function getCurrentTrip(){ 
+      return current_trip_results;  
+    }
+
+    function completeTrip(trip, index){ 
+      // upcomingTrips.push(value);
+        upcomingTrips.splice(index, 1);
+         angular.copy(upcomingTrips, result_trips); 
+
+        completedTrips.push(trip); 
+        angular.copy(completedTrips, result_completed); 
+      // property = value; 
     }
 
     function setAttractions(value){ 
