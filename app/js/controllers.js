@@ -205,7 +205,7 @@ Final_Controllers.controller('searchPage',[ '$scope', '$http', '$window', 'Place
 
             console.log("SHARED PROPERTY: " + upcomingTripService.setProperty(new_trip));
 
-            $scope.upcomingTrips.push(new_trip);
+            // $scope.upcomingTrips.push(new_trip);
             console.log("New Trip Created!");
             window.location.href = "/#/mytrips";
 
@@ -243,7 +243,7 @@ $scope.submitNewDay = function() {
 
     $scope.submitNewTrip = function() {
         console.log("Adding new trip!");
-        window.location.href = "/#/adddtrip";
+        window.location.href = "/#/addtrip";
     };
 
 
@@ -444,6 +444,7 @@ Final_Controllers.service('upcomingTripService', function() {
     // }
     function setProperty(value){ 
       upcomingTrips.push(value);
+      angular.copy(upcomingTrips, result_trips);
 
       property = value; 
     }
