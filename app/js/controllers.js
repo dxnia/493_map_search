@@ -69,6 +69,7 @@ Final_Controllers.controller('searchPage',[ '$scope', '$http', '$window', 'Place
     $scope.add = function(city) {
     console.log("Add Function Returns City: " + city);
     $scope.city = city; 
+    upcomingTripService.setCity(city); 
 
       // alert("add function works " + city);
       Places.getData(city).then(function(response){
@@ -98,6 +99,36 @@ Final_Controllers.controller('searchPage',[ '$scope', '$http', '$window', 'Place
 
 
       })
+
+      //   $http({
+      //     method: 'GET',
+      //     data: { action: 'query', list: 'search', srsearch: city, format: 'json' },
+      //     dataType: 'jsonp',
+      //     url: '//en.wikipedia.org/w/api.php'
+      //   }).then(function successCallback(response) {
+      //     console.log(response.data); 
+      //     console.log('title', response.query.search[0].snippet);
+
+      // }) 
+      $.ajax({
+        url: '//en.wikipedia.org/w/api.php',
+        data: { action: 'query', list: 'search', srsearch: city, format: 'json' },
+        dataType: 'jsonp',
+        success: function (x) {
+          upcomingTripService.setDesc( x.query.search[0].snippet ); 
+          // $scope.description = x.query.search[0].snippet; 
+          console.log('title', x.query.search[0].snippet);
+        }
+      });
+          
+      //     console.log($scope.attractions); 
+
+      //     upcomingTripService.setAttractions(response.data.data.places); 
+      //     $scope.attractions = upcomingTripService.getAttractions(); 
+
+
+    
+  
         
     });
       // console.log("console attributes: "); 
@@ -133,7 +164,7 @@ Final_Controllers.controller('searchPage',[ '$scope', '$http', '$window', 'Place
           headers: {
               "x-api-key": 'GwXHC0Tks21G6Y3T0PQbRacMXRNhsEOy8R8OqlTf'
           }, 
-          url: 'https://api.sygictravelapi.com/1.0/en/places/list?area='+lat+','+long+',5000&categories=sightseeing&limit=4'
+          url: 'https://api.sygictravelapi.com/1.0/en/places/list?area='+lat+','+long+',5000&categories=sightseeing&limit=20'
         }).then(function successCallback(response) {
           console.log(response); 
 
@@ -171,6 +202,8 @@ Final_Controllers.controller('searchPage',[ '$scope', '$http', '$window', 'Place
       })
         
     });
+
+
         // var form = document.getElementById("form");
         // form.reset();
         // var new_trip = {
@@ -208,8 +241,10 @@ Final_Controllers.controller('searchPage',[ '$scope', '$http', '$window', 'Place
     console.log($scope.upcomingTrips); 
     $scope.completedTrips = upcomingTripService.getCompleted();
     $scope.attractions = upcomingTripService.getAttractions(); 
- 
-
+    $scope.city = upcomingTripService.getCity();
+    console.log($scope.city); 
+    $scope.description = upcomingTripService.getDesc(); 
+    console.log("AHHHHH" +  $scope.description ); 
    // $scope.upcomingTripService.upcomingTrips = upcomingTripService.upcomingTrips;
 
 
@@ -298,6 +333,20 @@ Final_Controllers.factory('LatLong', function($http) {
 Final_Controllers.service('upcomingTripService', function() { 
 
   var property = 'First'; 
+  var city =[
+
+  {
+    name: 'empty'
+
+  }
+  ]; 
+  var desc =[
+
+  {
+    name: 'empty'
+
+  }
+  ]; 
   var attractions = [
 
   {
@@ -359,13 +408,22 @@ Final_Controllers.service('upcomingTripService', function() {
   var result_attr = [];
   angular.copy(attractions, result_attr);
   
+  var city_service = []; 
+  angular.copy(city, city_service);
+
+  var result_desc = ""; 
+  angular.copy(desc, result_desc);
 
   return { 
     getCompleted: getCompleted, 
     getProperty: getProperty, 
     setProperty: setProperty, 
     getAttractions: getAttractions, 
-    setAttractions: setAttractions
+    setAttractions: setAttractions, 
+    setCity: setCity, 
+    getCity: getCity, 
+    getDesc: getDesc, 
+    setDesc: setDesc
   };
   // setProperty: function(value){ 
     //   property = value; 
@@ -389,6 +447,21 @@ Final_Controllers.service('upcomingTripService', function() {
     }
   function getAttractions(){ 
       return result_attr; 
+  }
+
+  function setCity(city) { 
+      city_service[0] = city; 
+  }
+  function getCity(){ 
+    return city_service[0]; 
+  }
+  function setDesc(description) { 
+      desc = description; 
+  }
+  function getDesc(){ 
+    console.log('get desc log: ' + result_desc + ', ' + desc); 
+    return result_desc; 
+
   }
 
 
