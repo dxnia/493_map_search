@@ -1,7 +1,8 @@
+<p class="add-trip-button" ng-click="" >+</p>
 
 <div class ='trip-agenda'>
   <h1>{{current_trip.title}}</h1>
-  <h2>{{current_trip.start_date}} - {{current_trip.end_date}}</h2>
+  <!-- <h2>{{current_trip.start_date}} - {{current_trip.end_date}}</h2> -->
   <br><hr>
   
   <div class = 'agenda-row'>
@@ -10,20 +11,39 @@
     </div>
 
     <div class = 'day-column'>
-      <h2><b>DAY 1</b></h2>
+        <div class='scrolling_trip_row'>
+
+          <span ng-repeat = "day in current_trip.days track by $index">
+          
+            <div class='trip_entry' style="background-image:url('{{trip.image}}');" ng-click="redirect(); setCurrentTripContent(trip, $index);">
+              <div id="trip_title_dates">
+                <span style="color:#101010;">{{ trip.title }},</span>
+                <span style="color:#101010;">{{ trip.place }}</span><br>
+                <span style="font-size:11px; line-height: 15px;">{{(trip.start_date | date : 'MMM ' | uppercase) + (trip.start_date | date : 'dd')}} - {{ (trip.end_date | date : 'MMM ' | uppercase) + (trip.end_date | date : 'dd, yyyy')}}</span>
+
+              </div>
+                      <p class="delete-trip-button" ng-click="markTripCompleted(trip, $index);" style="z-index: 1000;" ng-click="" >x</p>
+
+
+            </div>
+          </span>
+        </div>
+
+
+      <!-- <h2><b>DAY 1</b></h2>
       <div class = 'day-activity'>Walk down Orchard Road</div>
       <div class = 'day-activity'>Botanical Garden</div>
-      <div class = 'day-activity'>Singapore Zoo</div>
+      <div class = 'day-activity'>Singapore Zoo</div> -->
     </div>
 
-    <div class = 'day-column'>
+    <!-- <div class = 'day-column'>
       <h2><b>DAY 2</b></h2>
     </div>
 
     <div class = 'day-column'>
       <h2><b>DAY 3</b></h2>
 
-    </div>
+    </div> -->
 
   </div>
 

@@ -181,7 +181,7 @@ Final_Controllers.controller('searchPage',[ '$scope', '$http', '$window', 'Place
           console.log("updated attractions");
           var city_attractions = []; 
           city_attractions = response.data.data.places;  
-
+          var day_trips = []; 
       //     console.log($scope.attractions); 
 
       //     upcomingTripService.setAttractions(response.data.data.places); 
@@ -196,7 +196,8 @@ Final_Controllers.controller('searchPage',[ '$scope', '$http', '$window', 'Place
                 image: 'images/dctrip.jpg',
                 start_date: new Date('2018', '11', '22'),
                 end_date: new Date('2018', '11', '27'),
-                attractions: city_attractions
+                attractions: city_attractions, 
+                days: day_trips 
             }
 
             console.log("the new trip info: "); 
@@ -212,47 +213,37 @@ Final_Controllers.controller('searchPage',[ '$scope', '$http', '$window', 'Place
         
     });
 
+      
+  }; 
 
-        // var form = document.getElementById("form");
-        // form.reset();
-        // var new_trip = {
-        //     title: $scope.title,
-        //     place: $scope.place,
-        //     latitude: lat, 
-        //     longitude: long, 
-        //     image: 'images/dctrip.jpg',
-        //     start_date: new Date('2018', '11', '22'),
-        //     end_date: new Date('2018', '11', '27'),
-        //     attractions: city_attractions
-        // }
+$scope.submitNewDay = function() {
+        
 
-        // console.log("the new trip info: "); 
-        // console.log(new_trip); 
-
-        // console.log("SHARED PROPERTY: " + upcomingTripService.setProperty(new_trip));
-
-        // $scope.upcomingTrips.push(new_trip);
-        // console.log("New Trip Created!");
-        // window.location.href = "/#/mytrips";
-    }
-
+        console.log("day added: " );
+        upcomingTripService.addDay(); 
+    }; 
     $scope.redirect = function(index){
        window.location.href = "/#/tripagenda";
-    }
+    }; 
 
     $scope.setCurrentTripContent = function(trip, $index){ 
       $scope.current_trip = trip; 
       console.log("current trip content: "); 
       console.log($scope.current_trip); 
 
-      upcomingTripService.setCurrentTrip(trip); 
+      upcomingTripService.setCurrentTrip(trip, $index); 
 
 
-    }
+    }; 
 
     $scope.submitNewTrip = function() {
         console.log("Adding new trip!");
         window.location.href = "/#/addtrip";
+    };
+
+    $scope.submitNewTrip = function() {
+        console.log("Adding new trip!");
+        window.location.href = "/#/adddtrip";
     };
 
 
@@ -445,7 +436,8 @@ Final_Controllers.service('upcomingTripService', function() {
     getDesc: getDesc, 
     setDesc: setDesc, 
     getCurrentTrip: getCurrentTrip, 
-    setCurrentTrip: setCurrentTrip
+    setCurrentTrip: setCurrentTrip, 
+    addDay: addDay
   };
   // setProperty: function(value){ 
     //   property = value; 
@@ -455,9 +447,21 @@ Final_Controllers.service('upcomingTripService', function() {
 
       property = value; 
     }
-    function setCurrentTrip(trip){ 
-      current_trip = trip; 
+    function setCurrentTrip(trip, $index){ 
+      current_trip = trip;
+      current_trip.index = $index;  
       angular.copy(current_trip, current_trip_results);
+    }
+
+    function addDay(){ 
+      var empty_days = {}; 
+      current_trip.days.push(empty_days); 
+      angular.copy(current_trip, current_trip_results); 
+
+      upcomingTrips[current_trip.index].days.push(empty_days); 
+      angular.copy(current_trip, current_trip_results);
+
+
     }
 
     function getCurrentTrip(){ 
