@@ -1,0 +1,35 @@
+
+
+
+<div class ='mytrips'>
+  <h1> {{city}} </h1>
+  
+  <h2>Suggestions</h2>
+
+  <div class='scrolling_trip_row'>
+
+    <span ng-repeat = "place in attractions">
+    
+      <div class='trip_entry' style="background-image:url('{{place.thumbnail_url}}');">
+        <div id="trip_title_dates">
+          <span style="color:#101010;">{{ place.name }}</span><br>
+          <span style="font-size:11px; line-height: 15px;">{{place.perex}}</span>
+
+        </div>
+      </div>
+
+    </span>
+  </div>
+</div>
+
+
+<!-- <div class ='main'>
+  <h1> YOU GOT HERE! {{attractions[0].name}}</h1>
+   <div id="NEW STUFF" ng-repeat="stuff in attractions | limitTo:4" >
+    <p style="z-index: 10000;"> {{stuff.name}} </p>
+    <img ng-src="https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference={{stuff.photos[0].photo_reference}}&key=AIzaSyBsxawHW0CdThQYREPYasco9mJ9Ub3VXqk" /> 
+
+
+    </div>
+</div>
+ -->

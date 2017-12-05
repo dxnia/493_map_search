@@ -1,0 +1,9 @@
+{
+  "firebase": "493FinalProj",
+  "public": "app",
+  "ignore": [
+    "firebase.json",
+    "**/.*",
+    "**/node_modules/**"
+  ]
+}

@@ -1,0 +1,40 @@
+<p class="add-trip-button" ng-click="submitNewTrip();" >+</p>
+
+
+<div class ='mytrips'>
+  <h2>UPCOMING</h2>
+
+  <div class='scrolling_trip_row'>
+
+    <span ng-repeat = "trip in upcomingTrips">
+    
+      <div class='trip_entry' style="background-image:url('{{trip.image}}');" ng-click="redirect();">
+        <div id="trip_title_dates">
+          <span style="color:#101010;">{{ trip.title }},</span>
+          <span style="color:#101010;">{{ trip.place }}</span><br>
+          <span style="font-size:11px; line-height: 15px;">{{(trip.start_date | date : 'MMM ' | uppercase) + (trip.start_date | date : 'dd')}} - {{ (trip.end_date | date : 'MMM ' | uppercase) + (trip.end_date | date : 'dd, yyyy')}}</span>
+
+        </div>
+      </div>
+
+    </span>
+  </div>
+
+  <br><br>
+
+  <h2>COMPLETED</h2>
+
+  <div class='scrolling_trip_row'>
+
+    <span ng-repeat = "trip in completedTrips">
+    
+      <div class='trip_entry' style="background-image:url('{{trip.image}}');">
+        <div id="trip_title_dates">
+          <span style="color:#101010;">{{ trip.title }}</span><br>
+          <span style="font-size:11px; line-height: 15px;">{{ (trip.start_date | date : 'MMM ' | uppercase) + (trip.start_date | date : 'dd') }} - {{ (trip.end_date | date : 'MMM ' | uppercase) + (trip.end_date | date : 'dd, yyyy') }}</span>
+        </div>
+      </div>
+
+    </span>
+  </div>
+</div>

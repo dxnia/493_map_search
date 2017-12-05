@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html >
+<head>
+  <meta charset="UTF-8">
+  <title>#DailyUI028 Contact Form</title>
+  <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css'>
+
+  
+  <link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css'>
+
+      <link rel="stylesheet" href="assets/css/addtrip.css">
+      <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+      
+
+  
+</head>
+
+<body ng-app = "493FinalProj">
+ <div ng-controller="searchPage">
+  <form class="form" id="form">
+   <span id='close' onclick='this.parentNode.parentNode.parentNode.removeChild(this.parentNode.parentNode); return false;'>x</span>
+  <p type="Title your trip:"><input type="text" ng-model="title"></input></p>
+  <p type="Where are you going?"><input type="text" ng-model="place"></input></p>
+  <button ng-click="submit(title,place);">BEGIN YOUR TRIP</button>
+</form>
+</div>
+  
+  
+</body>
+</html>

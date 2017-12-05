@@ -1,0 +1,73 @@
+{
+  "Globals" : {
+      "signupsOpen": true,
+      "Locations" : [ "Expresso Royale on State St", "Lab Cafe on Liberty St", "Starbucks on State St" ],
+      "Humanitarians" : {
+        "200" : "cmetwall@umich,edu",
+        "300" : "aeschep@umich,edu",
+        "400" : "amkopitz@umich,edu",
+        "500" : "dania@umich,edu",
+        "600" : "jesswu@umich,edu"
+      }
+    },
+  
+  "Matches" : [ null, {
+    "location" : "Starbucks",
+    "person1" : "gdimit@umich,edu",
+    "person2" : "abdulali@umich,edu"
+  } ],
+  "Users" : {
+    "abdulali@umich,edu" : {
+      "firstname" : "Ali",
+      "lastname" : "Abdulhamid",
+      "location" : "TBD",
+      "phonenum" : "2484700080",
+      "timeslot" : "000"
+    },
+    "amkopitz@umich,edu" : {
+      "firstname" : "andi",
+      "lastname" : "kopitz",
+      "location" : "TBD",
+      "phonenum" : "12345678",
+      "timeslot" : "300"
+    },
+    "dania@umich,edu" : {
+      "firstname" : "Dania",
+      "lastname" : "Abdulhamid",
+      "location" : "TBD",
+      "phonenum" : "",
+      "timeslot" : "300"
+    },
+    "gdimit@umich,edu" : {
+      "firstname" : "Guergana",
+      "lastname" : "Dimitrova",
+      "location" : "TBD",
+      "phonenum" : "12345678",
+      "timeslot" : "000"
+    },
+    "jesswu@umich,edu" : {
+      "firstname" : "Jessica",
+      "lastname" : "Wu",
+      "location" : "TBD",
+      "phonenum" : "",
+      "timeslot" : "000"
+    }
+  },
+  "Week1" : {
+    "200" : {
+     "cmetwall@umich,edu" : false
+    },
+    "300" : {
+     "aeschep@umich,edu" : false
+    },
+    "400" : {
+     "amkopitz@umich,edu" : false
+    },
+    "500" : {
+     "dania@umich,edu" : false
+    },
+    "600" : {
+      "jesswu@umich,edu" : false
+    }
+  }
+}

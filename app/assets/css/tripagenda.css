@@ -1,0 +1,287 @@
+
+body {
+overflow-y: hidden;
+}
+
+
+/* Main Containers */
+.outer-container {
+  margin: 10%;
+  height: 70%;
+  width: 80%;
+  min-width: 750px;
+  font-family: Lato;
+/*  box-shadow: 2px 5px 22px #a3a3a3;*/
+
+
+}
+/*.game-window {
+  height: 100%;
+  width: 75%;
+  background: #222;
+  float: right;
+  position: relative;
+}*/
+
+.game-window {
+  font-family: lato;
+  color: white;
+  background-color: #F3f3f3;
+  background-size: 100% 100%;
+  border-radius: 0px 15px 15px 0px;
+  height: 100%;
+  width: 75%;
+  float: right;
+  position: relative;
+  overflow: auto;
+}
+
+.game-window h1 { 
+  font-weight: 300;
+  letter-spacing: 1;
+  font-size: 60px; 
+  text-align: center; 
+  padding-top: 40px;
+}
+
+/*************** AGENDA PAGE STYLING ***********************/
+
+ .trip-agenda {
+  padding-left: 40px;
+  padding-right: 30px;
+  color: #545454;
+  font-size: 14px;
+}
+
+ .trip-agenda h1 {
+  font-size: 23px;
+  letter-spacing: 0;
+  font-weight: 600;
+  color: #545454;
+  text-align: left;
+}
+
+.trip-agenda h2 {
+  font-size: 15px;
+  font-weight: 400;
+  color: #545454;
+  text-align: left;
+}
+
+.trip-agenda hr {
+  opacity: .1;
+}
+
+.agenda-row {
+  width: 100%;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  height: 65%;
+  white-space:nowrap;
+}
+
+.checklist-column {
+  width: 200px;
+  height: 95%;
+  background-color: #f8f8f8;
+  position: relative;
+  display: inline-block;
+  margin-right: 20px;
+  overflow-y: scroll;
+}
+
+.day-column {
+  width: 200px;
+  height: 95%;
+  background-color: #ffffff;
+  position: relative;
+  display: inline-block;
+  margin-right: 20px;
+  overflow-y: scroll;
+}
+
+.day-activity {
+  position: relative;
+  background-color: #545454; /*#d86942; */
+  height: 28px;
+  width: 95%;
+  border-radius: 3px;
+  color: #ffffff;
+  font-size: 13px;
+  padding-top: 10px;
+  padding-left: 5%;
+  margin-bottom: 10px;
+}
+
+/**************************************/
+
+.scrolling_trip_row {
+  width: 100%;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  height: 200px;
+  white-space:nowrap;
+}
+
+.trip_entry {
+  background-size: 100% 100%;
+  border-radius: 5px;
+  width: 195px;
+  height: 180px;
+  position: relative;
+  display: inline-block;
+  margin-right: 20px;
+}
+
+
+#trip_title_dates {
+  background-color: white;
+  border-radius: 0px 0px 5px 5px;
+  position: absolute;
+  bottom: 0px;
+  width: 90%;
+  height: 16%;
+  padding: 10px;
+  font-size: 13px;
+}
+
+
+
+
+
+
+.status-window {
+  height: 100%;
+  width: 25%;
+  background: #fafafa;
+  float: left;
+}
+
+.status-window a:link, a:visited {
+  width: 100%;
+  text-align: left;
+  font-size: 15px;
+  padding-left: 20%;
+  text-decoration: none;
+  font-weight: 500;
+  padding-top: 12px;
+  margin-bottom: 10px;
+  height: 32px;
+  color: #adadad;
+  display: inline-block;
+}
+
+.status-window a:hover, a:active {
+  color: #d86942;
+  background-image: linear-gradient(left, #d86942, #d86942 2%, transparent 2%, transparent 100%);
+  background-image: -webkit-linear-gradient(left, #d86942, #d86942 2%, transparent 2%, transparent 100%)  
+}
+
+.avatar-circle {
+  border-radius: 50%;
+  width: 37%;
+  margin: 10px;
+}
+
+.start-game {
+  color: #ffffff;
+  text-align: center;
+}
+
+.game-over {
+  color: #ffffff;
+  text-align: center;
+}
+
+.setting-panel {
+  float: left;
+  font-size: 12px;
+}
+
+.bottom {
+  width: 300px;
+  height: 70px;
+  top: 555px;
+  position: absolute;
+}
+
+#main {
+  position: relative;
+  padding: 65px;
+  max-width: 100%;
+  min-width: 80em;
+  padding: 4.5em 3em 3em 3em ;
+  background: #ffffff;
+  border-radius: 4px;
+  cursor: default;
+  opacity: 0.95;
+  text-align: center;
+  -moz-transform-origin: 50% 50%;
+  -webkit-transform-origin: 50% 50%;
+  -ms-transform-origin: 50% 50%;
+  transform-origin: 50% 50%;
+  -moz-transform: rotateX(0deg);
+  -webkit-transform: rotateX(0deg);
+  -ms-transform: rotateX(0deg);
+  transform: rotateX(0deg);
+  -moz-transition: opacity 1s ease, -moz-transform 1s ease;
+  -webkit-transition: opacity 1s ease, -webkit-transform 1s ease;
+  -ms-transition: opacity 1s ease, -ms-transform 1s ease;
+  transition: opacity 1s ease, transform 1s ease;
+}
+
+#main h2 {
+  font-size: 24px;
+  font-weight: 300;
+}
+
+
+#main .avatar {
+  position: relative;
+  display: block;
+  margin-bottom: 1.5em;
+}
+
+#main .avatar img {
+  display: block;
+  margin: 0 auto;
+  border-radius: 100%;
+  box-shadow: 0 0 0 1.5em #ffffff;
+}
+
+#main .avatar:before {
+  content: '';
+  display: block;
+  position: absolute;
+  top: 50%;
+  left: -3em;
+  width: calc(100% + 6em);
+  height: 1px;
+  z-index: -1;
+  background: #c8cccf;
+}
+
+@media screen and (max-width: 480px) {
+
+  #main {
+    min-width: 0;
+    width: 100%;
+    padding: 4em 2em 2.5em 2em ;
+  }
+
+  #main .avatar:before {
+    left: -2em;
+    width: calc(100% + 4em);
+  }
+
+}
+
+body.is-loading #main {
+  opacity: 0;
+  -moz-transform: rotateX(15deg);
+  -webkit-transform: rotateX(15deg);
+  -ms-transform: rotateX(15deg);
+  transform: rotateX(15deg);
+}
+
+

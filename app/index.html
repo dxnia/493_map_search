@@ -1,0 +1,85 @@
+<!DOCTYPE HTML>
+<!--
+  Identity by HTML5 UP
+  html5up.net | @n33co
+  Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html ng-app="493FinalProj">
+  <head>
+   
+    <!-- bootstraptrap -->
+      <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+          <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+
+      <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="assets/js/bootstrap.min.js"></script>
+    <link href="assets/css/bootstrap.min.css" rel="stylesheet">
+      <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+        <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places,visualization,drawing,geometry,places&key=AIzaSyBsxawHW0CdThQYREPYasco9mJ9Ub3VXqk"></script>
+
+    <link href='https://fonts.googleapis.com/css?family=Amatic+SC' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="assets/fonts/MyFontsWebfontsKit/MyFontsWebfontsKit.css">
+    <script src="https://www.gstatic.com/firebasejs/4.7.0/firebase.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular-route.min.js"></script>
+    <script src="https://cdn.firebase.com/libs/angularfire/1.1.3/angularfire.min.js"></script>
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+
+    <title>Itinerary</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    
+    <link rel="stylesheet" href="assets/css/homepage.css" />
+    
+    <noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.12.0/moment.min.js"></script>
+
+    <script src="js/app.js"></script>
+    <script src="js/controllers.js"></script>
+    <script src="js/services.js"></script>
+    <script type="text/javascript">
+      
+      function initialize() {
+
+            var input = document.getElementById('searchTextField');
+            var autocomplete = new google.maps.places.Autocomplete(input);
+            }
+
+            google.maps.event.addDomListener(window, 'load', initialize);
+
+    </script>
+    <script js.src = "//connect.facebook.net/en_US/sdk.js"></script>
+
+  </head>
+  
+  <body ng-app="493FinalProj">
+    <div class='outer-container'>
+    <div class='game-window'>
+
+        <!-- Main -->
+        <div ng-view></div>
+
+
+    </div>
+    <!-- Navigation -->
+    <div class='status-window' style='text-align: center'>
+      <br><br><br><br><br>
+      <img class = "avatar-circle" src = "images/azba.png">
+      <br><br><br><br>
+      <a href = "/#/">BROWSE</a><br>
+      <a href = "/#/mytrips">MY TRIPS</a><br>
+      <a href = "/#/addtrip">ADD NEW TRIP</a>
+    </div>
+
+  </div>
+
+  </body>
+
+</html>
