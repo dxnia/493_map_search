@@ -182,6 +182,12 @@ Final_Controllers.controller('searchPage', ['$scope', '$http', '$window', 'Place
                 var city_attractions = [];
                 city_attractions = response.data.data.places;
                 var day_trips = [];
+
+                if(city_attractions[0].thumbnail_url != null){ 
+                   var image = city_attractions[0].thumbnail_url;
+                 } 
+                 else 
+                    var image = 'images/noimage.png'; 
                 //     console.log($scope.attractions); 
 
                 //     upcomingTripService.setAttractions(response.data.data.places); 
@@ -193,7 +199,7 @@ Final_Controllers.controller('searchPage', ['$scope', '$http', '$window', 'Place
                     place: $scope.place,
                     latitude: lat,
                     longitude: long,
-                    image: 'images/noimage.png',
+                    image: image,
                     start_date: new Date('2018', '11', '22'),
                     end_date: new Date('2018', '11', '27'),
                     attractions: city_attractions,
