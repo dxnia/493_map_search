@@ -67,72 +67,96 @@ Final_Controllers.controller('searchPage', ['$scope', '$http', '$window', 'Place
     console.log("SHARED PROPERTY: " + upcomingTripService.getProperty());
 
     $scope.add = function(city) {
+        upcomingTripService.clearAttractions();
         console.log("Add Function Returns City: " + city);
         $scope.city = city;
-        upcomingTripService.setCity(city);
+         upcomingTripService.setCity(city);
+        $http({
+            method: 'GET',
+            dataType: 'jsonp',
+            cache: false,
+            url: 'https://maps.googleapis.com/maps/api/geocode/json?address=' + city + '&key=AIzaSyBsxawHW0CdThQYREPYasco9mJ9Ub3VXqk'
 
-        // alert("add function works " + city);
-        Places.getData(city).then(function(response) {
-            console.log("response: " + response);
-            $scope.latlongobj = response;
-            $scope.lat = response.lat;
-            $scope.long = response.lng;
+            // url: 'https://maps.googleapis.com/maps/api/place/autocomplete/json?input='+city+'&key='+'AIzaSyAk2w4o27LZQzZrSk7QKq-erTQEGqZnnZo'
+        }).then(function successCallback(response) {
+            console.log("success " + response.data);
+            var obj = JSON.stringify(response);
+            console.log("object: " + obj);
 
-            $http({
-                method: 'GET',
-                dataType: 'jsonp',
-                headers: {
-                    "x-api-key": 'GwXHC0Tks21G6Y3T0PQbRacMXRNhsEOy8R8OqlTf'
-                },
-                url: 'https://api.sygictravelapi.com/1.0/en/places/list?area=' + $scope.lat + ',' + $scope.long + ',5000&categories=sightseeing&limit=4'
-            }).then(function successCallback(response) {
-                console.log(response);
+            if(response.data.status != "ZERO_RESULTS"){ 
+              console.log("there are results and we know this"); 
+                        window.location.href = "/#/searchresults";
 
-                upcomingTripService.setAttractions(response.data.data.places);
-                console.log("updated attractions");
-                $scope.attractions = upcomingTripService.getAttractions();
+                        
+                       
 
-                //     console.log($scope.attractions); 
+                        // alert("add function works " + city);
+                        Places.getData(city).then(function(response) {
+                            console.log("response: " + response);
+                            $scope.latlongobj = response;
+                            $scope.lat = response.lat;
+                            $scope.long = response.lng;
 
-                //     upcomingTripService.setAttractions(response.data.data.places); 
-                //     $scope.attractions = upcomingTripService.getAttractions(); 
+                            $http({
+                                method: 'GET',
+                                dataType: 'jsonp',
+                                headers: {
+                                    "x-api-key": 'GwXHC0Tks21G6Y3T0PQbRacMXRNhsEOy8R8OqlTf'
+                                },
+                                url: 'https://api.sygictravelapi.com/1.0/en/places/list?area=' + $scope.lat + ',' + $scope.long + ',5000&categories=sightseeing&limit=4'
+                            }).then(function successCallback(response) {
+                                console.log(response);
 
+                                upcomingTripService.setAttractions(response.data.data.places);
+                                console.log("updated attractions");
+                                $scope.attractions = upcomingTripService.getAttractions();
 
-            })
+                                //     console.log($scope.attractions); 
 
-            //   $http({
-            //     method: 'GET',
-            //     data: { action: 'query', list: 'search', srsearch: city, format: 'json' },
-            //     dataType: 'jsonp',
-            //     url: '//en.wikipedia.org/w/api.php'
-            //   }).then(function successCallback(response) {
-            //     console.log(response.data); 
-            //     console.log('title', response.query.search[0].snippet);
-
-            // }) 
-            $.ajax({
-                url: '//en.wikipedia.org/w/api.php',
-                data: { action: 'query', list: 'search', srsearch: city, format: 'json' },
-                dataType: 'jsonp',
-                success: function(x) {
-                    upcomingTripService.setDesc(x.query.search[0].snippet);
-                    // $scope.description = x.query.search[0].snippet; 
-                    console.log('title', x.query.search[0].snippet);
-                }
-            });
-
-            //     console.log($scope.attractions); 
-
-            //     upcomingTripService.setAttractions(response.data.data.places); 
-            //     $scope.attractions = upcomingTripService.getAttractions(); 
+                                //     upcomingTripService.setAttractions(response.data.data.places); 
+                                //     $scope.attractions = upcomingTripService.getAttractions(); 
 
 
+                            })
+
+                            //   $http({
+                            //     method: 'GET',
+                            //     data: { action: 'query', list: 'search', srsearch: city, format: 'json' },
+                            //     dataType: 'jsonp',
+                            //     url: '//en.wikipedia.org/w/api.php'
+                            //   }).then(function successCallback(response) {
+                            //     console.log(response.data); 
+                            //     console.log('title', response.query.search[0].snippet);
+
+                            // }) 
+                            $.ajax({
+                                url: '//en.wikipedia.org/w/api.php',
+                                data: { action: 'query', list: 'search', srsearch: city, format: 'json' },
+                                dataType: 'jsonp',
+                                success: function(x) {
+                                    upcomingTripService.setDesc(x.query.search[0].snippet);
+                                    // $scope.description = x.query.search[0].snippet; 
+                                    console.log('title', x.query.search[0].snippet);
+                                }
+                            });
+
+                            //     console.log($scope.attractions); 
+
+                            //     upcomingTripService.setAttractions(response.data.data.places); 
+                            //     $scope.attractions = upcomingTripService.getAttractions(); 
 
 
 
-        });
-        // console.log("console attributes: "); 
 
+
+                        });
+              
+
+              }           // console.log("console attributes: "); 
+
+              else { 
+              }
+          })
         // console.log($scope.attractions); 
     };
 
@@ -495,7 +519,8 @@ Final_Controllers.service('upcomingTripService', function() {
         setCurrentTrip: setCurrentTrip,
         addDay: addDay,
         addDayToCurrentTrip: addDayToCurrentTrip,
-        addItemToCheckList: addItemToCheckList
+        addItemToCheckList: addItemToCheckList, 
+        clearAttractions: clearAttractions
     };
     // setProperty: function(value){ 
     //   property = value; 
@@ -537,6 +562,11 @@ Final_Controllers.service('upcomingTripService', function() {
         property = value;
     }
 
+    function clearAttractions() { 
+        attractions = []; 
+        angular.copy(attractions, result_attr);
+
+    }
     function setCurrentTrip(trip, $index) {
         current_trip = trip;
         current_trip.index = $index;

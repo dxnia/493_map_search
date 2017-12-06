@@ -10,26 +10,26 @@
 
     <div class='scrolling_results'>
 
+      <span ng-if="attractions.length != 0">
       <span ng-repeat = "place in attractions">
-      
         <div class='result_entry'>
-
-
-
           <span ng-if="place.thumbnail_url != null"><div id="result_image" style="background-image:url('{{place.thumbnail_url}}');"></div></span>
-
           <span ng-if="place.thumbnail_url == null"><div id="result_image" style="background-image:url('images/noimage.png');"></div></span>
-
-
-
           <div id="result_title_desc">
             {{ place.name }}<br>
             <span style="font-size:11px; color: #878787; line-height: 15px;">{{place.perex}}</span>
           </div>
-        </div>
+          </div>
+        </span>
+        </span> 
 
-      </span>
-    </div><br>
+        <span ng-if="attractions[0].name != 'empty'"">
+            <h1>Looks like there are no results for this city! Try again :) </h1>
+        </span> 
+      
+
+
+    <br>
   </div>
 </div>
 
