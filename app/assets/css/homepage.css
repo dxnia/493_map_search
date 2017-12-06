@@ -369,8 +369,8 @@ input[name="add_t"]::placeholder {
 }
 
 .checklist-column {
-  width: 200px;
-  height: 10%;
+  width: 250px;
+  height: 50%;
   background-color: #f8f8f8;
   position: relative;
   display: inline-block;

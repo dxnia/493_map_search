@@ -182,6 +182,7 @@ Final_Controllers.controller('searchPage', ['$scope', '$http', '$window', 'Place
                 var city_attractions = [];
                 city_attractions = response.data.data.places;
                 var day_trips = [];
+                var check_list = [];
 
                 if(city_attractions[0].thumbnail_url != null){ 
                    var image = city_attractions[0].thumbnail_url;
@@ -203,7 +204,8 @@ Final_Controllers.controller('searchPage', ['$scope', '$http', '$window', 'Place
                     start_date: new Date('2018', '11', '22'),
                     end_date: new Date('2018', '11', '27'),
                     attractions: city_attractions,
-                    days: day_trips
+                    days: day_trips,
+                    checkList: check_list
                 }
 
                 console.log("the new trip info: ");
@@ -241,6 +243,23 @@ Final_Controllers.controller('searchPage', ['$scope', '$http', '$window', 'Place
 
     };
 
+    
+    $scope.addList = function() {        
+        // var myEl = angular.element( document.querySelector( '#'+$scope.id ) );
+        // myEl.append('<div class="day-activity"><p>'+$scope.selectedPlace.name+'</p></div>'); 
+        // var lastChar = $scope.id.substr($scope.id.length - 1); 
+        // upcomingTripService.addDayToCurrentTrip(lastChar,$scope.selectedPlace.name);
+        console.log("hi");
+
+        // $scope.checkList.push({ 'title': $scope.newItem, 'done': false });        
+        upcomingTripService.addItemToCheckList($scope.newItem);
+        $scope.newItem = '';
+    }
+
+    // $scope.deleteItem = function(index) {
+    //     $scope.checkList.splice(index, 1);
+    // }
+
     $scope.submitNewTrip = function() {
         console.log("Adding new trip!");
         window.location.href = "/#/addtrip";
@@ -258,6 +277,7 @@ Final_Controllers.controller('searchPage', ['$scope', '$http', '$window', 'Place
         console.log($scope.id);
         $scope.IsVisible = $scope.IsVisible ? false : true;
     }
+
     $scope.addPlaceToDay = function(list) {
         console.log("hi");
         console.log(list);
@@ -392,6 +412,7 @@ Final_Controllers.service('upcomingTripService', function() {
             start_date: new Date('2018', '02', '18'),
             end_date: new Date('2018', '02', '29'),
             days: [],
+            checkList: [],
         },
         {
             title: 'Off to Toronto',
@@ -400,6 +421,7 @@ Final_Controllers.service('upcomingTripService', function() {
             start_date: new Date('2018', '06', '03'),
             end_date: new Date('2018', '06', '15'),
             days: [],
+            checkList: [],
         }
     ];
 
@@ -410,6 +432,7 @@ Final_Controllers.service('upcomingTripService', function() {
             start_date: new Date('2017', '07', '02'),
             end_date: new Date('2017', '07', '11'),
             days: [],
+            checkList: [],
         },
         {
             title: 'Heading to India!',
@@ -418,6 +441,7 @@ Final_Controllers.service('upcomingTripService', function() {
             start_date: new Date('2017', '02', '10'),
             end_date: new Date('2017', '02', '23'),
             days: [],
+            checkList: [],
         },
         {
             title: 'Ski Trip!',
@@ -426,6 +450,7 @@ Final_Controllers.service('upcomingTripService', function() {
             start_date: new Date('2016', '11', '22'),
             end_date: new Date('2016', '11', '27'),
             days: [],
+            checkList: [],
         },
         {
             title: 'Visiting the Capital',
@@ -434,6 +459,7 @@ Final_Controllers.service('upcomingTripService', function() {
             start_date: new Date('2016', '05', '16'),
             end_date: new Date('2016', '05', '18'),
             days: [],
+            checkList: [],
         }
     ];
 
@@ -468,7 +494,8 @@ Final_Controllers.service('upcomingTripService', function() {
         getCurrentTrip: getCurrentTrip,
         setCurrentTrip: setCurrentTrip,
         addDay: addDay,
-        addDayToCurrentTrip: addDayToCurrentTrip
+        addDayToCurrentTrip: addDayToCurrentTrip,
+        addItemToCheckList: addItemToCheckList
     };
     // setProperty: function(value){ 
     //   property = value; 
@@ -487,6 +514,21 @@ Final_Controllers.service('upcomingTripService', function() {
         angular.copy(current_trip, current_trip_results);
 
     }
+
+    function addItemToCheckList(item){
+        // console.log(current_trip[lastChar].day);
+        current_trip.checkList.push(item);
+        console.log(current_trip.checkList);
+        // console.log(current_trip.index);
+
+        // console.log(upcomingTrips[current_trip.index].days[lastChar]);
+        upcomingTrips[current_trip.index].checkList.push(item);
+        angular.copy(upcomingTrips, result_trips);
+
+        angular.copy(current_trip, current_trip_results);
+
+    }
+
 
     function setProperty(value) {
         upcomingTrips.push(value);
@@ -515,6 +557,7 @@ Final_Controllers.service('upcomingTripService', function() {
 
     }
 
+     
     function getCurrentTrip() {
         return current_trip_results;
     }

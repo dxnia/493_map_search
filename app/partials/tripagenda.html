@@ -7,6 +7,13 @@
     <div class='agenda-row'>
         <div class='checklist-column'>
             <h2><b>CHECKLIST</b></h2>
+            <form name="listFrm" >
+                <input type="text" name="newItem" ng-model="newItem" required />
+                <button ng-disabled="listFrm.$invalid" ng-click="addList()">Add</button>
+            </form>
+            <ul style="height:10px" ng-repeat="item in current_trip.checkList" class="{'fadeOut' : item.done}">
+                <input type="checkbox"  />&nbsp;&nbsp;{{item}}
+            </ul>
         </div>
 
         <div class='row'>
