@@ -1,37 +1,27 @@
 
+<div class ="searchresults-bg">
+  <div class ='searchresults'>
 
+    <!-- <a href="#/addtrip" id="createtripbtn"> Create Trip </a> -->
 
-<div class ='mytrips'>
-  <h1> {{city}} </h1>
-  <a href="#/addtrip"> Create Trip </a>
+    <h1> {{city}} </h1>  <a href="#/addtrip" id="createtripbtn"> Create Trip </a> <br>
 
-  <h2> {{city}} is a bustling city with great attractions! Here are a few: </h2>
-  <h2>Suggestions</h2>
+    <h3>Top Attractions: </h3><br>
 
-  <div class='scrolling_trip_row'>
+    <div class='scrolling_results'>
 
-    <span ng-repeat = "place in attractions">
-    
-      <div class='trip_entry' style="background-image:url('{{place.thumbnail_url}}');">
-        <div id="trip_title_dates">
-          <span style="color:#101010;">{{ place.name }}</span><br>
-          <span style="font-size:11px; line-height: 15px;">{{place.perex}}</span>
-
+      <span ng-repeat = "place in attractions">
+      
+        <div class='result_entry'>
+          <div id="result_image" style="background-image:url('{{place.thumbnail_url}}');"></div>
+          <div id="result_title_desc">
+            {{ place.name }}<br>
+            <span style="font-size:11px; color: #878787; line-height: 15px;">{{place.perex}}</span>
+          </div>
         </div>
-      </div>
 
-    </span>
+      </span>
+    </div><br>
   </div>
 </div>
 
-
-<!-- <div class ='main'>
-  <h1> YOU GOT HERE! {{attractions[0].name}}</h1>
-   <div id="NEW STUFF" ng-repeat="stuff in attractions | limitTo:4" >
-    <p style="z-index: 10000;"> {{stuff.name}} </p>
-    <img ng-src="https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference={{stuff.photos[0].photo_reference}}&key=AIzaSyBsxawHW0CdThQYREPYasco9mJ9Ub3VXqk" /> 
-
-
-    </div>
-</div>
- -->
