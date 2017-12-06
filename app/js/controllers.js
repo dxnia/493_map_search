@@ -193,7 +193,7 @@ Final_Controllers.controller('searchPage', ['$scope', '$http', '$window', 'Place
                     place: $scope.place,
                     latitude: lat,
                     longitude: long,
-                    image: 'images/dctrip.jpg',
+                    image: 'images/noimage.png',
                     start_date: new Date('2018', '11', '22'),
                     end_date: new Date('2018', '11', '27'),
                     attractions: city_attractions,
@@ -397,24 +397,28 @@ Final_Controllers.service('upcomingTripService', function() {
 
     var completedTrips = [{
             title: 'Tokyo and Kyoto',
+            place: 'Tokyo',
             image: 'images/japantrip.png',
             start_date: new Date('2017', '07', '02'),
             end_date: new Date('2017', '07', '11'),
         },
         {
             title: 'Heading to India!',
+            place: 'Udaipur',
             image: 'images/udaipurtrip.png',
             start_date: new Date('2017', '02', '10'),
             end_date: new Date('2017', '02', '23'),
         },
         {
             title: 'Ski Trip!',
+            place: 'Aspen',
             image: 'images/skitrip.png',
             start_date: new Date('2016', '11', '22'),
             end_date: new Date('2016', '11', '27'),
         },
         {
             title: 'Visiting the Capital',
+            place: 'Washington DC',
             image: 'images/dctrip.jpg',
             start_date: new Date('2016', '05', '16'),
             end_date: new Date('2016', '05', '18'),
