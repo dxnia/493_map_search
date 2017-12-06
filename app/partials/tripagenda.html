@@ -8,11 +8,34 @@
         <div class='checklist-column'>
             <h2><b>CHECKLIST</b></h2>
         </div>
-        <div class='row'>
+<!--         <div class='row'>
             <span ng-repeat="day in current_trip.days track by $index">
-          <div class = 'day-column' id="day{{$index}}">
+            <div class = 'day-column' id="day{{$index}}">
        
                 <h2 style="text-align: center"><b>DAY{{$index+1}}</b></h2>
+
+                <div class="day-activity" ng-repeat="activity in day track by $index">
+                  <p> current_trip.days[$index] </p>
+                </div>
+                <input type="button"  value="+" ng-click="ShowHide($event)" />
+            <br />
+            <br />
+                
+                  <p class="delete-trip-button" ng-click="markTripCompleted(trip, $index);" style="z-index: 1000;" ng-click="" >x</p>
+
+
+            </div>
+            </span>
+        </div> -->
+        <div class='row'>
+            <span ng-repeat="day in current_trip.days track by $index">
+            <div class = 'day-column' id="day{{$index}}">
+       
+                <h2 style="text-align: center"><b>DAY{{$index}}</b></h2>
+
+                <div class="day-activity" ng-repeat="activity in day track by $index">
+                      <p> {{activity}} </p>
+                </div>
                 <input type="button"  value="+" ng-click="ShowHide($event)" />
             <br />
             <br />
@@ -23,6 +46,10 @@
             </div>
             </span>
         </div>
+
+
+
+
         <div ng-show="IsVisible" class='scrolling_trip_row'>
             <span ng-repeat="place in current_trip.attractions">
     

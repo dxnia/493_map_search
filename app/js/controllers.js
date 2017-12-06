@@ -360,7 +360,7 @@ Final_Controllers.factory('LatLong', function($http) {
 
 
 Final_Controllers.service('upcomingTripService', function() {
-    var current_trip = {};
+    var current_trip = [];
 
     var property = 'First';
     var city = "";
@@ -460,12 +460,12 @@ Final_Controllers.service('upcomingTripService', function() {
 
     function addDayToCurrentTrip(lastChar,place){
         console.log(current_trip.days[lastChar].day);
-        current_trip.days[lastChar].day.push(place);
+        // current_trip.days[lastChar].day.push(place);
         console.log(current_trip);
         console.log(current_trip.index);
 
         // console.log(upcomingTrips[current_trip.index].days[lastChar]);
-        // upcomingTrips[current_trip.index].days[lastChar].day.push(place);
+        upcomingTrips[current_trip.index].days[lastChar].push(place);
         angular.copy(upcomingTrips, result_trips);
 
         angular.copy(current_trip, current_trip_results);
