@@ -1,4 +1,6 @@
-<p class="add-trip-button" ng-click="submitNewDay($event);">+</p>
+<span ng-if="current_trip.whichArray == 'upcoming'"><p class="add-trip-button" ng-click="submitNewDay($event);">+</p></span>
+
+<!-- <p class="add-trip-button" ng-click="submitNewDay($event);">+</p> -->
 <div class='trip-agenda'>
     <h1>{{current_trip.title}}</h1>
     <!-- <h2>{{current_trip.start_date}} - {{current_trip.end_date}}</h2> -->
@@ -25,7 +27,7 @@
                 <div class="day-activity" ng-hide="!day.length" ng-repeat="activity in day track by $index">
                       <p> {{activity}} </p>
                 </div>
-                <input type="button"  value="+" ng-click="ShowHide($event)" />
+                    <input type="button"  value="+" ng-click="ShowHide($event)" />
             <br />
             <br />
                 
@@ -40,6 +42,7 @@
 
 
         <div ng-show="IsVisible" class='scrolling_trip_row'>
+           <span ng-if="current_trip.whichArray == 'upcoming'">
             <span ng-repeat="place in current_trip.attractions">
     
       <div class='trip_entry' style="background-image:url('{{place.thumbnail_url}}');" ng-click="addPlaceToDay(place);">
@@ -49,6 +52,7 @@
             <span style="font-size:11px; line-height: 15px;">{{place.perex}}</span>
         </div>
     </div>
+    </span>
     </span>
 </div>
 </div>

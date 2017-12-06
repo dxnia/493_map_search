@@ -256,13 +256,17 @@ Final_Controllers.controller('searchPage', ['$scope', '$http', '$window', 'Place
     $scope.redirect = function(index) {
         window.location.href = "/#/tripagenda";
     };
+     $scope.redirect = function(index) {
+        window.location.href = "/#/tripagenda";
+    };
 
-    $scope.setCurrentTripContent = function(trip, $index) {
+    $scope.setCurrentTripContent = function(trip, $index, whichArray) {
         $scope.current_trip = trip;
+        $scope.current_trip.whichArray = whichArray;
         console.log("current trip content: ");
         console.log($scope.current_trip);
 
-        upcomingTripService.setCurrentTrip(trip, $index);
+        upcomingTripService.setCurrentTrip(trip, $index, whichArray);
 
 
     };
@@ -567,9 +571,11 @@ Final_Controllers.service('upcomingTripService', function() {
         angular.copy(attractions, result_attr);
 
     }
-    function setCurrentTrip(trip, $index) {
+    function setCurrentTrip(trip, $index, whichArray) {
         current_trip = trip;
         current_trip.index = $index;
+        current_trip.whichArray = whichArray; 
+        console.log('the array this came from: ' + whichArray); 
         angular.copy(current_trip, current_trip_results);
     }
 
