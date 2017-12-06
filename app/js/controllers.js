@@ -391,6 +391,7 @@ Final_Controllers.service('upcomingTripService', function() {
             image: 'images/SEAtravelstrip.png',
             start_date: new Date('2018', '02', '18'),
             end_date: new Date('2018', '02', '29'),
+            days: [],
         },
         {
             title: 'Off to Toronto',
@@ -398,6 +399,7 @@ Final_Controllers.service('upcomingTripService', function() {
             image: 'images/torontotrip.png',
             start_date: new Date('2018', '06', '03'),
             end_date: new Date('2018', '06', '15'),
+            days: [],
         }
     ];
 
@@ -407,6 +409,7 @@ Final_Controllers.service('upcomingTripService', function() {
             image: 'images/japantrip.png',
             start_date: new Date('2017', '07', '02'),
             end_date: new Date('2017', '07', '11'),
+            days: [],
         },
         {
             title: 'Heading to India!',
@@ -414,6 +417,7 @@ Final_Controllers.service('upcomingTripService', function() {
             image: 'images/udaipurtrip.png',
             start_date: new Date('2017', '02', '10'),
             end_date: new Date('2017', '02', '23'),
+            days: [],
         },
         {
             title: 'Ski Trip!',
@@ -421,6 +425,7 @@ Final_Controllers.service('upcomingTripService', function() {
             image: 'images/skitrip.png',
             start_date: new Date('2016', '11', '22'),
             end_date: new Date('2016', '11', '27'),
+            days: [],
         },
         {
             title: 'Visiting the Capital',
@@ -428,6 +433,7 @@ Final_Controllers.service('upcomingTripService', function() {
             image: 'images/dctrip.jpg',
             start_date: new Date('2016', '05', '16'),
             end_date: new Date('2016', '05', '18'),
+            days: [],
         }
     ];
 
