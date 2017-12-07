@@ -67,11 +67,11 @@ Final_Controllers.controller('searchPage', ['$scope', '$http', '$window', 'Place
     console.log("SHARED PROPERTY: " + upcomingTripService.getProperty());
 
     $scope.add = function(city) {
-      window.location.href = "#/searchresults"; 
+        window.location.href = "#/searchresults";
         upcomingTripService.clearAttractions();
         console.log("Add Function Returns City: " + city);
         $scope.city = city;
-         upcomingTripService.setCity(city);
+        upcomingTripService.setCity(city);
         $http({
             method: 'GET',
             dataType: 'jsonp',
@@ -84,87 +84,85 @@ Final_Controllers.controller('searchPage', ['$scope', '$http', '$window', 'Place
             var obj = JSON.stringify(response);
             console.log("object: " + obj);
 
-            if(response.data.status != "ZERO_RESULTS"){ 
-              console.log("there are results and we know this"); 
-                        window.location.href = "/#/searchresults";
-
-                        
-                       
-
-                        // alert("add function works " + city);
-                        Places.getData(city).then(function(response) {
-                            console.log("response: " + response);
-                            $scope.latlongobj = response;
-                            $scope.lat = response.lat;
-                            $scope.long = response.lng;
-
-                            $http({
-                                method: 'GET',
-                                dataType: 'jsonp',
-                                headers: {
-                                    "x-api-key": 'GwXHC0Tks21G6Y3T0PQbRacMXRNhsEOy8R8OqlTf'
-                                },
-                                url: 'https://api.sygictravelapi.com/1.0/en/places/list?area=' + $scope.lat + ',' + $scope.long + ',5000&categories=sightseeing&limit=4'
-                            }).then(function successCallback(response) {
-                                console.log(response);
-
-                                upcomingTripService.setAttractions(response.data.data.places);
-                                console.log("updated attractions");
-                                $scope.attractions = upcomingTripService.getAttractions();
-
-                                //     console.log($scope.attractions); 
-
-                                //     upcomingTripService.setAttractions(response.data.data.places); 
-                                //     $scope.attractions = upcomingTripService.getAttractions(); 
-
-
-                            })
-
-                            //   $http({
-                            //     method: 'GET',
-                            //     data: { action: 'query', list: 'search', srsearch: city, format: 'json' },
-                            //     dataType: 'jsonp',
-                            //     url: '//en.wikipedia.org/w/api.php'
-                            //   }).then(function successCallback(response) {
-                            //     console.log(response.data); 
-                            //     console.log('title', response.query.search[0].snippet);
-
-                            // }) 
-                            $.ajax({
-                                url: '//en.wikipedia.org/w/api.php',
-                                data: { action: 'query', list: 'search', srsearch: city, format: 'json' },
-                                dataType: 'jsonp',
-                                success: function(x) {
-                                    upcomingTripService.setDesc(x.query.search[0].snippet);
-                                    // $scope.description = x.query.search[0].snippet; 
-                                    console.log('title', x.query.search[0].snippet);
-                                }
-                            });
-
-                            //     console.log($scope.attractions); 
-
-                            //     upcomingTripService.setAttractions(response.data.data.places); 
-                            //     $scope.attractions = upcomingTripService.getAttractions(); 
+            if (response.data.status != "ZERO_RESULTS") {
+                console.log("there are results and we know this");
+                window.location.href = "/#/searchresults";
 
 
 
 
+                // alert("add function works " + city);
+                Places.getData(city).then(function(response) {
+                    console.log("response: " + response);
+                    $scope.latlongobj = response;
+                    $scope.lat = response.lat;
+                    $scope.long = response.lng;
 
-                        });
-              
+                    $http({
+                        method: 'GET',
+                        dataType: 'jsonp',
+                        headers: {
+                            "x-api-key": 'GwXHC0Tks21G6Y3T0PQbRacMXRNhsEOy8R8OqlTf'
+                        },
+                        url: 'https://api.sygictravelapi.com/1.0/en/places/list?area=' + $scope.lat + ',' + $scope.long + ',5000&categories=sightseeing&limit=4'
+                    }).then(function successCallback(response) {
+                        console.log(response);
 
-              }           // console.log("console attributes: "); 
+                        upcomingTripService.setAttractions(response.data.data.places);
+                        console.log("updated attractions");
+                        $scope.attractions = upcomingTripService.getAttractions();
 
-              else { 
-              }
-          })
+                        //     console.log($scope.attractions); 
+
+                        //     upcomingTripService.setAttractions(response.data.data.places); 
+                        //     $scope.attractions = upcomingTripService.getAttractions(); 
+
+
+                    })
+
+                    //   $http({
+                    //     method: 'GET',
+                    //     data: { action: 'query', list: 'search', srsearch: city, format: 'json' },
+                    //     dataType: 'jsonp',
+                    //     url: '//en.wikipedia.org/w/api.php'
+                    //   }).then(function successCallback(response) {
+                    //     console.log(response.data); 
+                    //     console.log('title', response.query.search[0].snippet);
+
+                    // }) 
+                    $.ajax({
+                        url: '//en.wikipedia.org/w/api.php',
+                        data: { action: 'query', list: 'search', srsearch: city, format: 'json' },
+                        dataType: 'jsonp',
+                        success: function(x) {
+                            upcomingTripService.setDesc(x.query.search[0].snippet);
+                            // $scope.description = x.query.search[0].snippet; 
+                            console.log('title', x.query.search[0].snippet);
+                        }
+                    });
+
+                    //     console.log($scope.attractions); 
+
+                    //     upcomingTripService.setAttractions(response.data.data.places); 
+                    //     $scope.attractions = upcomingTripService.getAttractions(); 
+
+
+
+
+
+                });
+
+
+            } // console.log("console attributes: "); 
+            else {}
+        })
         // console.log($scope.attractions); 
     };
 
 
     console.log("woohoo seeing my trips");
-   
-   $scope.markTripDeleted = function(trip, index) {
+
+    $scope.markTripDeleted = function(trip, index) {
 
         console.log("trip: " + trip);
         console.log("index:  " + index);
@@ -174,7 +172,7 @@ Final_Controllers.controller('searchPage', ['$scope', '$http', '$window', 'Place
     }
 
     $scope.markTripCompleted = function(trip, index) {
-      window.location.href = "#/mytrips"; 
+        window.location.href = "#/mytrips";
 
         console.log("trip: " + trip);
         console.log("index:  " + index);
@@ -191,81 +189,78 @@ Final_Controllers.controller('searchPage', ['$scope', '$http', '$window', 'Place
     $scope.submit = function(title, place) {
         $scope.title = title;
         $scope.place = place;
-        console.log("place: " + place); 
+        console.log("place: " + place);
 
-        if(place == undefined || title == undefined){ 
+        if (place == undefined || title == undefined) {
 
-         alert('Make sure your trip has a name and a place!'); 
-        window.location.href = "/#/addtrip";
+            alert('Make sure your trip has a name and a place!');
+            window.location.href = "/#/addtrip";
 
-       } 
-
-       else { 
-        console.log("place added: " + place);
+        } else {
+            console.log("place added: " + place);
 
 
-        // alert("add function works " + city);
-        Places.getData(place).then(function(response) {
-            console.log("response: " + response);
+            // alert("add function works " + city);
+            Places.getData(place).then(function(response) {
+                console.log("response: " + response);
 
-            var lat = response.lat;
-            var long = response.lng;
+                var lat = response.lat;
+                var long = response.lng;
 
-            $http({
-                method: 'GET',
-                dataType: 'jsonp',
-                headers: {
-                    "x-api-key": 'GwXHC0Tks21G6Y3T0PQbRacMXRNhsEOy8R8OqlTf'
-                },
-                url: 'https://api.sygictravelapi.com/1.0/en/places/list?area=' + lat + ',' + long + ',5000&categories=sightseeing&limit=20'
-            }).then(function successCallback(response) {
-                console.log(response);
+                $http({
+                    method: 'GET',
+                    dataType: 'jsonp',
+                    headers: {
+                        "x-api-key": 'GwXHC0Tks21G6Y3T0PQbRacMXRNhsEOy8R8OqlTf'
+                    },
+                    url: 'https://api.sygictravelapi.com/1.0/en/places/list?area=' + lat + ',' + long + ',5000&categories=sightseeing&limit=20'
+                }).then(function successCallback(response) {
+                    console.log(response);
 
-                // upcomingTripService.setAttractions(response.data.data.places); 
-                console.log("updated attractions");
-                var city_attractions = [];
-                city_attractions = response.data.data.places;
-                var empty_days = [];
-                var day_trips = [{ 'day': empty_days }];
-                var check_list = [];
+                    // upcomingTripService.setAttractions(response.data.data.places); 
+                    console.log("updated attractions");
+                    var city_attractions = [];
+                    city_attractions = response.data.data.places;
+                    var empty_days = [];
+                    var day_trips = [{ 'day': empty_days }];
+                    var check_list = [];
 
-                if(city_attractions[0].thumbnail_url != null){ 
-                   var image = city_attractions[0].thumbnail_url;
-                 } 
-                 else 
-                    var image = 'images/noimage.png'; 
-                //     console.log($scope.attractions); 
+                    if (city_attractions[0].thumbnail_url != null) {
+                        var image = city_attractions[0].thumbnail_url;
+                    } else
+                        var image = 'images/noimage.png';
+                    //     console.log($scope.attractions); 
 
-                //     upcomingTripService.setAttractions(response.data.data.places); 
-                //     $scope.attractions = upcomingTripService.getAttractions(); 
-                var form = document.getElementById("form");
-                form.reset();
-                var new_trip = {
-                    title: $scope.title,
-                    place: $scope.place,
-                    latitude: lat,
-                    longitude: long,
-                    image: image,
-                    start_date: new Date('2018', '11', '22'),
-                    end_date: new Date('2018', '11', '27'),
-                    attractions: city_attractions,
-                    days: day_trips,
-                    checkList: check_list
-                }
+                    //     upcomingTripService.setAttractions(response.data.data.places); 
+                    //     $scope.attractions = upcomingTripService.getAttractions(); 
+                    var form = document.getElementById("form");
+                    form.reset();
+                    var new_trip = {
+                        title: $scope.title,
+                        place: $scope.place,
+                        latitude: lat,
+                        longitude: long,
+                        image: image,
+                        start_date: new Date('2018', '11', '22'),
+                        end_date: new Date('2018', '11', '27'),
+                        attractions: city_attractions,
+                        days: day_trips,
+                        checkList: check_list
+                    }
 
-                console.log("the new trip info: ");
-                console.log(new_trip);
+                    console.log("the new trip info: ");
+                    console.log(new_trip);
 
-                console.log("SHARED PROPERTY: " + upcomingTripService.setProperty(new_trip));
+                    console.log("SHARED PROPERTY: " + upcomingTripService.setProperty(new_trip));
 
-                // $scope.upcomingTrips.push(new_trip);
-                console.log("New Trip Created!");
-                window.location.href = "/#/mytrips";
+                    // $scope.upcomingTrips.push(new_trip);
+                    console.log("New Trip Created!");
+                    window.location.href = "/#/mytrips";
 
-            })
+                })
 
-        });
-      } 
+            });
+        }
 
 
     };
@@ -278,7 +273,7 @@ Final_Controllers.controller('searchPage', ['$scope', '$http', '$window', 'Place
     $scope.redirect = function(index) {
         window.location.href = "/#/tripagenda";
     };
-     $scope.redirect = function(index) {
+    $scope.redirect = function(index) {
         window.location.href = "/#/tripagenda";
     };
 
@@ -293,8 +288,8 @@ Final_Controllers.controller('searchPage', ['$scope', '$http', '$window', 'Place
 
     };
 
-    
-    $scope.addList = function() {        
+
+    $scope.addList = function() {
         // var myEl = angular.element( document.querySelector( '#'+$scope.id ) );
         // myEl.append('<div class="day-activity"><p>'+$scope.selectedPlace.name+'</p></div>'); 
         // var lastChar = $scope.id.substr($scope.id.length - 1); 
@@ -305,11 +300,17 @@ Final_Controllers.controller('searchPage', ['$scope', '$http', '$window', 'Place
         upcomingTripService.addItemToCheckList($scope.newItem);
         $scope.newItem = '';
     }
+    // $scope.checked = {};
 
-    // $scope.deleteItem = function(index) {
-    //     $scope.checkList.splice(index, 1);
-    // }
+    $scope.itemsChecked = function(item,id) {    
+       
 
+        upcomingTripService.itemsChecked(item,id);
+        
+    }
+
+
+    
     $scope.submitNewTrip = function() {
         console.log("Adding new trip!");
         window.location.href = "/#/addtrip";
@@ -334,10 +335,10 @@ Final_Controllers.controller('searchPage', ['$scope', '$http', '$window', 'Place
         $scope.selectedPlace = list;
         console.log($scope.id);
 
-        var myEl = angular.element( document.querySelector( '#'+$scope.id ) );
-        myEl.append('<div class="day-activity"><p>'+$scope.selectedPlace.name+'</p></div>'); 
-        var lastChar = $scope.id.substr($scope.id.length - 1); 
-        upcomingTripService.addDayToCurrentTrip(lastChar,$scope.selectedPlace.name);
+        var myEl = angular.element(document.querySelector('#' + $scope.id));
+        myEl.append('<div class="day-activity"><p>' + $scope.selectedPlace.name + '</p></div>');
+        var lastChar = $scope.id.substr($scope.id.length - 1);
+        upcomingTripService.addDayToCurrentTrip(lastChar, $scope.selectedPlace.name);
         // console.log(current_trip.days[lastChar]);
     }
 
@@ -513,7 +514,7 @@ Final_Controllers.service('upcomingTripService', function() {
         }
     ];
 
-    var count = 0; 
+    var count = 0;
     var result_completed = [];
     angular.copy(completedTrips, result_completed);
 
@@ -546,15 +547,37 @@ Final_Controllers.service('upcomingTripService', function() {
         setCurrentTrip: setCurrentTrip,
         addDay: addDay,
         addDayToCurrentTrip: addDayToCurrentTrip,
-        addItemToCheckList: addItemToCheckList, 
-        clearAttractions: clearAttractions, 
-        deleteTrip: deleteTrip
+        addItemToCheckList: addItemToCheckList,
+        clearAttractions: clearAttractions,
+        deleteTrip: deleteTrip,
+        itemsChecked: itemsChecked 
     };
     // setProperty: function(value){ 
     //   property = value; 
     // }
+    function itemsChecked(item,id){
+        console.log(current_trip.checkList[id].checked);
+        if(current_trip.checkList[id].checked == true){
+            current_trip.checkList[id].checked = false;
+        }
+        else{
+            current_trip.checkList[id].checked = true;
+        }
 
-    function addDayToCurrentTrip(lastChar,place){
+        if(upcomingTrips[current_trip.index].checkList[id].checked == true){
+            upcomingTrips[current_trip.index].checkList[id].checked = false;
+        }
+        else{
+            upcomingTrips[current_trip.index].checkList[id].checked = true;
+        }
+        
+        
+        angular.copy(upcomingTrips, result_trips);
+
+        angular.copy(current_trip, current_trip_results);
+
+    }
+    function addDayToCurrentTrip(lastChar, place) {
         console.log(current_trip.days[lastChar].day);
         // current_trip.days[lastChar].day.push(place);
         console.log(current_trip);
@@ -568,14 +591,14 @@ Final_Controllers.service('upcomingTripService', function() {
 
     }
 
-    function addItemToCheckList(item){
+    function addItemToCheckList(item) {
         // console.log(current_trip[lastChar].day);
-        current_trip.checkList.push(item);
+        current_trip.checkList.push({"item":item, "checked": false});
         console.log(current_trip.checkList);
         // console.log(current_trip.index);
 
         // console.log(upcomingTrips[current_trip.index].days[lastChar]);
-        upcomingTrips[current_trip.index].checkList.push(item);
+        upcomingTrips[current_trip.index].checkList.push({"item":item, "checked": false});
         angular.copy(upcomingTrips, result_trips);
 
         angular.copy(current_trip, current_trip_results);
@@ -590,16 +613,17 @@ Final_Controllers.service('upcomingTripService', function() {
         property = value;
     }
 
-    function clearAttractions() { 
-        attractions = []; 
+    function clearAttractions() {
+        attractions = [];
         angular.copy(attractions, result_attr);
 
     }
+
     function setCurrentTrip(trip, $index, whichArray) {
         current_trip = trip;
         current_trip.index = $index;
-        current_trip.whichArray = whichArray; 
-        console.log('the array this came from: ' + whichArray); 
+        current_trip.whichArray = whichArray;
+        console.log('the array this came from: ' + whichArray);
         angular.copy(current_trip, current_trip_results);
     }
 
@@ -617,7 +641,7 @@ Final_Controllers.service('upcomingTripService', function() {
 
     }
 
-     
+
     function getCurrentTrip() {
         return current_trip_results;
     }
@@ -632,24 +656,25 @@ Final_Controllers.service('upcomingTripService', function() {
     }
 
     function completeTrip(trip, index) {
-  
+
         // upcomingTrips.push(value);
-        deleteTrip(trip, index); 
+        deleteTrip(trip, index);
         // upcomingTrips[index] = null;
         // angular.copy(upcomingTrips, result_trips);
-        
-        if(count == 0) { 
-            push(trip); 
-          } 
-          count++; 
+
+        if (count == 0) {
+            push(trip);
+        }
+        count++;
 
         // completedTrips.push(trip);
         // angular.copy(completedTrips, result_completed);
         // property = value; 
     }
-    function push(trip,index){ 
-      completedTrips.push(trip); 
-              angular.copy(completedTrips, result_completed);
+
+    function push(trip, index) {
+        completedTrips.push(trip);
+        angular.copy(completedTrips, result_completed);
 
     }
 

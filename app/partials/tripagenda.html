@@ -1,3 +1,20 @@
+<script type="text/javascript"> 
+    jQuery(function($) {
+    var checkboxValue = JSON.parse(localStorage.getItem('checkboxValue')) || {}
+    var $checkbox = $("#checkbox-container :checkbox");
+
+    $checkbox.on("change", function() {
+      $checkbox.each(function() {
+        checkboxValue[this.id] = this.checked;
+      });
+      localStorage.setItem("checkboxValue", JSON.stringify(checkboxValue));
+    });
+
+    //on page load
+    $.each(checkboxValue, function(key, value) {
+      $("#" + key).prop('checked', value);
+    });
+  });</script>
 <div class = "mytrips-bg">
   <p class="add-day-button" ng-click="submitNewDay($event);">ADD DAY</p>
   <div class='trip-agenda'>
@@ -16,7 +33,9 @@
               </form>
               <br>
               <span style="line-height: 20px;" ng-repeat="item in current_trip.checkList" class="{'fadeOut' : item.done}">
-                <input type="checkbox"  />  {{item}} <br>
+                <div id="checkbox-container" >
+                <input type="checkbox"  ng-model="item.checked" ng-change="itemsChecked(item,{{$index}})"/>  {{item.item}} <br>
+            </div>
               </span>
           </div>
 
