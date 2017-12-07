@@ -454,32 +454,6 @@ input[name="add_t"]::placeholder {
  transition: background 500ms;
 }
 
-/*.complete-trip-button {
- background: #3FC380;
- color: #fff;
- cursor: pointer;
- position: absolute;
- top: 40px;
- right: 160px;
- font-size: 14px;
- line-height: 24px;
- width: 150px;
- height: 34px;
- padding: 5px;
- border-radius: 100px;
- margin: 0 -30px 0 40px;
- text-align: center;
- font-weight: 400;
- box-shadow: 0 2px 5px rgba(0,0,0,0.2);
- transition: background 500ms;
-}
-
-.complete-trip-button:hover {
- color: #3FC380 ;
- background: white;
- transition: background 500ms;
-}*/
-
 #completetripbtn {
   background: #3FC380;
   border-radius: 3px;
@@ -551,20 +525,37 @@ input[id=add-activity-btn]:hover {
 .pickanattraction {
   background-color: #1f1f1f;
   padding: 20px;
+  padding-top: 0px;
+  width: 100%;
+  overflow-y: hidden;
+  white-space:nowrap;
+  height: 340px;
+  bottom: 0;
+  position: absolute;
+}
+
+.attraction-scroll {
   width: 100%;
   overflow-x: scroll;
   overflow-y: hidden;
-  height: 320px;
+  height: 86%;
   white-space:nowrap;
-  bottom: 0;
   position: absolute;
-  z-index: 100;
+}
+
+.fixed-attraction-top {
+  overflow-x: hidden;
+  text-align: center;
+  width: 100%;
+  color: #fff;
+  position: relative;
 }
 
 .attract_entry {
   border-radius: 5px;
   width: 27%;
   height: 100%;
+  /*top: 20px;*/
   position: relative;
   display: inline-block;
   margin-right: 20px;
