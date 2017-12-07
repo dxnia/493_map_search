@@ -31,7 +31,7 @@ body {
   color: white;
   background-image:url('images/back.jpg'); 
   background-size: cover;
-  border-radius: 0px 15px 15px 0px;
+  /*border-radius: 0px 15px 15px 0px;*/
   height: 100%;
   width: 75%;
   float: right;
@@ -87,10 +87,10 @@ input[id=searchTextField] {
   background: transparent;
   border: none;
   border-bottom: 1.2px solid #fff;
-  width: 63%;
+  width: 75%;
   margin: 15px;
   font-size: 24px;
-  color: fff;
+  color: #fff;
 }
 
 input[id=searchTextField]::placeholder { 
@@ -337,68 +337,259 @@ input[name="add_t"]::placeholder {
  .trip-agenda {
   padding-left: 40px;
   padding-right: 30px;
+  padding-top: 50px;
   color: #545454;
   font-size: 14px;
 }
 
- .trip-agenda h1 {
-  font-size: 23px;
-  letter-spacing: 0;
-  font-weight: 600;
-  color: #545454;
+.trip-agenda h1 {
+  font-size: 24px;
+  font-weight: 400;
   text-align: left;
+  line-height: 17px;
 }
 
 .trip-agenda h2 {
   font-size: 15px;
-  font-weight: 400;
-  color: #545454;
+  font-weight: 600;
   text-align: left;
+  text-transform: uppercase;
+  color: #95A5A6;
 }
 
 .trip-agenda hr {
-  opacity: .1;
+  opacity: .2;
+  border-color: #545454;
 }
 
 .agenda-row {
   width: 100%;
   overflow-x: scroll;
   overflow-y: hidden;
-  height: 65%;
+  height: 100%;
+  min-height: 400px;
   white-space:nowrap;
+  /*background-color: #f6f6f6;*/
+  border-radius: 5px;
 }
 
 .checklist-column {
-  width: 250px;
-  height: 50%;
-  background-color: #f8f8f8;
+  width: 27%;
+  height: 100%;
+/*background-color: #f8f8f8;*/  
   position: relative;
   display: inline-block;
   margin-right: 20px;
   overflow-y: scroll;
+  vertical-align:top;
+  border-left: 1px #545454;
+}
+
+.vertical-line {
+  width: 1px;
+  background-color: #545454;
+  opacity: .2;
+  height: 300px;
+  position: relative;
+}
+
+.line-column {
+  width: 4%;
+  height: 100%;
+  position: relative;
+  display: inline-block;
+  margin-right: 5px;
+  overflow-y: hidden;
+  vertical-align: top;
 }
 
 .day-column {
-  width: 200px;
-  height: 95%;
-  background-color: #ffffff;
+  width: 27%;
+  height: 100%;
+  /*background-color: #ffffff;*/
   position: relative;
   display: inline-block;
   margin-right: 20px;
   overflow-y: scroll;
+  vertical-align:top;
 }
 
 .day-activity {
   position: relative;
   background-color: #545454; /*#d86942; */
-  height: 28px;
+  height: 30px;
   width: 95%;
   border-radius: 3px;
   color: #ffffff;
   font-size: 13px;
-  padding-top: 10px;
+  line-height: 29px;
+  padding-top, padding-bottom: 10px;
   padding-left: 5%;
-  margin-bottom: 10px;
+  margin-bottom: 7px;
+}
+
+.add-day-button {
+ background: #d86942;
+ color: #fff;
+ cursor: pointer;
+ position: absolute;
+ top: 40px;
+ right: 65px;
+ font-size: 14px;
+ line-height: 24px;
+ width: 90px;
+ height: 34px;
+ padding: 5px;
+ border-radius: 100px;
+ margin: 0 -30px 0 40px;
+ text-align: center;
+ font-weight: 400;
+ box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+ transition: background 500ms;
+}
+
+.add-day-button:hover {
+ color: #F65A5B ;
+ background: white;
+ transition: background 500ms;
+}
+
+/*.complete-trip-button {
+ background: #3FC380;
+ color: #fff;
+ cursor: pointer;
+ position: absolute;
+ top: 40px;
+ right: 160px;
+ font-size: 14px;
+ line-height: 24px;
+ width: 150px;
+ height: 34px;
+ padding: 5px;
+ border-radius: 100px;
+ margin: 0 -30px 0 40px;
+ text-align: center;
+ font-weight: 400;
+ box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+ transition: background 500ms;
+}
+
+.complete-trip-button:hover {
+ color: #3FC380 ;
+ background: white;
+ transition: background 500ms;
+}*/
+
+#completetripbtn {
+  background: #3FC380;
+  border-radius: 3px;
+  border:none;
+  width: 75px;
+  padding: 3px;
+  font-size: 10px;
+  font-weight: 300;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  text-align: center;
+  position: relative;
+  top: -3px;
+}
+
+#completetripbtn:hover{
+  text-decoration: none;
+  border: none;
+  background: #fff;
+  color: #3FC380;
+  transition: background 300ms;
+}
+
+input[id=checklist-input] {
+  font-weight: 500;
+  background: transparent;
+  border: none;
+  border-bottom: 1.5px solid #d86942;
+  width: 74%;
+  font-size: 13px;
+}
+
+#add-to-checklist {
+  background-color: #545454;
+  width: 18%;
+  letter-spacing: 1px;
+  border: none;
+  padding: 4px;
+  font-size: 10px;
+  position: relative;
+  margin-left: 2px;
+  font-weight: 400;
+  color: #fff;
+  text-transform: uppercase;
+}
+
+input[id=add-activity-btn] {
+  background: none;
+  border: none;
+  /*border: 1px solid #d86942;;
+  width: auto;
+  padding: 3px;*/
+  font-size: 25px;
+  top: -10px;
+  position: relative;
+  float: right;
+  font-weight: 500;
+  color: #d86942;
+  text-transform: uppercase;
+}
+
+input[id=add-activity-btn]:hover {
+  color: #fff
+  background: #d86942;
+}
+
+
+.pickanattraction {
+  background-color: #1f1f1f;
+  padding: 20px;
+  width: 100%;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  height: 320px;
+  white-space:nowrap;
+  bottom: 0;
+  position: absolute;
+  z-index: 100;
+}
+
+.attract_entry {
+  border-radius: 5px;
+  width: 27%;
+  height: 100%;
+  position: relative;
+  display: inline-block;
+  margin-right: 20px;
+}
+
+.attract_image {
+  background-size: cover;
+  border-radius: 5px 5px 0px 0px;
+  height: 55%;
+}
+
+
+#attract_desc {
+  background-color: white;
+  border-radius: 0px 0px 5px 5px;
+  position: absolute;
+  width: 100%;
+  height: 45%;
+  padding: 10px;
+  font-size: 13px;
+  color: #101010;
+  overflow-y: auto;
+  white-space: normal;
+  vertical-align: bottom;
+  bottom: 0;
 }
 
 /******************* SEARCH RESULTS STYLING *******************/
@@ -598,4 +789,9 @@ body.is-loading #main {
   -ms-transform: rotateX(15deg);
   transform: rotateX(15deg);
 }
+
+
+
+
+
 
