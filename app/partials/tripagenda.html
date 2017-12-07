@@ -1,9 +1,10 @@
 <div class = "mytrips-bg">
   <p class="add-day-button" ng-click="submitNewDay($event);">ADD DAY</p>
   <div class='trip-agenda'>
-      <h1>{{current_trip.title}}</h1>
-      <h2>{{current_trip.place}}</h2>
-      <br>
+      <h1 style="display:inline;">{{current_trip.title}} </h1><button id="completetripbtn" ng-click="markTripCompleted(current_trip, current_trip.index);">TRIP OVER?</button><br>
+      <img style="height: 15px; display: inline; position: relative; left: 4px;" src="images/pin.png"><h2 style="font-size: 14px; font-weight: 300; display: inline; position: relative; top: 2px; left: 8px;"> {{current_trip.place}}</h2>
+      <br><br>
+      <hr>
       <div class='agenda-row'>
 
           <div class='checklist-column'>
@@ -13,16 +14,18 @@
                   <input type="text" id="checklist-input" name="newItem" ng-model="newItem" required />
                   <button ng-disabled="listFrm.$invalid" id="add-to-checklist" ng-click="addList()">ADD</button>
               </form>
-
-              <span style="height:10px" ng-repeat="item in current_trip.checkList" class="{'fadeOut' : item.done}">
+              <br>
+              <span style="line-height: 20px;" ng-repeat="item in current_trip.checkList" class="{'fadeOut' : item.done}">
                 <input type="checkbox"  />  {{item}} <br>
               </span>
           </div>
 
+         <div class ="line-column"><br><div class="vertical-line">&nbsp;</div></div>
+
           <span ng-repeat="day in current_trip.days track by $index">
             <div class = 'day-column' id="day{{$index}}">
        
-                <h2 style="display: inline; color: #545454;"><br><b>DAY {{$index}}</b></h2>
+                <h2 style="display: inline; color: #545454;"><br><b>DAY {{$index +1}}</b></h2>
                 <input type="button"  id="add-activity-btn" value="+" ng-click="ShowHide($event)" />
                 <br><br>
                 <div class="day-activity" ng-hide="!day.length" ng-repeat="activity in day track by $index">
