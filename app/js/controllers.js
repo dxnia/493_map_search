@@ -174,6 +174,7 @@ Final_Controllers.controller('searchPage', ['$scope', '$http', '$window', 'Place
     }
 
     $scope.markTripCompleted = function(trip, index) {
+      window.location.href = "#/mytrips"; 
 
         console.log("trip: " + trip);
         console.log("index:  " + index);
@@ -501,6 +502,7 @@ Final_Controllers.service('upcomingTripService', function() {
         }
     ];
 
+    var count = 0; 
     var result_completed = [];
     angular.copy(completedTrips, result_completed);
 
@@ -611,20 +613,33 @@ Final_Controllers.service('upcomingTripService', function() {
 
     function deleteTrip(trip, index) {
         // upcomingTrips.push(value);
-        upcomingTrips.splice(index, 1);
+        upcomingTrips[index] = null;
+        // upcomingTrips.splice(index, 1);
         angular.copy(upcomingTrips, result_trips);
 
         // property = value; 
     }
 
     function completeTrip(trip, index) {
+  
         // upcomingTrips.push(value);
-        upcomingTrips.splice(index, 1);
-        angular.copy(upcomingTrips, result_trips);
+        deleteTrip(trip, index); 
+        // upcomingTrips[index] = null;
+        // angular.copy(upcomingTrips, result_trips);
+        
+        if(count == 0) { 
+            push(trip); 
+          } 
+          count++; 
 
-        completedTrips.push(trip);
-        angular.copy(completedTrips, result_completed);
+        // completedTrips.push(trip);
+        // angular.copy(completedTrips, result_completed);
         // property = value; 
+    }
+    function push(trip,index){ 
+      completedTrips.push(trip); 
+              angular.copy(completedTrips, result_completed);
+
     }
 
     function setAttractions(value) {

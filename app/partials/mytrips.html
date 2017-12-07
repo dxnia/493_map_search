@@ -9,7 +9,7 @@
     <div class='scrolling_trip_row'>
 
       <span ng-repeat = "trip in upcomingTrips track by $index">
-      
+      <span ng-if="trip != null"> 
         <div class='trip_entry' style="background-image:url('{{trip.image}}');" ng-click="redirect(); setCurrentTripContent(trip, $index, 'upcoming');">
           <div id="trip_title_dates">
             <span style="color:#101010;">{{ trip.title }}</span><br>
@@ -20,7 +20,7 @@
           </div>
           <p class="delete-trip-button" ng-click="markTripDeleted(trip, $index);" style="z-index: 1000;" ng-click="" ><img src="/images/delete_icon.png" style="height: 70%; opacity: .95;"></p>
         </div>
-
+        </span>
       </span>
     </div>
 
@@ -30,7 +30,7 @@
 
     <div class='scrolling_trip_row'>
 
-      <span ng-repeat = "trip in completedTrips">
+      <span ng-repeat = "trip in completedTrips track by $index">
       
         <div class='trip_entry' style="background-image:url('{{trip.image}}'" ng-click="redirect(); setCurrentTripContent(trip, $index, 'completed');">
           <div id="trip_title_dates">
