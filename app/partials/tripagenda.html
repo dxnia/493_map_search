@@ -45,7 +45,12 @@
     <span ng-repeat="place in current_trip.attractions">
       
       <div class='attract_entry'>
-        <div class='attract_image' style="background-image:url('{{place.thumbnail_url}}');" ng-click="addPlaceToDay(place);">
+
+ <span ng-if="place.thumbnail_url != null"><div class='attract_image'  id="result_image" ng-click="addPlaceToDay(place);" style="background-image:url('{{place.thumbnail_url}}');"></div></span>
+          <span ng-if="place.thumbnail_url == null"><div id="result_image" class='attract_image' style="background-image:url('images/noimage.png');" ng-click="addPlaceToDay(place);"></div></span>
+
+
+        <!-- <div class='attract_image' style="background-image:url('{{place.thumbnail_url}}');" ng-click="addPlaceToDay(place);"> -->
 
           <div id="attract_desc">
             <span style="color:#101010;">{{ place.name }}</span><br>

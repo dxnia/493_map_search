@@ -191,7 +191,16 @@ Final_Controllers.controller('searchPage', ['$scope', '$http', '$window', 'Place
     $scope.submit = function(title, place) {
         $scope.title = title;
         $scope.place = place;
+        console.log("place: " + place); 
 
+        if(place == undefined || title == undefined){ 
+
+         alert('Make sure your trip has a name and a place!'); 
+        window.location.href = "/#/addtrip";
+
+       } 
+
+       else { 
         console.log("place added: " + place);
 
 
@@ -216,7 +225,8 @@ Final_Controllers.controller('searchPage', ['$scope', '$http', '$window', 'Place
                 console.log("updated attractions");
                 var city_attractions = [];
                 city_attractions = response.data.data.places;
-                var day_trips = [];
+                var empty_days = [];
+                var day_trips = [{ 'day': empty_days }];
                 var check_list = [];
 
                 if(city_attractions[0].thumbnail_url != null){ 
@@ -255,6 +265,7 @@ Final_Controllers.controller('searchPage', ['$scope', '$http', '$window', 'Place
             })
 
         });
+      } 
 
 
     };
