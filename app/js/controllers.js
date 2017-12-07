@@ -226,7 +226,7 @@ Final_Controllers.controller('searchPage', ['$scope', '$http', '$window', 'Place
                 var city_attractions = [];
                 city_attractions = response.data.data.places;
                 var empty_days = [];
-                var day_trips = [{ 'day': empty_days }];
+                var day_trips = [];
                 var check_list = [];
 
                 if(city_attractions[0].thumbnail_url != null){ 
