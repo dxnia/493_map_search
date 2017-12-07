@@ -1,63 +1,56 @@
-<span ng-if="current_trip.whichArray == 'upcoming'"><p class="add-trip-button" ng-click="submitNewDay($event);">+</p></span>
+<div class = "mytrips-bg">
+  <p class="add-day-button" ng-click="submitNewDay($event);">ADD DAY</p>
+  <div class='trip-agenda'>
+      <h1>{{current_trip.title}}</h1>
+      <h2>{{current_trip.place}}</h2>
+      <br>
+      <div class='agenda-row'>
 
-<!-- <p class="add-trip-button" ng-click="submitNewDay($event);">+</p> -->
-<div class='trip-agenda'>
-    <h1>{{current_trip.title}}</h1>
-    <!-- <h2>{{current_trip.start_date}} - {{current_trip.end_date}}</h2> -->
-    <br>
-    <hr>
-    <div class='agenda-row'>
-        <div class='checklist-column'>
-            <h2><b>CHECKLIST</b></h2>
-            <form name="listFrm" >
-                <input type="text" name="newItem" ng-model="newItem" required />
-                <button ng-disabled="listFrm.$invalid" ng-click="addList()">Add</button>
-            </form>
-            <ul style="height:10px" ng-repeat="item in current_trip.checkList" class="{'fadeOut' : item.done}">
-                <input type="checkbox"  />&nbsp;&nbsp;{{item}}
-            </ul>
-        </div>
+          <div class='checklist-column'>
+              <h2 style="display: inline; color: #545454;"><br><b>CHECKLIST</b></h2>
 
-        <div class='row'>
-            <span ng-repeat="day in current_trip.days track by $index">
+              <form name="listFrm" >
+                  <input type="text" id="checklist-input" name="newItem" ng-model="newItem" required />
+                  <button ng-disabled="listFrm.$invalid" id="add-to-checklist" ng-click="addList()">ADD</button>
+              </form>
+
+              <span style="height:10px" ng-repeat="item in current_trip.checkList" class="{'fadeOut' : item.done}">
+                <input type="checkbox"  />  {{item}} <br>
+              </span>
+          </div>
+
+          <span ng-repeat="day in current_trip.days track by $index">
             <div class = 'day-column' id="day{{$index}}">
        
-                <h2 style="text-align: center"><b>DAY{{$index}}</b></h2>
-
+                <h2 style="display: inline; color: #545454;"><br><b>DAY {{$index}}</b></h2>
+                <input type="button"  id="add-activity-btn" value="+" ng-click="ShowHide($event)" />
+                <br><br>
                 <div class="day-activity" ng-hide="!day.length" ng-repeat="activity in day track by $index">
-                      <p> {{activity}} </p>
+                    <p> {{activity}} </p>
                 </div>
-                    <input type="button"  value="+" ng-click="ShowHide($event)" />
-            <br />
-            <br />
-                
+
                    <!--    <p class="delete-trip-button" ng-click="markTripCompleted(trip, $index);" style="z-index: 1000;" ng-click="" >x</p> -->
-
-
             </div>
-            </span>
+          </span>
         </div>
 
+        
+      
+  </div>
 
+  <div ng-show="IsVisible" class='pickanattraction'>
+    <span ng-repeat="place in current_trip.attractions">
+      
+      <div class='attract_entry'>
+        <div class='attract_image' style="background-image:url('{{place.thumbnail_url}}');" ng-click="addPlaceToDay(place);">
 
-
-        <div ng-show="IsVisible" class='scrolling_trip_row'>
-           <span ng-if="current_trip.whichArray == 'upcoming'">
-            <span ng-repeat="place in current_trip.attractions">
-    
-      <div class='trip_entry' style="background-image:url('{{place.thumbnail_url}}');" ng-click="addPlaceToDay(place);">
-        <div id="trip_title_dates">
-          <span style="color:#101010;">{{ place.name }}</span>
-            <br>
+          <div id="attract_desc">
+            <span style="color:#101010;">{{ place.name }}</span><br>
             <span style="font-size:11px; line-height: 15px;">{{place.perex}}</span>
+          </div>
+
         </div>
-
-    </div>
-
+      </div>
     </span>
-    </span>
+  </div>
 </div>
-</div>
-</div>
-
-
