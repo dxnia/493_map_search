@@ -1,26 +1,23 @@
 <script type="text/javascript">
       
-      function initialize() {
+      var input = document.getElementById('searchTextField');
+      var autocomplete = new google.maps.places.Autocomplete(input);
 
-            var input = document.getElementById('searchTextField');
-            var autocomplete = new google.maps.places.Autocomplete(input);
-
-            	console.log(autocomplete); 
-            }
-
-            google.maps.event.addDomListener(window, 'load', initialize);
+          
 
     </script>
+       
 
 <div class ='main'>
   <br><br><br><br><br><br><br><br>
   <h1>Explore Destinations</h1>
   <br>
 
-    <form style="text-align: center;">
-      <input type="text" id="searchTextField"  ng-model="city" placeholder="Pick a city, any city!" name="cities"><br>
-      <a href="#/searchresults"> <input type="submit" ng-click='add(city)' value="Submit" ></a>
-    </form>
+
+  	<input type="text" id="searchTextField" ng-model="city" placeholder="Pick a city, any city!" name="cities"/>
+      <!-- <input type="text" id="autocomplete" ng-model="city" placeholder="Pick a city, any city!" name="cities"><br> -->
+      <a href="#/searchresults"> <input id="searchbtn" type="submit" ng-click='add(city)' value="Submit" ></a>
+    <!-- </form>  -->
     
   <br><br>
 </div>

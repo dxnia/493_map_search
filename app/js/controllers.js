@@ -67,6 +67,7 @@ Final_Controllers.controller('searchPage', ['$scope', '$http', '$window', 'Place
     console.log("SHARED PROPERTY: " + upcomingTripService.getProperty());
 
     $scope.add = function(city) {
+      window.location.href = "#/searchresults"; 
         upcomingTripService.clearAttractions();
         console.log("Add Function Returns City: " + city);
         $scope.city = city;
@@ -162,6 +163,15 @@ Final_Controllers.controller('searchPage', ['$scope', '$http', '$window', 'Place
 
 
     console.log("woohoo seeing my trips");
+   
+   $scope.markTripDeleted = function(trip, index) {
+
+        console.log("trip: " + trip);
+        console.log("index:  " + index);
+        upcomingTripService.deleteTrip(trip, index);
+
+
+    }
 
     $scope.markTripCompleted = function(trip, index) {
 
@@ -524,7 +534,8 @@ Final_Controllers.service('upcomingTripService', function() {
         addDay: addDay,
         addDayToCurrentTrip: addDayToCurrentTrip,
         addItemToCheckList: addItemToCheckList, 
-        clearAttractions: clearAttractions
+        clearAttractions: clearAttractions, 
+        deleteTrip: deleteTrip
     };
     // setProperty: function(value){ 
     //   property = value; 
@@ -596,6 +607,14 @@ Final_Controllers.service('upcomingTripService', function() {
      
     function getCurrentTrip() {
         return current_trip_results;
+    }
+
+    function deleteTrip(trip, index) {
+        // upcomingTrips.push(value);
+        upcomingTrips.splice(index, 1);
+        angular.copy(upcomingTrips, result_trips);
+
+        // property = value; 
     }
 
     function completeTrip(trip, index) {

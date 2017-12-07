@@ -31,6 +31,10 @@ app.config(['$routeProvider',
         templateUrl: 'partials/searchresults.html',
         controller: 'searchPage'
       }).
+       when('/map', {
+        templateUrl: 'partials/map.html',
+        controller: 'searchPage'
+      }).
       otherwise({
         redirectTo: '/404'
       });
