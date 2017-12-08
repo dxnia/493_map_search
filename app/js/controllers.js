@@ -71,6 +71,7 @@ Final_Controllers.controller('searchPage', ['$scope', '$http', '$window', 'Place
         upcomingTripService.clearAttractions();
         console.log("Add Function Returns City: " + city);
         $scope.city = city;
+        // $scope.sentcity = city;
         upcomingTripService.setCity(city);
         $http({
             method: 'GET',
@@ -188,8 +189,19 @@ Final_Controllers.controller('searchPage', ['$scope', '$http', '$window', 'Place
 
     $scope.submit = function(title, place) {
         $scope.title = title;
+        console.log(place  );
+        if($scope.city != ''){
+            console.log("hi");
+            place = $scope.city;
+        }
+        
         $scope.place = place;
         console.log("place: " + place);
+        console.log($scope.sentcity );
+        console.log($scope.city);
+        // if()
+        
+    
 
         if (place == undefined || title == undefined) {
 
@@ -263,6 +275,7 @@ Final_Controllers.controller('searchPage', ['$scope', '$http', '$window', 'Place
 
         });
       } 
+      $scope.city ='';
     };
 
     $scope.submitNewDay = function(event) {
@@ -312,12 +325,18 @@ Final_Controllers.controller('searchPage', ['$scope', '$http', '$window', 'Place
 
     
     $scope.submitNewTrip = function() {
+        // $scope.sentcity = $scope.city;
+        $scope.city = '';        
         console.log("Adding new trip!");
+        console .log($scope.city);
         window.location.href = "/#/addtrip";
     };
 
     $scope.submitNewTrip = function() {
+        $scope.city = '';        
         console.log("Adding new trip!");
+        console .log($scope.city);
+        
         window.location.href = "/#/addtrip";
     };
     $scope.IsVisible = false;
@@ -347,6 +366,7 @@ Final_Controllers.controller('searchPage', ['$scope', '$http', '$window', 'Place
     $scope.completedTrips = upcomingTripService.getCompleted();
     $scope.attractions = upcomingTripService.getAttractions();
     $scope.city = upcomingTripService.getCity();
+    // $scope.city ='';
     console.log($scope.city);
     $scope.description = upcomingTripService.getDesc();
     console.log("AHHHHH" + $scope.description);
