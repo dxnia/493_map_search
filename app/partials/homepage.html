@@ -1,7 +1,10 @@
 <script type="text/javascript">
       
   var input = document.getElementById('searchTextField');
-  var autocomplete = new google.maps.places.Autocomplete(input);
+  var options = {
+    types: ['(cities)']
+  };
+  var autocomplete = new google.maps.places.Autocomplete(input, options);
           
 </script>
        
