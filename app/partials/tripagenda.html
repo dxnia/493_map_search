@@ -18,8 +18,8 @@
 <div class = "mytrips-bg">
   <p class="add-day-button" ng-click="submitNewDay($event);">ADD DAY</p>
   <div class='trip-agenda'>
-      <h1 style="display:inline;">{{current_trip.title}} </h1><button id="completetripbtn" ng-click="markTripCompleted(current_trip, current_trip.index);">TRIP OVER?</button><br>
-      <img style="height: 15px; display: inline; position: relative; left: 4px;" src="images/pin.png"><h2 style="font-size: 14px; font-weight: 300; display: inline; position: relative; top: 2px; left: 8px;"> {{current_trip.place.name}}</h2>
+      <h1 style="display:inline; margin-right: 3px;">{{current_trip.title}} </h1><button id="completetripbtn" ng-click="markTripCompleted(current_trip, current_trip.index);">TRIP OVER?</button><br>
+      <img style="height: 15px; display: inline; position: relative; left: 4px;" src="images/pin.png"><h2 style="font-size: 14px; font-weight: 300; display: inline; position: relative; top: 2px; left: 8px;"> {{current_trip.place}}</h2>
       <br><br>
       <hr>
       <div class='agenda-row'>
@@ -43,7 +43,6 @@
 
           <span ng-repeat="day in current_trip.days track by $index">
             <div class = 'day-column' id="day{{$index}}">
-
        
                 <h2 style="display: inline; color: #545454;"><br><b>DAY {{$index +1}}</b></h2>
 
@@ -51,9 +50,13 @@
                 <input type="button" value="see map" ng-click="makeMap(day);"/> 
                 <div id="map">Day Map</div>
                 <br><br>
+
                 <div class="day-activity" ng-hide="!day.length" ng-repeat="activity in day track by $index">
-                    {{activity}}
+                  <div class="delete-act-button" onclick="alert('a')" >x </div>
+                  <div class="activity-text"> {{activity.name}} </div>
                 </div>
+                    
+            </div>
 
                    <!--    <p class="delete-trip-button" ng-click="markTripCompleted(trip, $index);" >x</p> -->
             </div>
