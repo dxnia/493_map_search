@@ -23,6 +23,10 @@ app.config(['$routeProvider',
         templateUrl: 'partials/addtrip.html',
         controller: 'searchPage'
       }).
+      when('/addtripfromsearch', {
+        templateUrl: 'partials/addtripfromsearch.html',
+        controller: 'searchPage'
+      }).
        when('/tripagenda', {
         templateUrl: 'partials/tripagenda.html',
         controller: 'searchPage'
