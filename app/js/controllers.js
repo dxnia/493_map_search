@@ -357,7 +357,27 @@ Final_Controllers.controller('searchPage', ['$scope', '$http', '$window', 'Place
         var myEl = angular.element(document.querySelector('#' + $scope.id));
         myEl.append('<div class="day-activity"><p>' + $scope.selectedPlace.name + '</p></div>');
         var lastChar = $scope.id.substr($scope.id.length - 1);
-        upcomingTripService.addDayToCurrentTrip(lastChar, $scope.selectedPlace.name);
+        upcomingTripService.addDayToCurrentTrip(lastChar, $scope.selectedPlace);
+        // console.log(current_trip.days[lastChar]);
+    }
+
+    $scope.makeMap = function(day){ 
+
+      console.log("make map see the day:" ); 
+      console.log(day);
+
+      upcomingTripService.makeMapFromPoints(day); 
+    }
+
+    $scope.addPointToWaypoints = function(point) {
+        
+      console.log("adding to waypoints..."); 
+      console.log(point); 
+
+      var myEl = angular.element(document.querySelector('#' + $scope.id));
+        var lastChar = $scope.id.substr($scope.id.length - 1);
+
+      upcomingTripService.addToWaypoints(lastChar, point);
         // console.log(current_trip.days[lastChar]);
     }
 
@@ -1893,7 +1913,10 @@ Final_Controllers.service('upcomingTripService', function() {
         addItemToCheckList: addItemToCheckList,
         clearAttractions: clearAttractions,
         deleteTrip: deleteTrip,
-        itemsChecked: itemsChecked 
+        itemsChecked: itemsChecked, 
+        addToWaypoints: addToWaypoints, 
+        getWaypoints: getWaypoints, 
+        makeMapFromPoints: makeMapFromPoints
     };
     // setProperty: function(value){ 
     //   property = value; 
@@ -1920,7 +1943,7 @@ Final_Controllers.service('upcomingTripService', function() {
         angular.copy(current_trip, current_trip_results);
 
     }
-    function addDayToCurrentTrip(lastChar, place) {
+    function addDayToCurrentTrip(lastChar, place) { //adding place to current day, changed place to full place object
         console.log(current_trip.days[lastChar].day);
         // current_trip.days[lastChar].day.push(place);
         console.log(current_trip);
@@ -1928,6 +1951,8 @@ Final_Controllers.service('upcomingTripService', function() {
 
         // console.log(upcomingTrips[current_trip.index].days[lastChar]);
         upcomingTrips[current_trip.index].days[lastChar].push(place);
+
+
         angular.copy(upcomingTrips, result_trips);
 
         angular.copy(current_trip, current_trip_results);
@@ -1954,6 +1979,45 @@ Final_Controllers.service('upcomingTripService', function() {
         angular.copy(upcomingTrips, result_trips);
 
         property = value;
+    }
+
+    function getWaypoints(day){ 
+
+
+    }
+
+    function makeMapFromPoints(day){ 
+      day.waypoints_arr = []; 
+      
+      //   day.waypoints_arr.push(location); 
+      
+      for (var i=0; i<day['day'].length; i++) {
+        console.log(day['day'][i]);
+        var location;
+        console.log(day['day'][i].location['lat']); 
+        // location.lat = day['day'][i].location['lat'];
+        // location.long = day['day'][i].location['lng'];
+
+        // day.waypoints_arr.push(location);
+
+      }
+
+
+      console.log(day['day']); 
+    }
+
+
+    function addToWaypoints(lastChar, point){ 
+
+      console.log("got to waypoint service..."); 
+      console.log(point); 
+      console.log(current_trip.index); 
+      console.log("the day..."); 
+       console.log(current_trip.days[lastChar]);
+
+       // current_trip.days[lastChar].day.lat = point.location.latitude; 
+       // current_trip.days[lastChar].day.long = point.location.longitude; 
+
     }
 
     function clearAttractions() {
