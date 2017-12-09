@@ -1,9 +1,5 @@
 <!DOCTYPE HTML>
-<!--
-  Identity by HTML5 UP
-  html5up.net | @n33co
-  Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
--->
+
 <html ng-app="493FinalProj">
   <head>
    
@@ -59,10 +55,13 @@
       function initialize() {
 
             var input = document.getElementById('searchTextField');
-            var autocomplete = new google.maps.places.Autocomplete(input);
-            }
+            var options = {
+              types: ['(cities)']
+            };
+            var autocomplete = new google.maps.places.Autocomplete(input, options);
+      }
 
-            google.maps.event.addDomListener(window, 'load', initialize);
+      google.maps.event.addDomListener(window, 'load', initialize);
 
     </script>
     <script js.src = "//connect.facebook.net/en_US/sdk.js"></script>
