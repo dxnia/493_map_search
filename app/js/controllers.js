@@ -70,6 +70,11 @@ Final_Controllers.controller('searchPage', ['$scope', '$http', '$window', 'Place
         window.location.href = "#/searchresults";
         upcomingTripService.clearAttractions();
         console.log("Add Function Returns City: " + city);
+
+        //place should be only city (get rid of state/country)
+        var c = city.indexOf(',');
+        city = city.substring(0, c != -1 ? c : city.length);
+
         $scope.city = city;
         // $scope.sentcity = city;
         upcomingTripService.setCity(city);
@@ -187,19 +192,39 @@ Final_Controllers.controller('searchPage', ['$scope', '$http', '$window', 'Place
         $scope.viewAddTripForm = !$scope.viewAddTripForm;
     };
 
-    $scope.submit = function(title, place) {
+    $scope.submit = function(title, place, form_num) {
         $scope.title = title;
-        console.log(place  );
-        if($scope.city != ''){
-            console.log("hi");
-            place = $scope.city;
+        console.log(place );
+
+        // if (form_num == '1') {
+
+        //     if($scope.city != ''){
+        //         console.log("hi CITY HAS VALUE OF: " + $scope.city);
+        //         console.log("and PLACE HAS VALUE OF: " + place);
+        //         //place = $scope.city;
+        //     }
+
+        // }
+
+        if (form_num == '2') {
+
+            if($scope.city != ''){
+                console.log("hi CITY HAS VALUE OF: " + $scope.city);
+                console.log("and PLACE HAS VALUE OF: " + place);
+                place = $scope.city;
+            }
+
         }
-        
+
+        //place should be only city (get rid of state/country)
+        var c = place.indexOf(',');
+        place = place.substring(0, c != -1 ? c : place.length);
+
+
         $scope.place = place;
         console.log("place: " + place);
         console.log($scope.sentcity );
         console.log($scope.city);
-        // if()
         
     
 
@@ -271,11 +296,14 @@ Final_Controllers.controller('searchPage', ['$scope', '$http', '$window', 'Place
                 console.log("New Trip Created!");
                 window.location.href = "/#/mytrips";
 
+                $scope.city ='';
+                console.log('setting city to blank: ' + $scope.city);
+
             })
 
         });
+
       } 
-      $scope.city ='';
     };
 
     $scope.submitNewDay = function(event) {
