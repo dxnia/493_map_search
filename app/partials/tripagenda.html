@@ -48,10 +48,10 @@
                 <input type="button"  id="add-activity-btn" value="+" ng-click="ShowHide($event)" />
                 <br><br>
                 <div class="day-activity" ng-hide="!day.length" ng-repeat="activity in day track by $index">
-                    <p> {{activity}} </p>
+                    {{activity}}
                 </div>
 
-                   <!--    <p class="delete-trip-button" ng-click="markTripCompleted(trip, $index);" style="z-index: 1000;" ng-click="" >x</p> -->
+                   <!--    <p class="delete-trip-button" ng-click="markTripCompleted(trip, $index);" >x</p> -->
             </div>
           </span>
         </div>

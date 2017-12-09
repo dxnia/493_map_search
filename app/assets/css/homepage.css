@@ -332,6 +332,26 @@ input[name="add_t"]::placeholder {
     font-weight: 300;
 }
 
+#atfs {
+  width: 70%;
+  box-sizing: border-box;
+  background: none;
+  transition: all .3s;
+  border: 0;
+  border-bottom: 1px solid white;
+  color: white;
+  line-height: 40px;
+  font-size: 17px;
+  opacity: .8;
+  text-transform: capitalize;
+
+}
+
+#atfs-city {
+  color: white;
+  opacity: 1;
+}
+
 /*************** AGENDA PAGE STYLING ***********************/
 
  .trip-agenda {
@@ -427,6 +447,25 @@ input[name="add_t"]::placeholder {
   padding-left: 5%;
   margin-bottom: 7px;
 }
+
+.delete-act-button {
+  color: #fff;
+  cursor: pointer;
+  position: relative;
+  float: right;
+  width: 9%;
+  right: 2px;
+  font-size: 18px;
+  line-height: 25px;
+  text-align: center;
+  font-weight: 300;
+ }
+
+ .activity-text {
+  width: 90%;
+  position: relative;
+
+ }
 
 .add-day-button {
  background: #d86942;
@@ -599,7 +638,7 @@ input[id=add-activity-btn]:hover {
 
 .searchresults h1 {
   color: white;
-  size: 28px;
+  size: 23px;
   text-align: left;
   text-transform: capitalize;
   line-height: 40px;
@@ -622,13 +661,14 @@ input[id=add-activity-btn]:hover {
   padding: 8px;
   font-size: 12px;
   font-weight: 300;
-  line-height: 35px;
+  line-height: 40px;
   color: #fff;
   text-transform: uppercase;
   letter-spacing: 1.1px;
   text-align: center;
   position: relative;
   top: -10px;
+  white-space: nowrap
 }
 
 #createtripbtn:hover{

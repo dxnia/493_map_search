@@ -12,7 +12,7 @@
 	<form class="form" id="form">
 
 	  <div id="addtripp" type="TITLE YOUR TRIP"><input type="text" name="add_t" ng-model="title"></input></div>
-	  <div id="addtripp" type="WHERE ARE YOU GOING?">{{city}}</div>
+	  <div id="addtripp" type="WHERE ARE YOU GOING?"><div id="atfs"><div id="atfs-city">{{city}}</div></div></div>
 	  <br><br>
 	  <button id="addtripbtn" ng-click="submit(title,place);">START YOUR TRIP</button>
 	  <button id="addtripbtn" onclick="location.href='/#/mytrips';">CANCEL</button>

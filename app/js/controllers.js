@@ -355,7 +355,7 @@ Final_Controllers.controller('searchPage', ['$scope', '$http', '$window', 'Place
         console.log($scope.id);
 
         var myEl = angular.element(document.querySelector('#' + $scope.id));
-        myEl.append('<div class="day-activity"><p>' + $scope.selectedPlace.name + '</p></div>');
+        myEl.append('<div class="day-activity"><div class="delete-act-button" ng-click="markTripCompleted(trip, $index);" >x </div><div class="activity-text">' + $scope.selectedPlace.name + '</div></div>');
         var lastChar = $scope.id.substr($scope.id.length - 1);
         upcomingTripService.addDayToCurrentTrip(lastChar, $scope.selectedPlace.name);
         // console.log(current_trip.days[lastChar]);
