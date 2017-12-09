@@ -67,6 +67,10 @@ Final_Controllers.controller('searchPage', ['$scope', '$http', '$window', 'Place
     console.log("SHARED PROPERTY: " + upcomingTripService.getProperty());
 
     $scope.add = function(city) {
+
+        var input = angular.element(document.getElementById('searchTextField'));
+        city = input['context']['value']; 
+
         window.location.href = "#/searchresults";
         upcomingTripService.clearAttractions();
         console.log("Add Function Returns City: " + city);
@@ -2150,4 +2154,17 @@ Final_Controllers.service('upcomingTripService', function() {
 
 
 
+});
+app.directive('ngEnter', function () {
+    return function (scope, element, attrs) {
+        element.bind("keydown keypress", function (event) {
+            if(event.which === 13) {
+                scope.$apply(function (){
+                    scope.$eval(attrs.ngEnter);
+                });
+ 
+                event.preventDefault();
+            }
+        });
+    };
 });

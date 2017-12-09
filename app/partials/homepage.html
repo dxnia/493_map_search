@@ -15,7 +15,7 @@
   <br>
 
   <div style="text-align: center;">
-    <input type="text" id="searchTextField" ng-model="city" placeholder="Pick a city, any city!" name="cities"/><br>
+    <input type="text" id="searchTextField" ng-enter="add(city)" ng-model="city" placeholder="Pick a city, any city!" name="cities"/><br>
     <a href="#/searchresults"> <input id="searchbtn" type="submit" ng-click='add(city)' value="Submit" ></a>
   </div>
 
