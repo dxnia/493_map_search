@@ -47,8 +47,8 @@
                 <h2 style="display: inline; color: #545454;"><br><b>DAY {{$index +1}}</b></h2>
 
                 <input type="button"  id="add-activity-btn" value="+" ng-click="ShowHide($event); " />
-                <input type="button" value="see map" ng-click="makeMap(day);"/> 
-                <div id="map">Day Map</div>
+                <!-- <input type="button" value="see map" ng-click="makeMap(day);"/>  -->
+                <!-- <div id="map">Day Map</div> -->
                 <br><br>
 
                 <div class="day-activity" ng-hide="!day.length" ng-repeat="activity in day track by $index">
