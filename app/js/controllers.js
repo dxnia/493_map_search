@@ -25,6 +25,8 @@ var provider = new firebase.auth.FacebookAuthProvider();
 provider.addScope('email');
 provider.addScope('user_friends');
 
+var activityIdx = 0;
+var actKey;
 
 function get_user() {
     var user = firebase.auth().currentUser;
@@ -61,7 +63,7 @@ function checkToRedirect(url) {
 }
 
 
-Final_Controllers.controller('searchPage', ['$scope', '$http', '$window', 'Places', 'LatLong', 'upcomingTripService', function($scope, $http, $window, Places, LatLong, upcomingTripService) {
+Final_Controllers.controller('searchPage', ['$scope', '$compile', '$http', '$window', 'Places', 'LatLong', 'upcomingTripService', function($scope, $compile, $http, $window, Places, LatLong, upcomingTripService) {
     console.log("i got here");
 
     console.log("SHARED PROPERTY: " + upcomingTripService.getProperty());
@@ -69,7 +71,7 @@ Final_Controllers.controller('searchPage', ['$scope', '$http', '$window', 'Place
     $scope.add = function(city) {
 
         var input = angular.element(document.getElementById('searchTextField'));
-        city = input['context']['value']; 
+        city = input['context']['value'];
 
         window.location.href = "#/searchresults";
         upcomingTripService.clearAttractions();
@@ -211,7 +213,7 @@ Final_Controllers.controller('searchPage', ['$scope', '$http', '$window', 'Place
         else {
 
         $scope.title = title;
-        console.log(place );
+        console.log(place);
 
         // if (form_num == '1') {
 
@@ -225,7 +227,7 @@ Final_Controllers.controller('searchPage', ['$scope', '$http', '$window', 'Place
 
         if (form_num == '2') {
 
-            if($scope.city != ''){
+            if ($scope.city != '') {
                 console.log("hi CITY HAS VALUE OF: " + $scope.city);
                 console.log("and PLACE HAS VALUE OF: " + place);
                 place = $scope.city;
@@ -242,8 +244,9 @@ Final_Controllers.controller('searchPage', ['$scope', '$http', '$window', 'Place
 
         $scope.place = place;
         console.log("place: " + place);
-        console.log($scope.sentcity );
+        console.log($scope.sentcity);
         console.log($scope.city);
+
         
      
         console.log("place added: " + place);
@@ -298,23 +301,23 @@ Final_Controllers.controller('searchPage', ['$scope', '$http', '$window', 'Place
                     checkList: check_list
                 }
 
-                console.log("the new trip info: ");
-                console.log(new_trip);
+                    console.log("the new trip info: ");
+                    console.log(new_trip);
 
-                console.log("SHARED PROPERTY: " + upcomingTripService.setProperty(new_trip));
+                    console.log("SHARED PROPERTY: " + upcomingTripService.setProperty(new_trip));
 
-                // $scope.upcomingTrips.push(new_trip);
-                console.log("New Trip Created!");
-                window.location.href = "/#/mytrips";
+                    // $scope.upcomingTrips.push(new_trip);
+                    console.log("New Trip Created!");
+                    window.location.href = "/#/mytrips";
 
-                $scope.city ='';
-                console.log('setting city to blank: ' + $scope.city);
+                    $scope.city = '';
+                    console.log('setting city to blank: ' + $scope.city);
 
-            })
+                })
 
-        });
+            });
 
-      } 
+        }
     };
 
     $scope.submitNewDay = function(event) {
@@ -354,28 +357,28 @@ Final_Controllers.controller('searchPage', ['$scope', '$http', '$window', 'Place
     }
     // $scope.checked = {};
 
-    $scope.itemsChecked = function(item,id) {    
-       
+    $scope.itemsChecked = function(item, id) {
 
-        upcomingTripService.itemsChecked(item,id);
-        
+
+        upcomingTripService.itemsChecked(item, id);
+
     }
 
 
-    
+
     $scope.submitNewTrip = function() {
         // $scope.sentcity = $scope.city;
-        $scope.city = '';        
+        $scope.city = '';
         console.log("Adding new trip!");
-        console .log($scope.city);
+        console.log($scope.city);
         window.location.href = "/#/addtrip";
     };
 
     $scope.submitNewTrip = function() {
-        $scope.city = '';        
+        $scope.city = '';
         console.log("Adding new trip!");
-        console .log($scope.city);
-        
+        console.log($scope.city);
+
         window.location.href = "/#/addtrip";
     };
     $scope.IsVisible = false;
@@ -387,36 +390,76 @@ Final_Controllers.controller('searchPage', ['$scope', '$http', '$window', 'Place
         $scope.IsVisible = $scope.IsVisible ? false : true;
     }
 
+
+    $scope.deleteActivity = function(event) {
+        var el = event.target;
+        var target = angular.element(el).parent().parent();
+        $scope.sibling = event.target.nextSibling.innerText;
+        // $(event.target).nextSibling.remove();
+        console.log($scope.sibling);
+        $scope.dayId = target[0].id;
+        console.log($scope.dayId);
+        var activityDayId = $scope.dayId.substr($scope.dayId.length - 1);
+        console.log(activityDayId);
+        // element.remove();
+        upcomingTripService.deleteActivityInCurrentTrip(activityDayId, $scope.sibling);
+
+        // $scope.IsVisible = $scope.IsVisible ? false : true;
+    }
+
+    $scope.activities = [];
     $scope.addPlaceToDay = function(list) {
         console.log("hi");
         console.log(list);
         $scope.selectedPlace = list;
         console.log("SCOPE ID LALALALAALALA: " + $scope.id);
-
-        var myEl = angular.element(document.querySelector('#' + $scope.id));
-        myEl.append('<div class="day-activity"><div class="activity-text">' + $scope.selectedPlace.name + '</div></div>');
         var lastChar = $scope.id.substr($scope.id.length - 1);
-        upcomingTripService.addDayToCurrentTrip(lastChar, $scope.selectedPlace);
+
+        var activity = $scope.selectedPlace.name
+        $scope.activities.push({ activity });
+        console.log($scope.activities);
+        // $scope.index = $scope.activities.length - 1;
+        // // console.log($scope.index);
+        // $scope.acindex = $scope.activities.findIndex(x => x.activity == activity);
+        // var acindex = $scope.acindex;
+        // console.log($scope.acindex);
+        // console.log($scope.activities.indexOf(activity));
+// 
+        var myEl = angular.element(document.querySelector('#' + $scope.id));
+
+        myEl.append('<div class="day-activity"><div class="activity-text">' + $scope.selectedPlace.name + '</div></div>');
+
+        var lastChar = $scope.id.substr($scope.id.length - 1);
+        // if(actKey == lastChar){
+        // activityIdx++;
+        // }
+        // else{
+
+        // }
+        upcomingTripService.addDayToCurrentTrip(lastChar, $scope.selectedPlace, $scope.id);
+
         // console.log(current_trip.days[lastChar]);
     }
 
-    $scope.makeMap = function(day){ 
 
-      console.log("make map see the day:" ); 
-      console.log(day);
 
-      upcomingTripService.makeMapFromPoints(day); 
+    $scope.makeMap = function(day) {
+
+        console.log("make map see the day:");
+        console.log(day);
+
+        upcomingTripService.makeMapFromPoints(day);
     }
 
     $scope.addPointToWaypoints = function(point) {
-        
-      console.log("adding to waypoints..."); 
-      console.log(point); 
 
-      var myEl = angular.element(document.querySelector('#' + $scope.id));
+        console.log("adding to waypoints...");
+        console.log(point);
+
+        var myEl = angular.element(document.querySelector('#' + $scope.id));
         var lastChar = $scope.id.substr($scope.id.length - 1);
 
-      upcomingTripService.addToWaypoints(lastChar, point);
+        upcomingTripService.addToWaypoints(lastChar, point);
         // console.log(current_trip.days[lastChar]);
     }
 
@@ -545,624 +588,624 @@ Final_Controllers.service('upcomingTripService', function() {
             longitude: 103.819836,
             days: [],
             checkList: [],
-            attractions: [
-                {
-                  "id": "poi:21449",
-                  "level": "poi",
-                  "rating": 0.31966265060241,
-                  "quadkey": "132232231101322011",
-                  "location": {
-                    "lat": 1.3284306,
-                    "lng": 103.8469406
-                  },
-                  "bounding_box": null,
-                  "name": "Burmese Buddhist Temple",
-                  "name_suffix": "Singapore, Singapore",
-                  "url": "https://travel.sygic.com/go/poi:21449",
-                  "marker": "other:place_of_worship:temple",
-                  "categories": [
-                    "sightseeing"
-                  ],
-                  "parent_ids": [
-                    "city:3355",
-                    "region:61340",
-                    "region:1976232",
-                    "country:84",
-                    "continent:4"
-                  ],
-                  "perex": "Also called Maha Sasana Ramsi, this is the oldest Theravada temple in Singapore.",
-                  "customer_rating": null,
-                  "star_rating": null,
-                  "star_rating_unofficial": null,
-                  "thumbnail_url": "https://media-cdn.sygictraveldata.com/media/poi:21449",
-                  "$$hashKey": "object:19"
+            attractions: [{
+                    "id": "poi:21449",
+                    "level": "poi",
+                    "rating": 0.31966265060241,
+                    "quadkey": "132232231101322011",
+                    "location": {
+                        "lat": 1.3284306,
+                        "lng": 103.8469406
+                    },
+                    "bounding_box": null,
+                    "name": "Burmese Buddhist Temple",
+                    "name_suffix": "Singapore, Singapore",
+                    "url": "https://travel.sygic.com/go/poi:21449",
+                    "marker": "other:place_of_worship:temple",
+                    "categories": [
+                        "sightseeing"
+                    ],
+                    "parent_ids": [
+                        "city:3355",
+                        "region:61340",
+                        "region:1976232",
+                        "country:84",
+                        "continent:4"
+                    ],
+                    "perex": "Also called Maha Sasana Ramsi, this is the oldest Theravada temple in Singapore.",
+                    "customer_rating": null,
+                    "star_rating": null,
+                    "star_rating_unofficial": null,
+                    "thumbnail_url": "https://media-cdn.sygictraveldata.com/media/poi:21449",
+                    "$$hashKey": "object:19"
                 },
                 {
-                  "id": "poi:21445",
-                  "level": "poi",
-                  "rating": 0.23452208835341,
-                  "quadkey": "132232231103001122",
-                  "location": {
-                    "lat": 1.3140124,
-                    "lng": 103.8159507
-                  },
-                  "bounding_box": null,
-                  "name": "Botanic Gardens",
-                  "name_suffix": "Singapore, Singapore",
-                  "url": "https://travel.sygic.com/go/poi:21445",
-                  "marker": "relaxing:park:garden",
-                  "categories": [
-                    "hiking",
-                    "relaxing",
-                    "sightseeing",
-                    "discovering"
-                  ],
-                  "parent_ids": [
-                    "city:3355",
-                    "region:61340",
-                    "region:1976232",
-                    "country:84",
-                    "continent:4"
-                  ],
-                  "perex": "Established in 1859, this historical tropical garden is a vast haven for all nature lovers.",
-                  "customer_rating": null,
-                  "star_rating": null,
-                  "star_rating_unofficial": null,
-                  "thumbnail_url": "https://media-cdn.sygictraveldata.com/media/poi:21445",
-                  "$$hashKey": "object:20"
+                    "id": "poi:21445",
+                    "level": "poi",
+                    "rating": 0.23452208835341,
+                    "quadkey": "132232231103001122",
+                    "location": {
+                        "lat": 1.3140124,
+                        "lng": 103.8159507
+                    },
+                    "bounding_box": null,
+                    "name": "Botanic Gardens",
+                    "name_suffix": "Singapore, Singapore",
+                    "url": "https://travel.sygic.com/go/poi:21445",
+                    "marker": "relaxing:park:garden",
+                    "categories": [
+                        "hiking",
+                        "relaxing",
+                        "sightseeing",
+                        "discovering"
+                    ],
+                    "parent_ids": [
+                        "city:3355",
+                        "region:61340",
+                        "region:1976232",
+                        "country:84",
+                        "continent:4"
+                    ],
+                    "perex": "Established in 1859, this historical tropical garden is a vast haven for all nature lovers.",
+                    "customer_rating": null,
+                    "star_rating": null,
+                    "star_rating_unofficial": null,
+                    "thumbnail_url": "https://media-cdn.sygictraveldata.com/media/poi:21445",
+                    "$$hashKey": "object:20"
                 },
                 {
-                  "id": "poi:21443",
-                  "level": "poi",
-                  "rating": 0.063979699178739,
-                  "quadkey": "132232231103001032",
-                  "location": {
-                    "lat": 1.3128533,
-                    "lng": 103.8133493
-                  },
-                  "bounding_box": null,
-                  "name": "National Orchid Garden",
-                  "name_suffix": "Singapore, Singapore",
-                  "url": "https://travel.sygic.com/go/poi:21443",
-                  "marker": "hiking:park:nature",
-                  "categories": [
-                    "hiking",
-                    "sightseeing",
-                    "relaxing"
-                  ],
-                  "parent_ids": [
-                    "region:61340",
-                    "region:1976232",
-                    "country:84",
-                    "continent:4"
-                  ],
-                  "perex": "A part of the large complex of Botanic Gardens, this place is home to more than 1000 orchid species.",
-                  "customer_rating": null,
-                  "star_rating": null,
-                  "star_rating_unofficial": null,
-                  "thumbnail_url": "https://media-cdn.sygictraveldata.com/media/poi:21443",
-                  "$$hashKey": "object:21"
+                    "id": "poi:21443",
+                    "level": "poi",
+                    "rating": 0.063979699178739,
+                    "quadkey": "132232231103001032",
+                    "location": {
+                        "lat": 1.3128533,
+                        "lng": 103.8133493
+                    },
+                    "bounding_box": null,
+                    "name": "National Orchid Garden",
+                    "name_suffix": "Singapore, Singapore",
+                    "url": "https://travel.sygic.com/go/poi:21443",
+                    "marker": "hiking:park:nature",
+                    "categories": [
+                        "hiking",
+                        "sightseeing",
+                        "relaxing"
+                    ],
+                    "parent_ids": [
+                        "region:61340",
+                        "region:1976232",
+                        "country:84",
+                        "continent:4"
+                    ],
+                    "perex": "A part of the large complex of Botanic Gardens, this place is home to more than 1000 orchid species.",
+                    "customer_rating": null,
+                    "star_rating": null,
+                    "star_rating_unofficial": null,
+                    "thumbnail_url": "https://media-cdn.sygictraveldata.com/media/poi:21443",
+                    "$$hashKey": "object:21"
                 },
                 {
-                  "id": "poi:8743268",
-                  "level": "poi",
-                  "rating": 0.0034096385542169,
-                  "quadkey": "132232231103011301",
-                  "location": {
-                    "lat": 1.3120898,
-                    "lng": 103.839515
-                  },
-                  "bounding_box": null,
-                  "name": "Newton Food Centre",
-                  "name_suffix": "Singapore, Singapore",
-                  "url": "https://travel.sygic.com/go/poi:8743268",
-                  "marker": "eating:restaurant",
-                  "categories": [
-                    "eating",
-                    "sightseeing"
-                  ],
-                  "parent_ids": [
-                    "city:3355",
-                    "region:61340",
-                    "region:1976232",
-                    "country:84",
-                    "continent:4"
-                  ],
-                  "perex": null,
-                  "customer_rating": null,
-                  "star_rating": null,
-                  "star_rating_unofficial": null,
-                  "thumbnail_url": null,
-                  "$$hashKey": "object:22"
+                    "id": "poi:8743268",
+                    "level": "poi",
+                    "rating": 0.0034096385542169,
+                    "quadkey": "132232231103011301",
+                    "location": {
+                        "lat": 1.3120898,
+                        "lng": 103.839515
+                    },
+                    "bounding_box": null,
+                    "name": "Newton Food Centre",
+                    "name_suffix": "Singapore, Singapore",
+                    "url": "https://travel.sygic.com/go/poi:8743268",
+                    "marker": "eating:restaurant",
+                    "categories": [
+                        "eating",
+                        "sightseeing"
+                    ],
+                    "parent_ids": [
+                        "city:3355",
+                        "region:61340",
+                        "region:1976232",
+                        "country:84",
+                        "continent:4"
+                    ],
+                    "perex": null,
+                    "customer_rating": null,
+                    "star_rating": null,
+                    "star_rating_unofficial": null,
+                    "thumbnail_url": null,
+                    "$$hashKey": "object:22"
                 },
                 {
-                  "id": "poi:6037721",
-                  "level": "poi",
-                  "rating": 0.002816695431011,
-                  "quadkey": "132232231103001033",
-                  "location": {
-                    "lat": 1.313753,
-                    "lng": 103.8150439
-                  },
-                  "bounding_box": null,
-                  "name": "Shaw Foundation Symphony Stage",
-                  "name_suffix": "Singapore, Singapore",
-                  "url": "https://travel.sygic.com/go/poi:6037721",
-                  "marker": "sightseeing",
-                  "categories": [
-                    "sightseeing"
-                  ],
-                  "parent_ids": [
-                    "city:3355",
-                    "region:61340",
-                    "region:1976232",
-                    "country:84",
-                    "continent:4"
-                  ],
-                  "perex": null,
-                  "customer_rating": null,
-                  "star_rating": null,
-                  "star_rating_unofficial": null,
-                  "thumbnail_url": null,
-                  "$$hashKey": "object:23"
+                    "id": "poi:6037721",
+                    "level": "poi",
+                    "rating": 0.002816695431011,
+                    "quadkey": "132232231103001033",
+                    "location": {
+                        "lat": 1.313753,
+                        "lng": 103.8150439
+                    },
+                    "bounding_box": null,
+                    "name": "Shaw Foundation Symphony Stage",
+                    "name_suffix": "Singapore, Singapore",
+                    "url": "https://travel.sygic.com/go/poi:6037721",
+                    "marker": "sightseeing",
+                    "categories": [
+                        "sightseeing"
+                    ],
+                    "parent_ids": [
+                        "city:3355",
+                        "region:61340",
+                        "region:1976232",
+                        "country:84",
+                        "continent:4"
+                    ],
+                    "perex": null,
+                    "customer_rating": null,
+                    "star_rating": null,
+                    "star_rating_unofficial": null,
+                    "thumbnail_url": null,
+                    "$$hashKey": "object:23"
                 },
                 {
-                  "id": "poi:8827421",
-                  "level": "poi",
-                  "rating": 0.0026064257028112,
-                  "quadkey": "132232231103001213",
-                  "location": {
-                    "lat": 1.3108969,
-                    "lng": 103.8150737
-                  },
-                  "bounding_box": null,
-                  "name": "Ginger Garden",
-                  "name_suffix": "Singapore, Singapore",
-                  "url": "https://travel.sygic.com/go/poi:8827421",
-                  "marker": "sightseeing",
-                  "categories": [
-                    "sightseeing"
-                  ],
-                  "parent_ids": [
-                    "city:3355",
-                    "region:61340",
-                    "region:1976232",
-                    "country:84",
-                    "continent:4"
-                  ],
-                  "perex": null,
-                  "customer_rating": null,
-                  "star_rating": null,
-                  "star_rating_unofficial": null,
-                  "thumbnail_url": null,
-                  "$$hashKey": "object:24"
+                    "id": "poi:8827421",
+                    "level": "poi",
+                    "rating": 0.0026064257028112,
+                    "quadkey": "132232231103001213",
+                    "location": {
+                        "lat": 1.3108969,
+                        "lng": 103.8150737
+                    },
+                    "bounding_box": null,
+                    "name": "Ginger Garden",
+                    "name_suffix": "Singapore, Singapore",
+                    "url": "https://travel.sygic.com/go/poi:8827421",
+                    "marker": "sightseeing",
+                    "categories": [
+                        "sightseeing"
+                    ],
+                    "parent_ids": [
+                        "city:3355",
+                        "region:61340",
+                        "region:1976232",
+                        "country:84",
+                        "continent:4"
+                    ],
+                    "perex": null,
+                    "customer_rating": null,
+                    "star_rating": null,
+                    "star_rating_unofficial": null,
+                    "thumbnail_url": null,
+                    "$$hashKey": "object:24"
                 },
                 {
-                  "id": "poi:13346014",
-                  "level": "poi",
-                  "rating": 0.002,
-                  "quadkey": "132232231101231123",
-                  "location": {
-                    "lat": 1.3354249,
-                    "lng": 103.8387222
-                  },
-                  "bounding_box": null,
-                  "name": "Seah Eu Chin's grave on Grave Hill",
-                  "name_suffix": "Singapore, Singapore",
-                  "url": "https://travel.sygic.com/go/poi:13346014",
-                  "marker": "sightseeing:tomb",
-                  "categories": [
-                    "sightseeing"
-                  ],
-                  "parent_ids": [
-                    "region:61340",
-                    "region:1976232",
-                    "country:84",
-                    "continent:4"
-                  ],
-                  "perex": "Seah Eu Chin was an immigrant from South China to Singapore, later becoming a successful merchant and leader in the Overseas Chinese…",
-                  "customer_rating": null,
-                  "star_rating": null,
-                  "star_rating_unofficial": null,
-                  "thumbnail_url": null,
-                  "$$hashKey": "object:25"
+                    "id": "poi:13346014",
+                    "level": "poi",
+                    "rating": 0.002,
+                    "quadkey": "132232231101231123",
+                    "location": {
+                        "lat": 1.3354249,
+                        "lng": 103.8387222
+                    },
+                    "bounding_box": null,
+                    "name": "Seah Eu Chin's grave on Grave Hill",
+                    "name_suffix": "Singapore, Singapore",
+                    "url": "https://travel.sygic.com/go/poi:13346014",
+                    "marker": "sightseeing:tomb",
+                    "categories": [
+                        "sightseeing"
+                    ],
+                    "parent_ids": [
+                        "region:61340",
+                        "region:1976232",
+                        "country:84",
+                        "continent:4"
+                    ],
+                    "perex": "Seah Eu Chin was an immigrant from South China to Singapore, later becoming a successful merchant and leader in the Overseas Chinese…",
+                    "customer_rating": null,
+                    "star_rating": null,
+                    "star_rating_unofficial": null,
+                    "thumbnail_url": null,
+                    "$$hashKey": "object:25"
                 },
                 {
-                  "id": "poi:8835222",
-                  "level": "poi",
-                  "rating": 0.0018562376915832,
-                  "quadkey": "132232231103001102",
-                  "location": {
-                    "lat": 1.3166691,
-                    "lng": 103.815717
-                  },
-                  "bounding_box": null,
-                  "name": "Evolution Garden",
-                  "name_suffix": "Singapore, Singapore",
-                  "url": "https://travel.sygic.com/go/poi:8835222",
-                  "marker": "sightseeing",
-                  "categories": [
-                    "sightseeing"
-                  ],
-                  "parent_ids": [
-                    "city:3355",
-                    "region:61340",
-                    "region:1976232",
-                    "country:84",
-                    "continent:4"
-                  ],
-                  "perex": null,
-                  "customer_rating": null,
-                  "star_rating": null,
-                  "star_rating_unofficial": null,
-                  "thumbnail_url": null,
-                  "$$hashKey": "object:26"
+                    "id": "poi:8835222",
+                    "level": "poi",
+                    "rating": 0.0018562376915832,
+                    "quadkey": "132232231103001102",
+                    "location": {
+                        "lat": 1.3166691,
+                        "lng": 103.815717
+                    },
+                    "bounding_box": null,
+                    "name": "Evolution Garden",
+                    "name_suffix": "Singapore, Singapore",
+                    "url": "https://travel.sygic.com/go/poi:8835222",
+                    "marker": "sightseeing",
+                    "categories": [
+                        "sightseeing"
+                    ],
+                    "parent_ids": [
+                        "city:3355",
+                        "region:61340",
+                        "region:1976232",
+                        "country:84",
+                        "continent:4"
+                    ],
+                    "perex": null,
+                    "customer_rating": null,
+                    "star_rating": null,
+                    "star_rating_unofficial": null,
+                    "thumbnail_url": null,
+                    "$$hashKey": "object:26"
                 },
                 {
-                  "id": "poi:8822706",
-                  "level": "poi",
-                  "rating": 0.0018032128514056,
-                  "quadkey": "132232231103001320",
-                  "location": {
-                    "lat": 1.3099652,
-                    "lng": 103.8162532
-                  },
-                  "bounding_box": null,
-                  "name": "Bonsai",
-                  "name_suffix": "Singapore, Singapore",
-                  "url": "https://travel.sygic.com/go/poi:8822706",
-                  "marker": "sightseeing",
-                  "categories": [
-                    "sightseeing"
-                  ],
-                  "parent_ids": [
-                    "city:3355",
-                    "region:61340",
-                    "region:1976232",
-                    "country:84",
-                    "continent:4"
-                  ],
-                  "perex": null,
-                  "customer_rating": null,
-                  "star_rating": null,
-                  "star_rating_unofficial": null,
-                  "thumbnail_url": null,
-                  "$$hashKey": "object:27"
+                    "id": "poi:8822706",
+                    "level": "poi",
+                    "rating": 0.0018032128514056,
+                    "quadkey": "132232231103001320",
+                    "location": {
+                        "lat": 1.3099652,
+                        "lng": 103.8162532
+                    },
+                    "bounding_box": null,
+                    "name": "Bonsai",
+                    "name_suffix": "Singapore, Singapore",
+                    "url": "https://travel.sygic.com/go/poi:8822706",
+                    "marker": "sightseeing",
+                    "categories": [
+                        "sightseeing"
+                    ],
+                    "parent_ids": [
+                        "city:3355",
+                        "region:61340",
+                        "region:1976232",
+                        "country:84",
+                        "continent:4"
+                    ],
+                    "perex": null,
+                    "customer_rating": null,
+                    "star_rating": null,
+                    "star_rating_unofficial": null,
+                    "thumbnail_url": null,
+                    "$$hashKey": "object:27"
                 },
                 {
-                  "id": "poi:8821104",
-                  "level": "poi",
-                  "rating": 0.0018032128514056,
-                  "quadkey": "132232231101223320",
-                  "location": {
-                    "lat": 1.3203161,
-                    "lng": 103.8156956
-                  },
-                  "bounding_box": null,
-                  "name": "Spices",
-                  "name_suffix": "Singapore, Singapore",
-                  "url": "https://travel.sygic.com/go/poi:8821104",
-                  "marker": "sightseeing",
-                  "categories": [
-                    "sightseeing"
-                  ],
-                  "parent_ids": [
-                    "city:3355",
-                    "region:61340",
-                    "region:1976232",
-                    "country:84",
-                    "continent:4"
-                  ],
-                  "perex": null,
-                  "customer_rating": null,
-                  "star_rating": null,
-                  "star_rating_unofficial": null,
-                  "thumbnail_url": null,
-                  "$$hashKey": "object:28"
+                    "id": "poi:8821104",
+                    "level": "poi",
+                    "rating": 0.0018032128514056,
+                    "quadkey": "132232231101223320",
+                    "location": {
+                        "lat": 1.3203161,
+                        "lng": 103.8156956
+                    },
+                    "bounding_box": null,
+                    "name": "Spices",
+                    "name_suffix": "Singapore, Singapore",
+                    "url": "https://travel.sygic.com/go/poi:8821104",
+                    "marker": "sightseeing",
+                    "categories": [
+                        "sightseeing"
+                    ],
+                    "parent_ids": [
+                        "city:3355",
+                        "region:61340",
+                        "region:1976232",
+                        "country:84",
+                        "continent:4"
+                    ],
+                    "perex": null,
+                    "customer_rating": null,
+                    "star_rating": null,
+                    "star_rating_unofficial": null,
+                    "thumbnail_url": null,
+                    "$$hashKey": "object:28"
                 },
                 {
-                  "id": "poi:10418995",
-                  "level": "poi",
-                  "rating": 0.001,
-                  "quadkey": "132232231103001332",
-                  "location": {
-                    "lat": 1.3085082,
-                    "lng": 103.8181311
-                  },
-                  "bounding_box": null,
-                  "name": "Orchid Breeding and Micropropagation Lab",
-                  "name_suffix": "Singapore, Singapore",
-                  "url": "https://travel.sygic.com/go/poi:10418995",
-                  "marker": "sightseeing",
-                  "categories": [
-                    "sightseeing"
-                  ],
-                  "parent_ids": [
-                    "city:3355",
-                    "region:61340",
-                    "region:1976232",
-                    "country:84",
-                    "continent:4"
-                  ],
-                  "perex": null,
-                  "customer_rating": null,
-                  "star_rating": null,
-                  "star_rating_unofficial": null,
-                  "thumbnail_url": null,
-                  "$$hashKey": "object:29"
+                    "id": "poi:10418995",
+                    "level": "poi",
+                    "rating": 0.001,
+                    "quadkey": "132232231103001332",
+                    "location": {
+                        "lat": 1.3085082,
+                        "lng": 103.8181311
+                    },
+                    "bounding_box": null,
+                    "name": "Orchid Breeding and Micropropagation Lab",
+                    "name_suffix": "Singapore, Singapore",
+                    "url": "https://travel.sygic.com/go/poi:10418995",
+                    "marker": "sightseeing",
+                    "categories": [
+                        "sightseeing"
+                    ],
+                    "parent_ids": [
+                        "city:3355",
+                        "region:61340",
+                        "region:1976232",
+                        "country:84",
+                        "continent:4"
+                    ],
+                    "perex": null,
+                    "customer_rating": null,
+                    "star_rating": null,
+                    "star_rating_unofficial": null,
+                    "thumbnail_url": null,
+                    "$$hashKey": "object:29"
                 },
                 {
-                  "id": "poi:18899515",
-                  "level": "poi",
-                  "rating": 0.001,
-                  "quadkey": "132232231100310002",
-                  "location": {
-                    "lat": 1.3606982,
-                    "lng": 103.7773777
-                  },
-                  "bounding_box": null,
-                  "name": "Former Power Station",
-                  "name_suffix": "Singapore, Singapore",
-                  "url": "https://travel.sygic.com/go/poi:18899515",
-                  "marker": "sightseeing",
-                  "categories": [
-                    "sightseeing"
-                  ],
-                  "parent_ids": [
-                    "region:61342",
-                    "region:1976232",
-                    "country:84",
-                    "continent:4"
-                  ],
-                  "perex": null,
-                  "customer_rating": null,
-                  "star_rating": null,
-                  "star_rating_unofficial": null,
-                  "thumbnail_url": null,
-                  "$$hashKey": "object:30"
+                    "id": "poi:18899515",
+                    "level": "poi",
+                    "rating": 0.001,
+                    "quadkey": "132232231100310002",
+                    "location": {
+                        "lat": 1.3606982,
+                        "lng": 103.7773777
+                    },
+                    "bounding_box": null,
+                    "name": "Former Power Station",
+                    "name_suffix": "Singapore, Singapore",
+                    "url": "https://travel.sygic.com/go/poi:18899515",
+                    "marker": "sightseeing",
+                    "categories": [
+                        "sightseeing"
+                    ],
+                    "parent_ids": [
+                        "region:61342",
+                        "region:1976232",
+                        "country:84",
+                        "continent:4"
+                    ],
+                    "perex": null,
+                    "customer_rating": null,
+                    "star_rating": null,
+                    "star_rating_unofficial": null,
+                    "thumbnail_url": null,
+                    "$$hashKey": "object:30"
                 },
                 {
-                  "id": "poi:19812437",
-                  "level": "poi",
-                  "rating": 0.001,
-                  "quadkey": "132232231100310211",
-                  "location": {
-                    "lat": 1.3565221,
-                    "lng": 103.7822265
-                  },
-                  "bounding_box": null,
-                  "name": "Pipes",
-                  "name_suffix": "Singapore, Singapore",
-                  "url": "https://travel.sygic.com/go/poi:19812437",
-                  "marker": "sightseeing",
-                  "categories": [
-                    "sightseeing"
-                  ],
-                  "parent_ids": [
-                    "region:61342",
-                    "region:1976232",
-                    "country:84",
-                    "continent:4"
-                  ],
-                  "perex": null,
-                  "customer_rating": null,
-                  "star_rating": null,
-                  "star_rating_unofficial": null,
-                  "thumbnail_url": null,
-                  "$$hashKey": "object:31"
+                    "id": "poi:19812437",
+                    "level": "poi",
+                    "rating": 0.001,
+                    "quadkey": "132232231100310211",
+                    "location": {
+                        "lat": 1.3565221,
+                        "lng": 103.7822265
+                    },
+                    "bounding_box": null,
+                    "name": "Pipes",
+                    "name_suffix": "Singapore, Singapore",
+                    "url": "https://travel.sygic.com/go/poi:19812437",
+                    "marker": "sightseeing",
+                    "categories": [
+                        "sightseeing"
+                    ],
+                    "parent_ids": [
+                        "region:61342",
+                        "region:1976232",
+                        "country:84",
+                        "continent:4"
+                    ],
+                    "perex": null,
+                    "customer_rating": null,
+                    "star_rating": null,
+                    "star_rating_unofficial": null,
+                    "thumbnail_url": null,
+                    "$$hashKey": "object:31"
                 },
                 {
-                  "id": "poi:13037430",
-                  "level": "poi",
-                  "rating": 0.001,
-                  "quadkey": "132232231101203030",
-                  "location": {
-                    "lat": 1.3482053,
-                    "lng": 103.8138502
-                  },
-                  "bounding_box": null,
-                  "name": "Purification Tub",
-                  "name_suffix": "Singapore, Singapore",
-                  "url": "https://travel.sygic.com/go/poi:13037430",
-                  "marker": "sightseeing",
-                  "categories": [
-                    "sightseeing"
-                  ],
-                  "parent_ids": [
-                    "region:61340",
-                    "region:1976232",
-                    "country:84",
-                    "continent:4"
-                  ],
-                  "perex": null,
-                  "customer_rating": null,
-                  "star_rating": null,
-                  "star_rating_unofficial": null,
-                  "thumbnail_url": null,
-                  "$$hashKey": "object:32"
+                    "id": "poi:13037430",
+                    "level": "poi",
+                    "rating": 0.001,
+                    "quadkey": "132232231101203030",
+                    "location": {
+                        "lat": 1.3482053,
+                        "lng": 103.8138502
+                    },
+                    "bounding_box": null,
+                    "name": "Purification Tub",
+                    "name_suffix": "Singapore, Singapore",
+                    "url": "https://travel.sygic.com/go/poi:13037430",
+                    "marker": "sightseeing",
+                    "categories": [
+                        "sightseeing"
+                    ],
+                    "parent_ids": [
+                        "region:61340",
+                        "region:1976232",
+                        "country:84",
+                        "continent:4"
+                    ],
+                    "perex": null,
+                    "customer_rating": null,
+                    "star_rating": null,
+                    "star_rating_unofficial": null,
+                    "thumbnail_url": null,
+                    "$$hashKey": "object:32"
                 },
                 {
-                  "id": "poi:17033896",
-                  "level": "poi",
-                  "rating": 0.001,
-                  "quadkey": "132232231100333322",
-                  "location": {
-                    "lat": 1.3190684,
-                    "lng": 103.7944943
-                  },
-                  "bounding_box": null,
-                  "name": "Astrid meadows",
-                  "name_suffix": "Singapore, Singapore",
-                  "url": "https://travel.sygic.com/go/poi:17033896",
-                  "marker": "sightseeing",
-                  "categories": [
-                    "sightseeing"
-                  ],
-                  "parent_ids": [
-                    "region:61342",
-                    "region:1976232",
-                    "country:84",
-                    "continent:4"
-                  ],
-                  "perex": null,
-                  "customer_rating": null,
-                  "star_rating": null,
-                  "star_rating_unofficial": null,
-                  "thumbnail_url": null,
-                  "$$hashKey": "object:33"
+                    "id": "poi:17033896",
+                    "level": "poi",
+                    "rating": 0.001,
+                    "quadkey": "132232231100333322",
+                    "location": {
+                        "lat": 1.3190684,
+                        "lng": 103.7944943
+                    },
+                    "bounding_box": null,
+                    "name": "Astrid meadows",
+                    "name_suffix": "Singapore, Singapore",
+                    "url": "https://travel.sygic.com/go/poi:17033896",
+                    "marker": "sightseeing",
+                    "categories": [
+                        "sightseeing"
+                    ],
+                    "parent_ids": [
+                        "region:61342",
+                        "region:1976232",
+                        "country:84",
+                        "continent:4"
+                    ],
+                    "perex": null,
+                    "customer_rating": null,
+                    "star_rating": null,
+                    "star_rating_unofficial": null,
+                    "thumbnail_url": null,
+                    "$$hashKey": "object:33"
                 },
                 {
-                  "id": "poi:19297441",
-                  "level": "poi",
-                  "rating": 0.001,
-                  "quadkey": "132232231103001102",
-                  "location": {
-                    "lat": 1.3167893,
-                    "lng": 103.8158614
-                  },
-                  "bounding_box": null,
-                  "name": "Evolution Garden",
-                  "name_suffix": "Singapore, Singapore",
-                  "url": "https://travel.sygic.com/go/poi:19297441",
-                  "marker": "relaxing:park:garden",
-                  "categories": [
-                    "sightseeing",
-                    "relaxing"
-                  ],
-                  "parent_ids": [
-                    "city:3355",
-                    "region:61340",
-                    "region:1976232",
-                    "country:84",
-                    "continent:4"
-                  ],
-                  "perex": null,
-                  "customer_rating": null,
-                  "star_rating": null,
-                  "star_rating_unofficial": null,
-                  "thumbnail_url": null,
-                  "$$hashKey": "object:34"
+                    "id": "poi:19297441",
+                    "level": "poi",
+                    "rating": 0.001,
+                    "quadkey": "132232231103001102",
+                    "location": {
+                        "lat": 1.3167893,
+                        "lng": 103.8158614
+                    },
+                    "bounding_box": null,
+                    "name": "Evolution Garden",
+                    "name_suffix": "Singapore, Singapore",
+                    "url": "https://travel.sygic.com/go/poi:19297441",
+                    "marker": "relaxing:park:garden",
+                    "categories": [
+                        "sightseeing",
+                        "relaxing"
+                    ],
+                    "parent_ids": [
+                        "city:3355",
+                        "region:61340",
+                        "region:1976232",
+                        "country:84",
+                        "continent:4"
+                    ],
+                    "perex": null,
+                    "customer_rating": null,
+                    "star_rating": null,
+                    "star_rating_unofficial": null,
+                    "thumbnail_url": null,
+                    "$$hashKey": "object:34"
                 },
                 {
-                  "id": "poi:18753797",
-                  "level": "poi",
-                  "rating": 0.001,
-                  "quadkey": "132232231101203013",
-                  "location": {
-                    "lat": 1.3488032,
-                    "lng": 103.8150064
-                  },
-                  "bounding_box": null,
-                  "name": "Pumping House",
-                  "name_suffix": "Singapore, Singapore",
-                  "url": "https://travel.sygic.com/go/poi:18753797",
-                  "marker": "sightseeing",
-                  "categories": [
-                    "sightseeing"
-                  ],
-                  "parent_ids": [
-                    "region:61340",
-                    "region:1976232",
-                    "country:84",
-                    "continent:4"
-                  ],
-                  "perex": null,
-                  "customer_rating": null,
-                  "star_rating": null,
-                  "star_rating_unofficial": null,
-                  "thumbnail_url": null,
-                  "$$hashKey": "object:35"
+                    "id": "poi:18753797",
+                    "level": "poi",
+                    "rating": 0.001,
+                    "quadkey": "132232231101203013",
+                    "location": {
+                        "lat": 1.3488032,
+                        "lng": 103.8150064
+                    },
+                    "bounding_box": null,
+                    "name": "Pumping House",
+                    "name_suffix": "Singapore, Singapore",
+                    "url": "https://travel.sygic.com/go/poi:18753797",
+                    "marker": "sightseeing",
+                    "categories": [
+                        "sightseeing"
+                    ],
+                    "parent_ids": [
+                        "region:61340",
+                        "region:1976232",
+                        "country:84",
+                        "continent:4"
+                    ],
+                    "perex": null,
+                    "customer_rating": null,
+                    "star_rating": null,
+                    "star_rating_unofficial": null,
+                    "thumbnail_url": null,
+                    "$$hashKey": "object:35"
                 },
                 {
-                  "id": "poi:19812309",
-                  "level": "poi",
-                  "rating": 0.001,
-                  "quadkey": "132232231100303133",
-                  "location": {
-                    "lat": 1.3459379,
-                    "lng": 103.7766647
-                  },
-                  "bounding_box": null,
-                  "name": "Ruins",
-                  "name_suffix": "Singapore, Singapore",
-                  "url": "https://travel.sygic.com/go/poi:19812309",
-                  "marker": "sightseeing",
-                  "categories": [
-                    "sightseeing"
-                  ],
-                  "parent_ids": [
-                    "region:61342",
-                    "region:1976232",
-                    "country:84",
-                    "continent:4"
-                  ],
-                  "perex": null,
-                  "customer_rating": null,
-                  "star_rating": null,
-                  "star_rating_unofficial": null,
-                  "thumbnail_url": null,
-                  "$$hashKey": "object:36"
+                    "id": "poi:19812309",
+                    "level": "poi",
+                    "rating": 0.001,
+                    "quadkey": "132232231100303133",
+                    "location": {
+                        "lat": 1.3459379,
+                        "lng": 103.7766647
+                    },
+                    "bounding_box": null,
+                    "name": "Ruins",
+                    "name_suffix": "Singapore, Singapore",
+                    "url": "https://travel.sygic.com/go/poi:19812309",
+                    "marker": "sightseeing",
+                    "categories": [
+                        "sightseeing"
+                    ],
+                    "parent_ids": [
+                        "region:61342",
+                        "region:1976232",
+                        "country:84",
+                        "continent:4"
+                    ],
+                    "perex": null,
+                    "customer_rating": null,
+                    "star_rating": null,
+                    "star_rating_unofficial": null,
+                    "thumbnail_url": null,
+                    "$$hashKey": "object:36"
                 },
                 {
-                  "id": "poi:19812438",
-                  "level": "poi",
-                  "rating": 0.001,
-                  "quadkey": "132232231100310321",
-                  "location": {
-                    "lat": 1.3528888,
-                    "lng": 103.7841164
-                  },
-                  "bounding_box": null,
-                  "name": "Pipes",
-                  "name_suffix": "Singapore, Singapore",
-                  "url": "https://travel.sygic.com/go/poi:19812438",
-                  "marker": "sightseeing",
-                  "categories": [
-                    "sightseeing"
-                  ],
-                  "parent_ids": [
-                    "region:61342",
-                    "region:1976232",
-                    "country:84",
-                    "continent:4"
-                  ],
-                  "perex": null,
-                  "customer_rating": null,
-                  "star_rating": null,
-                  "star_rating_unofficial": null,
-                  "thumbnail_url": null,
-                  "$$hashKey": "object:37"
+                    "id": "poi:19812438",
+                    "level": "poi",
+                    "rating": 0.001,
+                    "quadkey": "132232231100310321",
+                    "location": {
+                        "lat": 1.3528888,
+                        "lng": 103.7841164
+                    },
+                    "bounding_box": null,
+                    "name": "Pipes",
+                    "name_suffix": "Singapore, Singapore",
+                    "url": "https://travel.sygic.com/go/poi:19812438",
+                    "marker": "sightseeing",
+                    "categories": [
+                        "sightseeing"
+                    ],
+                    "parent_ids": [
+                        "region:61342",
+                        "region:1976232",
+                        "country:84",
+                        "continent:4"
+                    ],
+                    "perex": null,
+                    "customer_rating": null,
+                    "star_rating": null,
+                    "star_rating_unofficial": null,
+                    "thumbnail_url": null,
+                    "$$hashKey": "object:37"
                 },
                 {
-                  "id": "poi:19427905",
-                  "level": "poi",
-                  "rating": 0.001,
-                  "quadkey": "132232231101210003",
-                  "location": {
-                    "lat": 1.3603133,
-                    "lng": 103.8233783
-                  },
-                  "bounding_box": null,
-                  "name": "Ruins",
-                  "name_suffix": "Singapore, Singapore",
-                  "url": "https://travel.sygic.com/go/poi:19427905",
-                  "marker": "sightseeing",
-                  "categories": [
-                    "sightseeing"
-                  ],
-                  "parent_ids": [
-                    "region:61340",
-                    "region:1976232",
-                    "country:84",
-                    "continent:4"
-                  ],
-                  "perex": null,
-                  "customer_rating": null,
-                  "star_rating": null,
-                  "star_rating_unofficial": null,
-                  "thumbnail_url": null,
-                  "$$hashKey": "object:38"
-                }],
+                    "id": "poi:19427905",
+                    "level": "poi",
+                    "rating": 0.001,
+                    "quadkey": "132232231101210003",
+                    "location": {
+                        "lat": 1.3603133,
+                        "lng": 103.8233783
+                    },
+                    "bounding_box": null,
+                    "name": "Ruins",
+                    "name_suffix": "Singapore, Singapore",
+                    "url": "https://travel.sygic.com/go/poi:19427905",
+                    "marker": "sightseeing",
+                    "categories": [
+                        "sightseeing"
+                    ],
+                    "parent_ids": [
+                        "region:61340",
+                        "region:1976232",
+                        "country:84",
+                        "continent:4"
+                    ],
+                    "perex": null,
+                    "customer_rating": null,
+                    "star_rating": null,
+                    "star_rating_unofficial": null,
+                    "thumbnail_url": null,
+                    "$$hashKey": "object:38"
+                }
+            ],
             whichArray: "upcoming",
         },
         {
@@ -1176,620 +1219,620 @@ Final_Controllers.service('upcomingTripService', function() {
             whichArray: "upcoming",
             days: [],
             checkList: [],
-            attractions: [
-                {
-                  "id": "poi:19451",
-                  "level": "poi",
-                  "rating": 0.65645312098639,
-                  "quadkey": "030223131222110002",
-                  "location": {
-                    "lat": 43.6425896,
-                    "lng": -79.3870873
-                  },
-                  "bounding_box": null,
-                  "name": "CN Tower",
-                  "name_suffix": "Toronto, Canada",
-                  "url": "https://travel.sygic.com/go/poi:19451",
-                  "marker": "sightseeing:tower:lookout:observation",
-                  "categories": [
-                    "sightseeing"
-                  ],
-                  "parent_ids": [
-                    "city:308",
-                    "region:71",
-                    "continent:6",
-                    "country:49"
-                  ],
-                  "perex": "With its 553 meters, it was once the highest building in the world and is one of the modern Seven Wonders of the World now.",
-                  "customer_rating": null,
-                  "star_rating": null,
-                  "star_rating_unofficial": null,
-                  "thumbnail_url": "https://media-cdn.sygictraveldata.com/media/poi:19451",
-                  "$$hashKey": "object:352"
+            attractions: [{
+                    "id": "poi:19451",
+                    "level": "poi",
+                    "rating": 0.65645312098639,
+                    "quadkey": "030223131222110002",
+                    "location": {
+                        "lat": 43.6425896,
+                        "lng": -79.3870873
+                    },
+                    "bounding_box": null,
+                    "name": "CN Tower",
+                    "name_suffix": "Toronto, Canada",
+                    "url": "https://travel.sygic.com/go/poi:19451",
+                    "marker": "sightseeing:tower:lookout:observation",
+                    "categories": [
+                        "sightseeing"
+                    ],
+                    "parent_ids": [
+                        "city:308",
+                        "region:71",
+                        "continent:6",
+                        "country:49"
+                    ],
+                    "perex": "With its 553 meters, it was once the highest building in the world and is one of the modern Seven Wonders of the World now.",
+                    "customer_rating": null,
+                    "star_rating": null,
+                    "star_rating_unofficial": null,
+                    "thumbnail_url": "https://media-cdn.sygictraveldata.com/media/poi:19451",
+                    "$$hashKey": "object:352"
                 },
                 {
-                  "id": "poi:27594",
-                  "level": "poi",
-                  "rating": 0.33231726907631,
-                  "quadkey": "030223131220320312",
-                  "location": {
-                    "lat": 43.6543165,
-                    "lng": -79.4006599
-                  },
-                  "bounding_box": null,
-                  "name": "Kensington Market",
-                  "name_suffix": "Toronto, Canada",
-                  "url": "https://travel.sygic.com/go/poi:27594",
-                  "marker": "eating:cafe",
-                  "categories": [
-                    "eating",
-                    "shopping",
-                    "sightseeing"
-                  ],
-                  "parent_ids": [
-                    "city:308",
-                    "region:71",
-                    "continent:6",
-                    "country:49"
-                  ],
-                  "perex": "Kensington Market is a distinctive multicultural neighbourhood in Downtown Toronto, Ontario, Canada.",
-                  "customer_rating": null,
-                  "star_rating": null,
-                  "star_rating_unofficial": null,
-                  "thumbnail_url": "https://media-cdn.sygictraveldata.com/media/poi:27594",
-                  "$$hashKey": "object:353"
+                    "id": "poi:27594",
+                    "level": "poi",
+                    "rating": 0.33231726907631,
+                    "quadkey": "030223131220320312",
+                    "location": {
+                        "lat": 43.6543165,
+                        "lng": -79.4006599
+                    },
+                    "bounding_box": null,
+                    "name": "Kensington Market",
+                    "name_suffix": "Toronto, Canada",
+                    "url": "https://travel.sygic.com/go/poi:27594",
+                    "marker": "eating:cafe",
+                    "categories": [
+                        "eating",
+                        "shopping",
+                        "sightseeing"
+                    ],
+                    "parent_ids": [
+                        "city:308",
+                        "region:71",
+                        "continent:6",
+                        "country:49"
+                    ],
+                    "perex": "Kensington Market is a distinctive multicultural neighbourhood in Downtown Toronto, Ontario, Canada.",
+                    "customer_rating": null,
+                    "star_rating": null,
+                    "star_rating_unofficial": null,
+                    "thumbnail_url": "https://media-cdn.sygictraveldata.com/media/poi:27594",
+                    "$$hashKey": "object:353"
                 },
                 {
-                  "id": "poi:19446",
-                  "level": "poi",
-                  "rating": 0.31467051973628,
-                  "quadkey": "030223131220033313",
-                  "location": {
-                    "lat": 43.6780934,
-                    "lng": -79.4093974
-                  },
-                  "bounding_box": null,
-                  "name": "Casa Loma",
-                  "name_suffix": "Toronto, Canada",
-                  "url": "https://travel.sygic.com/go/poi:19446",
-                  "marker": "discovering:museum",
-                  "categories": [
-                    "discovering",
-                    "sightseeing"
-                  ],
-                  "parent_ids": [
-                    "city:308",
-                    "region:71",
-                    "continent:6",
-                    "country:49"
-                  ],
-                  "perex": "Casa Loma is a Gothic Revival style house and gardens in midtown Toronto, Ontario, Canada, that is now a museum and landmark.",
-                  "customer_rating": null,
-                  "star_rating": null,
-                  "star_rating_unofficial": null,
-                  "thumbnail_url": "https://media-cdn.sygictraveldata.com/media/poi:19446",
-                  "$$hashKey": "object:354"
+                    "id": "poi:19446",
+                    "level": "poi",
+                    "rating": 0.31467051973628,
+                    "quadkey": "030223131220033313",
+                    "location": {
+                        "lat": 43.6780934,
+                        "lng": -79.4093974
+                    },
+                    "bounding_box": null,
+                    "name": "Casa Loma",
+                    "name_suffix": "Toronto, Canada",
+                    "url": "https://travel.sygic.com/go/poi:19446",
+                    "marker": "discovering:museum",
+                    "categories": [
+                        "discovering",
+                        "sightseeing"
+                    ],
+                    "parent_ids": [
+                        "city:308",
+                        "region:71",
+                        "continent:6",
+                        "country:49"
+                    ],
+                    "perex": "Casa Loma is a Gothic Revival style house and gardens in midtown Toronto, Ontario, Canada, that is now a museum and landmark.",
+                    "customer_rating": null,
+                    "star_rating": null,
+                    "star_rating_unofficial": null,
+                    "thumbnail_url": "https://media-cdn.sygictraveldata.com/media/poi:19446",
+                    "$$hashKey": "object:354"
                 },
                 {
-                  "id": "poi:19508",
-                  "level": "poi",
-                  "rating": 0.27060173479745,
-                  "quadkey": "030223131220303010",
-                  "location": {
-                    "lat": 43.6676981,
-                    "lng": -79.3947038
-                  },
-                  "bounding_box": null,
-                  "name": "Royal Ontario Museum",
-                  "name_suffix": "Toronto, Canada",
-                  "url": "https://travel.sygic.com/go/poi:19508",
-                  "marker": "sightseeing:architecture:modern",
-                  "categories": [
-                    "sightseeing",
-                    "discovering"
-                  ],
-                  "parent_ids": [
-                    "city:308",
-                    "region:71",
-                    "continent:6",
-                    "country:49"
-                  ],
-                  "perex": "The Royal Ontario Museum is a museum of art, world culture and natural history in Toronto, Ontario, Canada.",
-                  "customer_rating": null,
-                  "star_rating": null,
-                  "star_rating_unofficial": null,
-                  "thumbnail_url": "https://media-cdn.sygictraveldata.com/media/poi:19508",
-                  "$$hashKey": "object:355"
+                    "id": "poi:19508",
+                    "level": "poi",
+                    "rating": 0.27060173479745,
+                    "quadkey": "030223131220303010",
+                    "location": {
+                        "lat": 43.6676981,
+                        "lng": -79.3947038
+                    },
+                    "bounding_box": null,
+                    "name": "Royal Ontario Museum",
+                    "name_suffix": "Toronto, Canada",
+                    "url": "https://travel.sygic.com/go/poi:19508",
+                    "marker": "sightseeing:architecture:modern",
+                    "categories": [
+                        "sightseeing",
+                        "discovering"
+                    ],
+                    "parent_ids": [
+                        "city:308",
+                        "region:71",
+                        "continent:6",
+                        "country:49"
+                    ],
+                    "perex": "The Royal Ontario Museum is a museum of art, world culture and natural history in Toronto, Ontario, Canada.",
+                    "customer_rating": null,
+                    "star_rating": null,
+                    "star_rating_unofficial": null,
+                    "thumbnail_url": "https://media-cdn.sygictraveldata.com/media/poi:19508",
+                    "$$hashKey": "object:355"
                 },
                 {
-                  "id": "poi:19518",
-                  "level": "poi",
-                  "rating": 0.27014615977395,
-                  "quadkey": "030223131220333033",
-                  "location": {
-                    "lat": 43.6486907,
-                    "lng": -79.3715544
-                  },
-                  "bounding_box": null,
-                  "name": "St. Lawrence Market South",
-                  "name_suffix": "Toronto, Canada",
-                  "url": "https://travel.sygic.com/go/poi:19518",
-                  "marker": "shopping:market",
-                  "categories": [
-                    "eating",
-                    "shopping",
-                    "sightseeing"
-                  ],
-                  "parent_ids": [
-                    "city:308",
-                    "region:71",
-                    "continent:6",
-                    "country:49"
-                  ],
-                  "perex": "St. Lawrence Market is a major public market in Toronto, Ontario, Canada. It is located at Front St.",
-                  "customer_rating": null,
-                  "star_rating": null,
-                  "star_rating_unofficial": null,
-                  "thumbnail_url": "https://media-cdn.sygictraveldata.com/media/poi:19518",
-                  "$$hashKey": "object:356"
+                    "id": "poi:19518",
+                    "level": "poi",
+                    "rating": 0.27014615977395,
+                    "quadkey": "030223131220333033",
+                    "location": {
+                        "lat": 43.6486907,
+                        "lng": -79.3715544
+                    },
+                    "bounding_box": null,
+                    "name": "St. Lawrence Market South",
+                    "name_suffix": "Toronto, Canada",
+                    "url": "https://travel.sygic.com/go/poi:19518",
+                    "marker": "shopping:market",
+                    "categories": [
+                        "eating",
+                        "shopping",
+                        "sightseeing"
+                    ],
+                    "parent_ids": [
+                        "city:308",
+                        "region:71",
+                        "continent:6",
+                        "country:49"
+                    ],
+                    "perex": "St. Lawrence Market is a major public market in Toronto, Ontario, Canada. It is located at Front St.",
+                    "customer_rating": null,
+                    "star_rating": null,
+                    "star_rating_unofficial": null,
+                    "thumbnail_url": "https://media-cdn.sygictraveldata.com/media/poi:19518",
+                    "$$hashKey": "object:356"
                 },
                 {
-                  "id": "poi:60865",
-                  "level": "poi",
-                  "rating": 0.20764080828838,
-                  "quadkey": "030223131222110002",
-                  "location": {
-                    "lat": 43.6424618,
-                    "lng": -79.3861548
-                  },
-                  "bounding_box": null,
-                  "name": "Ripley's Aquarium of Canada",
-                  "name_suffix": "Toronto, Canada",
-                  "url": "https://travel.sygic.com/go/poi:60865",
-                  "marker": "discovering:museum",
-                  "categories": [
-                    "discovering",
-                    "sightseeing"
-                  ],
-                  "parent_ids": [
-                    "city:308",
-                    "region:71",
-                    "continent:6",
-                    "country:49"
-                  ],
-                  "perex": "Ripley's Aquarium of Canada is a public aquarium in Toronto, Ontario, Canada.",
-                  "customer_rating": null,
-                  "star_rating": null,
-                  "star_rating_unofficial": null,
-                  "thumbnail_url": "https://media-cdn.sygictraveldata.com/media/poi:60865",
-                  "$$hashKey": "object:357"
+                    "id": "poi:60865",
+                    "level": "poi",
+                    "rating": 0.20764080828838,
+                    "quadkey": "030223131222110002",
+                    "location": {
+                        "lat": 43.6424618,
+                        "lng": -79.3861548
+                    },
+                    "bounding_box": null,
+                    "name": "Ripley's Aquarium of Canada",
+                    "name_suffix": "Toronto, Canada",
+                    "url": "https://travel.sygic.com/go/poi:60865",
+                    "marker": "discovering:museum",
+                    "categories": [
+                        "discovering",
+                        "sightseeing"
+                    ],
+                    "parent_ids": [
+                        "city:308",
+                        "region:71",
+                        "continent:6",
+                        "country:49"
+                    ],
+                    "perex": "Ripley's Aquarium of Canada is a public aquarium in Toronto, Ontario, Canada.",
+                    "customer_rating": null,
+                    "star_rating": null,
+                    "star_rating_unofficial": null,
+                    "thumbnail_url": "https://media-cdn.sygictraveldata.com/media/poi:60865",
+                    "$$hashKey": "object:357"
                 },
                 {
-                  "id": "poi:60935",
-                  "level": "poi",
-                  "rating": 0.203,
-                  "quadkey": "030223131221222102",
-                  "location": {
-                    "lat": 43.6502803,
-                    "lng": -79.3595767
-                  },
-                  "bounding_box": null,
-                  "name": "Distillery District",
-                  "name_suffix": "Toronto, Canada",
-                  "url": "https://travel.sygic.com/go/poi:60935",
-                  "marker": "discovering",
-                  "categories": [
-                    "discovering",
-                    "sightseeing"
-                  ],
-                  "parent_ids": [
-                    "city:308",
-                    "region:71",
-                    "continent:6",
-                    "country:49"
-                  ],
-                  "perex": "The Distillery District is a commercial and residential district in Toronto, Ontario, Canada.",
-                  "customer_rating": null,
-                  "star_rating": null,
-                  "star_rating_unofficial": null,
-                  "thumbnail_url": "https://media-cdn.sygictraveldata.com/media/poi:60935",
-                  "$$hashKey": "object:358"
+                    "id": "poi:60935",
+                    "level": "poi",
+                    "rating": 0.203,
+                    "quadkey": "030223131221222102",
+                    "location": {
+                        "lat": 43.6502803,
+                        "lng": -79.3595767
+                    },
+                    "bounding_box": null,
+                    "name": "Distillery District",
+                    "name_suffix": "Toronto, Canada",
+                    "url": "https://travel.sygic.com/go/poi:60935",
+                    "marker": "discovering",
+                    "categories": [
+                        "discovering",
+                        "sightseeing"
+                    ],
+                    "parent_ids": [
+                        "city:308",
+                        "region:71",
+                        "continent:6",
+                        "country:49"
+                    ],
+                    "perex": "The Distillery District is a commercial and residential district in Toronto, Ontario, Canada.",
+                    "customer_rating": null,
+                    "star_rating": null,
+                    "star_rating_unofficial": null,
+                    "thumbnail_url": "https://media-cdn.sygictraveldata.com/media/poi:60935",
+                    "$$hashKey": "object:358"
                 },
                 {
-                  "id": "poi:19474",
-                  "level": "poi",
-                  "rating": 0.19678056657747,
-                  "quadkey": "030223131222110213",
-                  "location": {
-                    "lat": 43.6385065,
-                    "lng": -79.3830779
-                  },
-                  "bounding_box": null,
-                  "name": "Harbourfront Centre",
-                  "name_suffix": "Toronto, Canada",
-                  "url": "https://travel.sygic.com/go/poi:19474",
-                  "marker": "going_out",
-                  "categories": [
-                    "sightseeing",
-                    "doing_sports"
-                  ],
-                  "parent_ids": [
-                    "city:308",
-                    "region:71",
-                    "continent:6",
-                    "country:49"
-                  ],
-                  "perex": "Harbourfront Centre is a key cultural organization on the waterfront of Toronto, Ontario, Canada, situated at 235 Queens Quay West.",
-                  "customer_rating": null,
-                  "star_rating": null,
-                  "star_rating_unofficial": null,
-                  "thumbnail_url": "https://media-cdn.sygictraveldata.com/media/poi:19474",
-                  "$$hashKey": "object:359"
+                    "id": "poi:19474",
+                    "level": "poi",
+                    "rating": 0.19678056657747,
+                    "quadkey": "030223131222110213",
+                    "location": {
+                        "lat": 43.6385065,
+                        "lng": -79.3830779
+                    },
+                    "bounding_box": null,
+                    "name": "Harbourfront Centre",
+                    "name_suffix": "Toronto, Canada",
+                    "url": "https://travel.sygic.com/go/poi:19474",
+                    "marker": "going_out",
+                    "categories": [
+                        "sightseeing",
+                        "doing_sports"
+                    ],
+                    "parent_ids": [
+                        "city:308",
+                        "region:71",
+                        "continent:6",
+                        "country:49"
+                    ],
+                    "perex": "Harbourfront Centre is a key cultural organization on the waterfront of Toronto, Ontario, Canada, situated at 235 Queens Quay West.",
+                    "customer_rating": null,
+                    "star_rating": null,
+                    "star_rating_unofficial": null,
+                    "thumbnail_url": "https://media-cdn.sygictraveldata.com/media/poi:19474",
+                    "$$hashKey": "object:359"
                 },
                 {
-                  "id": "poi:60889",
-                  "level": "poi",
-                  "rating": 0.17510377600822,
-                  "quadkey": "030223131220330232",
-                  "location": {
-                    "lat": 43.65222,
-                    "lng": -79.3837416
-                  },
-                  "bounding_box": null,
-                  "name": "Nathan Phillips Square",
-                  "name_suffix": "Toronto, Canada",
-                  "url": "https://travel.sygic.com/go/poi:60889",
-                  "marker": "sightseeing",
-                  "categories": [
-                    "sightseeing"
-                  ],
-                  "parent_ids": [
-                    "city:308",
-                    "region:71",
-                    "continent:6",
-                    "country:49"
-                  ],
-                  "perex": "Nathan Phillips Square is an urban plaza in Toronto, Ontario, Canada. It forms the forecourt to Toronto City Hall, or New City Hall, at the…",
-                  "customer_rating": null,
-                  "star_rating": null,
-                  "star_rating_unofficial": null,
-                  "thumbnail_url": "https://media-cdn.sygictraveldata.com/media/poi:60889",
-                  "$$hashKey": "object:360"
+                    "id": "poi:60889",
+                    "level": "poi",
+                    "rating": 0.17510377600822,
+                    "quadkey": "030223131220330232",
+                    "location": {
+                        "lat": 43.65222,
+                        "lng": -79.3837416
+                    },
+                    "bounding_box": null,
+                    "name": "Nathan Phillips Square",
+                    "name_suffix": "Toronto, Canada",
+                    "url": "https://travel.sygic.com/go/poi:60889",
+                    "marker": "sightseeing",
+                    "categories": [
+                        "sightseeing"
+                    ],
+                    "parent_ids": [
+                        "city:308",
+                        "region:71",
+                        "continent:6",
+                        "country:49"
+                    ],
+                    "perex": "Nathan Phillips Square is an urban plaza in Toronto, Ontario, Canada. It forms the forecourt to Toronto City Hall, or New City Hall, at the…",
+                    "customer_rating": null,
+                    "star_rating": null,
+                    "star_rating_unofficial": null,
+                    "thumbnail_url": "https://media-cdn.sygictraveldata.com/media/poi:60889",
+                    "$$hashKey": "object:360"
                 },
                 {
-                  "id": "poi:19445",
-                  "level": "poi",
-                  "rating": 0.13956916120698,
-                  "quadkey": "030223131220332200",
-                  "location": {
-                    "lat": 43.647325,
-                    "lng": -79.386081
-                  },
-                  "bounding_box": null,
-                  "name": "Canada's Walk of Fame",
-                  "name_suffix": "Toronto, Canada",
-                  "url": "https://travel.sygic.com/go/poi:19445",
-                  "marker": "sightseeing:memorial",
-                  "categories": [
-                    "sightseeing"
-                  ],
-                  "parent_ids": [
-                    "city:308",
-                    "region:71",
-                    "continent:6",
-                    "country:49"
-                  ],
-                  "perex": "Canada's Walk of Fame in Toronto, Ontario, Canada, is a walk of fame that acknowledges the achievements and accomplishments of Canadians.",
-                  "customer_rating": null,
-                  "star_rating": null,
-                  "star_rating_unofficial": null,
-                  "thumbnail_url": "https://media-cdn.sygictraveldata.com/media/poi:19445",
-                  "$$hashKey": "object:361"
+                    "id": "poi:19445",
+                    "level": "poi",
+                    "rating": 0.13956916120698,
+                    "quadkey": "030223131220332200",
+                    "location": {
+                        "lat": 43.647325,
+                        "lng": -79.386081
+                    },
+                    "bounding_box": null,
+                    "name": "Canada's Walk of Fame",
+                    "name_suffix": "Toronto, Canada",
+                    "url": "https://travel.sygic.com/go/poi:19445",
+                    "marker": "sightseeing:memorial",
+                    "categories": [
+                        "sightseeing"
+                    ],
+                    "parent_ids": [
+                        "city:308",
+                        "region:71",
+                        "continent:6",
+                        "country:49"
+                    ],
+                    "perex": "Canada's Walk of Fame in Toronto, Ontario, Canada, is a walk of fame that acknowledges the achievements and accomplishments of Canadians.",
+                    "customer_rating": null,
+                    "star_rating": null,
+                    "star_rating_unofficial": null,
+                    "thumbnail_url": "https://media-cdn.sygictraveldata.com/media/poi:19445",
+                    "$$hashKey": "object:361"
                 },
                 {
-                  "id": "poi:19497",
-                  "level": "poi",
-                  "rating": 0.12711742846525,
-                  "quadkey": "030223131220330233",
-                  "location": {
-                    "lat": 43.6526458,
-                    "lng": -79.3817617
-                  },
-                  "bounding_box": null,
-                  "name": "Old City Hall",
-                  "name_suffix": "Toronto, Canada",
-                  "url": "https://travel.sygic.com/go/poi:19497",
-                  "marker": "sightseeing:building:court",
-                  "categories": [
-                    "sightseeing"
-                  ],
-                  "parent_ids": [
-                    "city:308",
-                    "region:71",
-                    "continent:6",
-                    "country:49"
-                  ],
-                  "perex": "The Old City Hall is a Romanesque civic building and court house in Toronto, Ontario, Canada.",
-                  "customer_rating": null,
-                  "star_rating": null,
-                  "star_rating_unofficial": null,
-                  "thumbnail_url": "https://media-cdn.sygictraveldata.com/media/poi:19497",
-                  "$$hashKey": "object:362"
+                    "id": "poi:19497",
+                    "level": "poi",
+                    "rating": 0.12711742846525,
+                    "quadkey": "030223131220330233",
+                    "location": {
+                        "lat": 43.6526458,
+                        "lng": -79.3817617
+                    },
+                    "bounding_box": null,
+                    "name": "Old City Hall",
+                    "name_suffix": "Toronto, Canada",
+                    "url": "https://travel.sygic.com/go/poi:19497",
+                    "marker": "sightseeing:building:court",
+                    "categories": [
+                        "sightseeing"
+                    ],
+                    "parent_ids": [
+                        "city:308",
+                        "region:71",
+                        "continent:6",
+                        "country:49"
+                    ],
+                    "perex": "The Old City Hall is a Romanesque civic building and court house in Toronto, Ontario, Canada.",
+                    "customer_rating": null,
+                    "star_rating": null,
+                    "star_rating_unofficial": null,
+                    "thumbnail_url": "https://media-cdn.sygictraveldata.com/media/poi:19497",
+                    "$$hashKey": "object:362"
                 },
                 {
-                  "id": "poi:60876",
-                  "level": "poi",
-                  "rating": 0.12287327682165,
-                  "quadkey": "030223131220303022",
-                  "location": {
-                    "lat": 43.6640219,
-                    "lng": -79.3981917
-                  },
-                  "bounding_box": null,
-                  "name": "University of Toronto",
-                  "name_suffix": "Toronto, Canada",
-                  "url": "https://travel.sygic.com/go/poi:60876",
-                  "marker": "other:information:board:map",
-                  "categories": [
-                    "sightseeing",
-                    "traveling"
-                  ],
-                  "parent_ids": [
-                    "city:308",
-                    "region:71",
-                    "continent:6",
-                    "country:49"
-                  ],
-                  "perex": "The University of Toronto is a public research university in Toronto, Ontario, Canada on the grounds that surround Queen's Park.",
-                  "customer_rating": null,
-                  "star_rating": null,
-                  "star_rating_unofficial": null,
-                  "thumbnail_url": "https://media-cdn.sygictraveldata.com/media/poi:60876",
-                  "$$hashKey": "object:363"
+                    "id": "poi:60876",
+                    "level": "poi",
+                    "rating": 0.12287327682165,
+                    "quadkey": "030223131220303022",
+                    "location": {
+                        "lat": 43.6640219,
+                        "lng": -79.3981917
+                    },
+                    "bounding_box": null,
+                    "name": "University of Toronto",
+                    "name_suffix": "Toronto, Canada",
+                    "url": "https://travel.sygic.com/go/poi:60876",
+                    "marker": "other:information:board:map",
+                    "categories": [
+                        "sightseeing",
+                        "traveling"
+                    ],
+                    "parent_ids": [
+                        "city:308",
+                        "region:71",
+                        "continent:6",
+                        "country:49"
+                    ],
+                    "perex": "The University of Toronto is a public research university in Toronto, Ontario, Canada on the grounds that surround Queen's Park.",
+                    "customer_rating": null,
+                    "star_rating": null,
+                    "star_rating_unofficial": null,
+                    "thumbnail_url": "https://media-cdn.sygictraveldata.com/media/poi:60876",
+                    "$$hashKey": "object:363"
                 },
                 {
-                  "id": "poi:60890",
-                  "level": "poi",
-                  "rating": 0.12201703913006,
-                  "quadkey": "030223131220330320",
-                  "location": {
-                    "lat": 43.653239,
-                    "lng": -79.381334
-                  },
-                  "bounding_box": null,
-                  "name": "The PATH",
-                  "name_suffix": "Toronto, Canada",
-                  "url": "https://travel.sygic.com/go/poi:60890",
-                  "marker": "shopping",
-                  "categories": [
-                    "shopping",
-                    "sightseeing"
-                  ],
-                  "parent_ids": [
-                    "city:308",
-                    "region:71",
-                    "continent:6",
-                    "country:49"
-                  ],
-                  "perex": "A 29 km of underground pathways full of shops. The world's biggest underground shopping complex.",
-                  "customer_rating": null,
-                  "star_rating": null,
-                  "star_rating_unofficial": null,
-                  "thumbnail_url": "https://media-cdn.sygictraveldata.com/media/poi:60890",
-                  "$$hashKey": "object:364"
+                    "id": "poi:60890",
+                    "level": "poi",
+                    "rating": 0.12201703913006,
+                    "quadkey": "030223131220330320",
+                    "location": {
+                        "lat": 43.653239,
+                        "lng": -79.381334
+                    },
+                    "bounding_box": null,
+                    "name": "The PATH",
+                    "name_suffix": "Toronto, Canada",
+                    "url": "https://travel.sygic.com/go/poi:60890",
+                    "marker": "shopping",
+                    "categories": [
+                        "shopping",
+                        "sightseeing"
+                    ],
+                    "parent_ids": [
+                        "city:308",
+                        "region:71",
+                        "continent:6",
+                        "country:49"
+                    ],
+                    "perex": "A 29 km of underground pathways full of shops. The world's biggest underground shopping complex.",
+                    "customer_rating": null,
+                    "star_rating": null,
+                    "star_rating_unofficial": null,
+                    "thumbnail_url": "https://media-cdn.sygictraveldata.com/media/poi:60890",
+                    "$$hashKey": "object:364"
                 },
                 {
-                  "id": "poi:19431",
-                  "level": "poi",
-                  "rating": 0.11431089990581,
-                  "quadkey": "030223131220321320",
-                  "location": {
-                    "lat": 43.6535571,
-                    "lng": -79.3926255
-                  },
-                  "bounding_box": null,
-                  "name": "Art Gallery of Ontario",
-                  "name_suffix": "Toronto, Canada",
-                  "url": "https://travel.sygic.com/go/poi:19431",
-                  "marker": "discovering:gallery:art",
-                  "categories": [
-                    "discovering",
-                    "sightseeing"
-                  ],
-                  "parent_ids": [
-                    "city:308",
-                    "region:71",
-                    "continent:6",
-                    "country:49"
-                  ],
-                  "perex": "The Art Gallery of Ontario is an art museum in Toronto, Ontario, Canada.",
-                  "customer_rating": null,
-                  "star_rating": null,
-                  "star_rating_unofficial": null,
-                  "thumbnail_url": "https://media-cdn.sygictraveldata.com/media/poi:19431",
-                  "$$hashKey": "object:365"
+                    "id": "poi:19431",
+                    "level": "poi",
+                    "rating": 0.11431089990581,
+                    "quadkey": "030223131220321320",
+                    "location": {
+                        "lat": 43.6535571,
+                        "lng": -79.3926255
+                    },
+                    "bounding_box": null,
+                    "name": "Art Gallery of Ontario",
+                    "name_suffix": "Toronto, Canada",
+                    "url": "https://travel.sygic.com/go/poi:19431",
+                    "marker": "discovering:gallery:art",
+                    "categories": [
+                        "discovering",
+                        "sightseeing"
+                    ],
+                    "parent_ids": [
+                        "city:308",
+                        "region:71",
+                        "continent:6",
+                        "country:49"
+                    ],
+                    "perex": "The Art Gallery of Ontario is an art museum in Toronto, Ontario, Canada.",
+                    "customer_rating": null,
+                    "star_rating": null,
+                    "star_rating_unofficial": null,
+                    "thumbnail_url": "https://media-cdn.sygictraveldata.com/media/poi:19431",
+                    "$$hashKey": "object:365"
                 },
                 {
-                  "id": "poi:60924",
-                  "level": "poi",
-                  "rating": 0.0997548591489,
-                  "quadkey": "030223131220333023",
-                  "location": {
-                    "lat": 43.6483804,
-                    "lng": -79.3743252
-                  },
-                  "bounding_box": null,
-                  "name": "Gooderham Building",
-                  "name_suffix": "Toronto, Canada",
-                  "url": "https://travel.sygic.com/go/poi:60924",
-                  "marker": "sightseeing:architecture:modern",
-                  "categories": [
-                    "sightseeing"
-                  ],
-                  "parent_ids": [
-                    "city:308",
-                    "region:71",
-                    "continent:6",
-                    "country:49"
-                  ],
-                  "perex": "The Gooderham Building, also known as the Flatiron Building, is a historic office building at 49 Wellington Street East in Toronto, Ontario…",
-                  "customer_rating": null,
-                  "star_rating": null,
-                  "star_rating_unofficial": null,
-                  "thumbnail_url": "https://media-cdn.sygictraveldata.com/media/poi:60924",
-                  "$$hashKey": "object:366"
+                    "id": "poi:60924",
+                    "level": "poi",
+                    "rating": 0.0997548591489,
+                    "quadkey": "030223131220333023",
+                    "location": {
+                        "lat": 43.6483804,
+                        "lng": -79.3743252
+                    },
+                    "bounding_box": null,
+                    "name": "Gooderham Building",
+                    "name_suffix": "Toronto, Canada",
+                    "url": "https://travel.sygic.com/go/poi:60924",
+                    "marker": "sightseeing:architecture:modern",
+                    "categories": [
+                        "sightseeing"
+                    ],
+                    "parent_ids": [
+                        "city:308",
+                        "region:71",
+                        "continent:6",
+                        "country:49"
+                    ],
+                    "perex": "The Gooderham Building, also known as the Flatiron Building, is a historic office building at 49 Wellington Street East in Toronto, Ontario…",
+                    "customer_rating": null,
+                    "star_rating": null,
+                    "star_rating_unofficial": null,
+                    "thumbnail_url": "https://media-cdn.sygictraveldata.com/media/poi:60924",
+                    "$$hashKey": "object:366"
                 },
                 {
-                  "id": "poi:19516",
-                  "level": "poi",
-                  "rating": 0.08091762993407,
-                  "quadkey": "030223131220333003",
-                  "location": {
-                    "lat": 43.6505065,
-                    "lng": -79.3739881
-                  },
-                  "bounding_box": null,
-                  "name": "Cathedral Church of St. James",
-                  "name_suffix": "Toronto, Canada",
-                  "url": "https://travel.sygic.com/go/poi:19516",
-                  "marker": "other:place_of_worship:church:cathedral",
-                  "categories": [
-                    "sightseeing"
-                  ],
-                  "parent_ids": [
-                    "city:308",
-                    "region:71",
-                    "continent:6",
-                    "country:49"
-                  ],
-                  "perex": "Cathedral Church of St. James in Downtown Toronto, Ontario, Canada is the home of the oldest congregation in the city.",
-                  "customer_rating": null,
-                  "star_rating": null,
-                  "star_rating_unofficial": null,
-                  "thumbnail_url": "https://media-cdn.sygictraveldata.com/media/poi:19516",
-                  "$$hashKey": "object:367"
+                    "id": "poi:19516",
+                    "level": "poi",
+                    "rating": 0.08091762993407,
+                    "quadkey": "030223131220333003",
+                    "location": {
+                        "lat": 43.6505065,
+                        "lng": -79.3739881
+                    },
+                    "bounding_box": null,
+                    "name": "Cathedral Church of St. James",
+                    "name_suffix": "Toronto, Canada",
+                    "url": "https://travel.sygic.com/go/poi:19516",
+                    "marker": "other:place_of_worship:church:cathedral",
+                    "categories": [
+                        "sightseeing"
+                    ],
+                    "parent_ids": [
+                        "city:308",
+                        "region:71",
+                        "continent:6",
+                        "country:49"
+                    ],
+                    "perex": "Cathedral Church of St. James in Downtown Toronto, Ontario, Canada is the home of the oldest congregation in the city.",
+                    "customer_rating": null,
+                    "star_rating": null,
+                    "star_rating_unofficial": null,
+                    "thumbnail_url": "https://media-cdn.sygictraveldata.com/media/poi:19516",
+                    "$$hashKey": "object:367"
                 },
                 {
-                  "id": "poi:19463",
-                  "level": "poi",
-                  "rating": 0.061224163027656,
-                  "quadkey": "030223131222100302",
-                  "location": {
-                    "lat": 43.6389226,
-                    "lng": -79.403319
-                  },
-                  "bounding_box": null,
-                  "name": "Fort York",
-                  "name_suffix": "Toronto, Canada",
-                  "url": "https://travel.sygic.com/go/poi:19463",
-                  "marker": "discovering:museum",
-                  "categories": [
-                    "discovering",
-                    "sightseeing"
-                  ],
-                  "parent_ids": [
-                    "city:308",
-                    "region:71",
-                    "continent:6",
-                    "country:49"
-                  ],
-                  "perex": "Fort York is a historic site of military fortifications and related buildings on the west side of downtown Toronto, Ontario, Canada.",
-                  "customer_rating": null,
-                  "star_rating": null,
-                  "star_rating_unofficial": null,
-                  "thumbnail_url": "https://media-cdn.sygictraveldata.com/media/poi:19463",
-                  "$$hashKey": "object:368"
+                    "id": "poi:19463",
+                    "level": "poi",
+                    "rating": 0.061224163027656,
+                    "quadkey": "030223131222100302",
+                    "location": {
+                        "lat": 43.6389226,
+                        "lng": -79.403319
+                    },
+                    "bounding_box": null,
+                    "name": "Fort York",
+                    "name_suffix": "Toronto, Canada",
+                    "url": "https://travel.sygic.com/go/poi:19463",
+                    "marker": "discovering:museum",
+                    "categories": [
+                        "discovering",
+                        "sightseeing"
+                    ],
+                    "parent_ids": [
+                        "city:308",
+                        "region:71",
+                        "continent:6",
+                        "country:49"
+                    ],
+                    "perex": "Fort York is a historic site of military fortifications and related buildings on the west side of downtown Toronto, Ontario, Canada.",
+                    "customer_rating": null,
+                    "star_rating": null,
+                    "star_rating_unofficial": null,
+                    "thumbnail_url": "https://media-cdn.sygictraveldata.com/media/poi:19463",
+                    "$$hashKey": "object:368"
                 },
                 {
-                  "id": "poi:63740",
-                  "level": "poi",
-                  "rating": 0.060367925336073,
-                  "quadkey": "030223131220303302",
-                  "location": {
-                    "lat": 43.662565,
-                    "lng": -79.3916659
-                  },
-                  "bounding_box": null,
-                  "name": "Ontario Legislative Building",
-                  "name_suffix": "Toronto, Canada",
-                  "url": "https://travel.sygic.com/go/poi:63740",
-                  "marker": "sightseeing",
-                  "categories": [
-                    "sightseeing"
-                  ],
-                  "parent_ids": [
-                    "city:308",
-                    "region:71",
-                    "continent:6",
-                    "country:49"
-                  ],
-                  "perex": "The Ontario Legislative Building is a structure in central Toronto, Ontario that houses the Legislative Assembly of Ontario, as well as the…",
-                  "customer_rating": null,
-                  "star_rating": null,
-                  "star_rating_unofficial": null,
-                  "thumbnail_url": "https://media-cdn.sygictraveldata.com/media/poi:63740",
-                  "$$hashKey": "object:369"
+                    "id": "poi:63740",
+                    "level": "poi",
+                    "rating": 0.060367925336073,
+                    "quadkey": "030223131220303302",
+                    "location": {
+                        "lat": 43.662565,
+                        "lng": -79.3916659
+                    },
+                    "bounding_box": null,
+                    "name": "Ontario Legislative Building",
+                    "name_suffix": "Toronto, Canada",
+                    "url": "https://travel.sygic.com/go/poi:63740",
+                    "marker": "sightseeing",
+                    "categories": [
+                        "sightseeing"
+                    ],
+                    "parent_ids": [
+                        "city:308",
+                        "region:71",
+                        "continent:6",
+                        "country:49"
+                    ],
+                    "perex": "The Ontario Legislative Building is a structure in central Toronto, Ontario that houses the Legislative Assembly of Ontario, as well as the…",
+                    "customer_rating": null,
+                    "star_rating": null,
+                    "star_rating_unofficial": null,
+                    "thumbnail_url": "https://media-cdn.sygictraveldata.com/media/poi:63740",
+                    "$$hashKey": "object:369"
                 },
                 {
-                  "id": "poi:5051882",
-                  "level": "poi",
-                  "rating": 0.05750086293033,
-                  "quadkey": "030223131220330230",
-                  "location": {
-                    "lat": 43.6535254,
-                    "lng": -79.3839535
-                  },
-                  "bounding_box": null,
-                  "name": "Toronto City Hall",
-                  "name_suffix": "Toronto, Canada",
-                  "url": "https://travel.sygic.com/go/poi:5051882",
-                  "marker": "sightseeing:town_hall:city_hall",
-                  "categories": [
-                    "sightseeing"
-                  ],
-                  "parent_ids": [
-                    "city:308",
-                    "region:71",
-                    "continent:6",
-                    "country:49"
-                  ],
-                  "perex": "The Toronto City Hall, or New City Hall, is the seat of the municipal government of Toronto, Ontario, Canada, and one of the city's most…",
-                  "customer_rating": null,
-                  "star_rating": null,
-                  "star_rating_unofficial": null,
-                  "thumbnail_url": "https://media-cdn.sygictraveldata.com/media/poi:5051882",
-                  "$$hashKey": "object:370"
+                    "id": "poi:5051882",
+                    "level": "poi",
+                    "rating": 0.05750086293033,
+                    "quadkey": "030223131220330230",
+                    "location": {
+                        "lat": 43.6535254,
+                        "lng": -79.3839535
+                    },
+                    "bounding_box": null,
+                    "name": "Toronto City Hall",
+                    "name_suffix": "Toronto, Canada",
+                    "url": "https://travel.sygic.com/go/poi:5051882",
+                    "marker": "sightseeing:town_hall:city_hall",
+                    "categories": [
+                        "sightseeing"
+                    ],
+                    "parent_ids": [
+                        "city:308",
+                        "region:71",
+                        "continent:6",
+                        "country:49"
+                    ],
+                    "perex": "The Toronto City Hall, or New City Hall, is the seat of the municipal government of Toronto, Ontario, Canada, and one of the city's most…",
+                    "customer_rating": null,
+                    "star_rating": null,
+                    "star_rating_unofficial": null,
+                    "thumbnail_url": "https://media-cdn.sygictraveldata.com/media/poi:5051882",
+                    "$$hashKey": "object:370"
                 },
                 {
-                  "id": "poi:60877",
-                  "level": "poi",
-                  "rating": 0.039818220738077,
-                  "quadkey": "030223131220332310",
-                  "location": {
-                    "lat": 43.6470304,
-                    "lng": -79.3782645
-                  },
-                  "bounding_box": null,
-                  "name": "Brookfield Place",
-                  "name_suffix": "Toronto, Canada",
-                  "url": "https://travel.sygic.com/go/poi:60877",
-                  "marker": "sightseeing:architecture:modern",
-                  "categories": [
-                    "sightseeing"
-                  ],
-                  "parent_ids": [
-                    "city:308",
-                    "region:71",
-                    "continent:6",
-                    "country:49"
-                  ],
-                  "perex": "An office complex with interesting architecture, especially the Allen Lambert Galleria.",
-                  "customer_rating": null,
-                  "star_rating": null,
-                  "star_rating_unofficial": null,
-                  "thumbnail_url": "https://media-cdn.sygictraveldata.com/media/poi:60877",
-                  "$$hashKey": "object:371"
-                }],
+                    "id": "poi:60877",
+                    "level": "poi",
+                    "rating": 0.039818220738077,
+                    "quadkey": "030223131220332310",
+                    "location": {
+                        "lat": 43.6470304,
+                        "lng": -79.3782645
+                    },
+                    "bounding_box": null,
+                    "name": "Brookfield Place",
+                    "name_suffix": "Toronto, Canada",
+                    "url": "https://travel.sygic.com/go/poi:60877",
+                    "marker": "sightseeing:architecture:modern",
+                    "categories": [
+                        "sightseeing"
+                    ],
+                    "parent_ids": [
+                        "city:308",
+                        "region:71",
+                        "continent:6",
+                        "country:49"
+                    ],
+                    "perex": "An office complex with interesting architecture, especially the Allen Lambert Galleria.",
+                    "customer_rating": null,
+                    "star_rating": null,
+                    "star_rating_unofficial": null,
+                    "thumbnail_url": "https://media-cdn.sygictraveldata.com/media/poi:60877",
+                    "$$hashKey": "object:371"
+                }
+            ],
         }
     ];
 
@@ -1801,28 +1844,27 @@ Final_Controllers.service('upcomingTripService', function() {
             end_date: new Date('2017', '07', '11'),
             latitude: 35.6894875,
             longitude: 139.6917064,
-            days: [
-              {
-                "day": [
-                  "Chidorigafuchi",
-                  "Shinjuku Station"
-                ]
-              },
-              {
-                "day": [
-                  "Shibuya Crossing",
-                  "Hachikō",
-                  "Shibuya Parco"
-                ]
-              },
-              {
-                "day": [
-                  "Hanazono Jinja Shrine",
-                  "Gokoku-ji",
-                  "Konnou Hachimangu Shrine",
-                  "Zenkoku-ji Temple"
-                ]
-              }
+            days: [{
+                    "day": [
+                        "Chidorigafuchi",
+                        "Shinjuku Station"
+                    ]
+                },
+                {
+                    "day": [
+                        "Shibuya Crossing",
+                        "Hachikō",
+                        "Shibuya Parco"
+                    ]
+                },
+                {
+                    "day": [
+                        "Hanazono Jinja Shrine",
+                        "Gokoku-ji",
+                        "Konnou Hachimangu Shrine",
+                        "Zenkoku-ji Temple"
+                    ]
+                }
             ],
             checkList: [],
             whichArray: "completed",
@@ -1836,26 +1878,25 @@ Final_Controllers.service('upcomingTripService', function() {
             end_date: new Date('2017', '02', '23'),
             latitude: 24.585445,
             longitude: 73.712479,
-            days: [
-              {
-                "day": [
-                  "City Palace",
-                  "Jagdish Mandir"
-                ]
-              },
-              {
-                "day": [
-                  "Ahar Museum",
-                  "Amar Vilas"
-                ]
-              },
-              {
-                "day": [
-                  "Lake Garden Palace",
-                  "Sunset Point",
-                  "Sukhadia Circle"
-                ]
-              }
+            days: [{
+                    "day": [
+                        "City Palace",
+                        "Jagdish Mandir"
+                    ]
+                },
+                {
+                    "day": [
+                        "Ahar Museum",
+                        "Amar Vilas"
+                    ]
+                },
+                {
+                    "day": [
+                        "Lake Garden Palace",
+                        "Sunset Point",
+                        "Sukhadia Circle"
+                    ]
+                }
             ],
             checkList: [],
             whichArray: "completed",
@@ -1869,19 +1910,18 @@ Final_Controllers.service('upcomingTripService', function() {
             end_date: new Date('2016', '11', '27'),
             latitude: 39.7392358,
             longitude: -104.990251,
-            days: [
-              {
-                "day": [
-                  "Colorado State Capitol",
-                  "Larimer Square"
-                ]
-              },
-              {
-                "day": [
-                  "Denver Botanic Gardens",
-                  "Denver Art Museum"
-                ]
-              }
+            days: [{
+                    "day": [
+                        "Colorado State Capitol",
+                        "Larimer Square"
+                    ]
+                },
+                {
+                    "day": [
+                        "Denver Botanic Gardens",
+                        "Denver Art Museum"
+                    ]
+                }
             ],
             checkList: [],
             whichArray: "completed",
@@ -1893,20 +1933,19 @@ Final_Controllers.service('upcomingTripService', function() {
             image: 'images/dctrip.jpg',
             start_date: new Date('2016', '05', '16'),
             end_date: new Date('2016', '05', '18'),
-            days: [
-              {
-                "day": [
-                  "White House",
-                  "United States Capitol"
-                ]
-              },
-              {
-                "day": [
-                  "Washington Monument",
-                  "National Mall",
-                  "Lincoln Memorial"
-                ]
-              }
+            days: [{
+                    "day": [
+                        "White House",
+                        "United States Capitol"
+                    ]
+                },
+                {
+                    "day": [
+                        "Washington Monument",
+                        "National Mall",
+                        "Lincoln Memorial"
+                    ]
+                }
             ],
             checkList: [],
             latitude: 38.9071923,
@@ -1952,37 +1991,38 @@ Final_Controllers.service('upcomingTripService', function() {
         addItemToCheckList: addItemToCheckList,
         clearAttractions: clearAttractions,
         deleteTrip: deleteTrip,
-        itemsChecked: itemsChecked, 
-        addToWaypoints: addToWaypoints, 
-        getWaypoints: getWaypoints, 
-        makeMapFromPoints: makeMapFromPoints
+        itemsChecked: itemsChecked,
+        addToWaypoints: addToWaypoints,
+        getWaypoints: getWaypoints,
+        makeMapFromPoints: makeMapFromPoints,
+        deleteActivityInCurrentTrip: deleteActivityInCurrentTrip
+
     };
     // setProperty: function(value){ 
     //   property = value; 
     // }
-    function itemsChecked(item,id){
+    function itemsChecked(item, id) {
         console.log(current_trip.checkList[id].checked);
-        if(current_trip.checkList[id].checked == true){
+        if (current_trip.checkList[id].checked == true) {
             current_trip.checkList[id].checked = false;
-        }
-        else{
+        } else {
             current_trip.checkList[id].checked = true;
         }
 
-        if(upcomingTrips[current_trip.index].checkList[id].checked == true){
+        if (upcomingTrips[current_trip.index].checkList[id].checked == true) {
             upcomingTrips[current_trip.index].checkList[id].checked = false;
-        }
-        else{
+        } else {
             upcomingTrips[current_trip.index].checkList[id].checked = true;
         }
-        
-        
+
+
         angular.copy(upcomingTrips, result_trips);
 
         angular.copy(current_trip, current_trip_results);
 
     }
-    function addDayToCurrentTrip(lastChar, place) { //adding place to current day, changed place to full place object
+
+    function addDayToCurrentTrip(lastChar, place, id) { //adding place to current day, changed place to full place object
         console.log(current_trip.days[lastChar].day);
         // current_trip.days[lastChar].day.push(place);
         console.log(current_trip);
@@ -1990,7 +2030,11 @@ Final_Controllers.service('upcomingTripService', function() {
 
         // console.log(upcomingTrips[current_trip.index].days[lastChar]);
         upcomingTrips[current_trip.index].days[lastChar].push(place);
+        // var acindex = upcomingTrips[current_trip.index].days[lastChar].day.findIndex(x => x.name==place);
+        // var acindex = $scope.acindex;
 
+        // var myEl = angular.element(document.querySelector('#' + id));
+        // myEl.append($compile('<div class="day-activity"><div class="delete-act-button"  ng-click="deleteActivity($event);" >x </div><div class="activity-text" id='+activityIdx+'>' + $scope.selectedPlace.name + '</div></div>')($scope));
 
         angular.copy(upcomingTrips, result_trips);
 
@@ -1998,14 +2042,37 @@ Final_Controllers.service('upcomingTripService', function() {
 
     }
 
+    function deleteActivityInCurrentTrip(activityDayId, activity) {
+        console.log(activityDayId);
+        
+        console.log(current_trip.days[activityDayId].day);
+        console.log(activity);
+        var length = current_trip.days[activityDayId].day.length;
+        console.log(length);
+        console.log("without deleting activity" );
+        console.log(current_trip); 
+        for (var i = 0; i < current_trip.days[activityDayId].day.length; i++) {
+            
+            if (current_trip.days[activityDayId].day[i].name == activity) {
+                
+                current_trip.days[activityDayId].day.splice(i, 1);
+                console.log("activity" + i);
+                        console.log("after deleting activity" );
+
+                console.log( current_trip);
+
+            }
+        }
+    }
+
     function addItemToCheckList(item) {
         // console.log(current_trip[lastChar].day);
-        current_trip.checkList.push({"item":item, "checked": false});
+        current_trip.checkList.push({ "item": item, "checked": false });
         console.log(current_trip.checkList);
         // console.log(current_trip.index);
 
         // console.log(upcomingTrips[current_trip.index].days[lastChar]);
-        upcomingTrips[current_trip.index].checkList.push({"item":item, "checked": false});
+        upcomingTrips[current_trip.index].checkList.push({ "item": item, "checked": false });
         angular.copy(upcomingTrips, result_trips);
 
         angular.copy(current_trip, current_trip_results);
@@ -2020,42 +2087,42 @@ Final_Controllers.service('upcomingTripService', function() {
         property = value;
     }
 
-    function getWaypoints(day){ 
+    function getWaypoints(day) {
 
 
     }
 
-    function makeMapFromPoints(day){ 
-      day.waypoints_arr = []; 
-      
-      //   day.waypoints_arr.push(location); 
-      
-      for (var i=0; i<day['day'].length; i++) {
-        console.log(day['day'][i]);
-        var location;
-        console.log(day['day'][i].location['lat']); 
-        // location.lat = day['day'][i].location['lat'];
-        // location.long = day['day'][i].location['lng'];
+    function makeMapFromPoints(day) {
+        day.waypoints_arr = [];
 
-        // day.waypoints_arr.push(location);
+        //   day.waypoints_arr.push(location); 
 
-      }
+        for (var i = 0; i < day['day'].length; i++) {
+            console.log(day['day'][i]);
+            var location;
+            console.log(day['day'][i].location['lat']);
+            // location.lat = day['day'][i].location['lat'];
+            // location.long = day['day'][i].location['lng'];
+
+            // day.waypoints_arr.push(location);
+
+        }
 
 
-      console.log(day['day']); 
+        console.log(day['day']);
     }
 
 
-    function addToWaypoints(lastChar, point){ 
+    function addToWaypoints(lastChar, point) {
 
-      console.log("got to waypoint service..."); 
-      console.log(point); 
-      console.log(current_trip.index); 
-      console.log("the day..."); 
-       console.log(current_trip.days[lastChar]);
+        console.log("got to waypoint service...");
+        console.log(point);
+        console.log(current_trip.index);
+        console.log("the day...");
+        console.log(current_trip.days[lastChar]);
 
-       // current_trip.days[lastChar].day.lat = point.location.latitude; 
-       // current_trip.days[lastChar].day.long = point.location.longitude; 
+        // current_trip.days[lastChar].day.lat = point.location.latitude; 
+        // current_trip.days[lastChar].day.long = point.location.longitude; 
 
     }
 
@@ -2162,14 +2229,14 @@ Final_Controllers.service('upcomingTripService', function() {
 
 
 });
-app.directive('ngEnter', function () {
-    return function (scope, element, attrs) {
-        element.bind("keydown keypress", function (event) {
-            if(event.which === 13) {
-                scope.$apply(function (){
+app.directive('ngEnter', function() {
+    return function(scope, element, attrs) {
+        element.bind("keydown keypress", function(event) {
+            if (event.which === 13) {
+                scope.$apply(function() {
                     scope.$eval(attrs.ngEnter);
                 });
- 
+
                 event.preventDefault();
             }
         });
