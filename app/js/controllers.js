@@ -112,7 +112,7 @@ Final_Controllers.controller('searchPage', ['$scope', '$http', '$window', 'Place
                         method: 'GET',
                         dataType: 'jsonp',
                         headers: {
-                            "x-api-key": 'GwXHC0Tks21G6Y3T0PQbRacMXRNhsEOy8R8OqlTf'
+                            "x-api-key": '0ox6z7CYFz4L2sc9FxG5d6ILi5GqqYke1f40zWeq'
                         },
                         url: 'https://api.sygictravelapi.com/1.0/en/places/list?area=' + $scope.lat + ',' + $scope.long + ',5000&categories=sightseeing&limit=4'
                     }).then(function successCallback(response) {
@@ -197,6 +197,19 @@ Final_Controllers.controller('searchPage', ['$scope', '$http', '$window', 'Place
     };
 
     $scope.submit = function(title, place, form_num) {
+        
+        if (form_num == '1' && (place == undefined || title == undefined)) {
+
+            alert('Make sure your trip has a name and a place!');
+            window.location.href = "/#/addtrip";
+        }
+
+        else if (form_num =='2' && title == undefined){
+            alert('Make sure your trip has a title!');
+        }
+
+        else {
+
         $scope.title = title;
         console.log(place );
 
@@ -221,8 +234,10 @@ Final_Controllers.controller('searchPage', ['$scope', '$http', '$window', 'Place
         }
 
         //place should be only city (get rid of state/country)
-        var c = place.indexOf(',');
-        place = place.substring(0, c != -1 ? c : place.length);
+        if (place.length != 0) {
+            var c = place.indexOf(',');
+            place = place.substring(0, c != -1 ? c : place.length);
+        }
 
 
         $scope.place = place;
@@ -230,15 +245,7 @@ Final_Controllers.controller('searchPage', ['$scope', '$http', '$window', 'Place
         console.log($scope.sentcity );
         console.log($scope.city);
         
-    
-
-        if (place == undefined || title == undefined) {
-
-            alert('Make sure your trip has a name and a place!');
-            window.location.href = "/#/addtrip";
-       } 
-
-       else { 
+     
         console.log("place added: " + place);
 
 
@@ -253,7 +260,7 @@ Final_Controllers.controller('searchPage', ['$scope', '$http', '$window', 'Place
                 method: 'GET',
                 dataType: 'jsonp',
                 headers: {
-                    "x-api-key": 'GwXHC0Tks21G6Y3T0PQbRacMXRNhsEOy8R8OqlTf'
+                    "x-api-key": '0ox6z7CYFz4L2sc9FxG5d6ILi5GqqYke1f40zWeq'
                 },
                 url: 'https://api.sygictravelapi.com/1.0/en/places/list?area=' + lat + ',' + long + ',5000&categories=sightseeing&limit=20'
             }).then(function successCallback(response) {
@@ -387,7 +394,7 @@ Final_Controllers.controller('searchPage', ['$scope', '$http', '$window', 'Place
         console.log("SCOPE ID LALALALAALALA: " + $scope.id);
 
         var myEl = angular.element(document.querySelector('#' + $scope.id));
-        myEl.append('<div class="day-activity"><div class="delete-act-button" onclick="alert(\'ab\')" >x </div><div class="activity-text">' + $scope.selectedPlace.name + '</div></div>');
+        myEl.append('<div class="day-activity"><div class="activity-text">' + $scope.selectedPlace.name + '</div></div>');
         var lastChar = $scope.id.substr($scope.id.length - 1);
         upcomingTripService.addDayToCurrentTrip(lastChar, $scope.selectedPlace);
         // console.log(current_trip.days[lastChar]);
